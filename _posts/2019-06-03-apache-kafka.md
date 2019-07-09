@@ -6,7 +6,9 @@ tags: 技术笔记
 author: shareif
 ---
 
-## 简介
+[TOC]
+
+## 概念
 
 * Producer - Topic - Consumer
 
@@ -39,3 +41,196 @@ author: shareif
 * Offset & Consumer Offset
 
   Offset是站在Broker的角度的，表示的是一个消息队列已经被消费到了哪里。而Consumer Offset是站在消费者的角度记录消费者消费了哪些记录。
+
+## Kafka版本
+
+* 0.7版本，上古版本，Kafka开源时的版本
+* 0.8版本，加入了副本机制
+* 0.9版本，增加基础安全/权限功能，引入kafka connect
+* 0.10版本，引入Kafka Streams
+* 0.11版本，提供幂等性Producer API，事务API，重构Kafka消息格式（推荐版本0.11.0.3）
+* 1.0版本/2.0版本，Kafka Streams改进。
+
+## Kafka部署平台
+
+|          | Linux                      | Windows                   |
+| -------- | -------------------------- | ------------------------- |
+| I/O模型  | epoll (多路复用->信号驱动) | select (I/O多路复用)      |
+| 网络传输 | Zero Copy                  | Zero Copy (>Java8 60版本) |
+| 社区     | Bug尽力修复                | Bug基本不会修复           |
+
+Kafka使用顺序读写磁盘，基本规避了机械磁盘的劣势：随机读写慢，所以可以使用机械磁盘，同时Kafka在软件层面提供了高可靠高可用，也没有必要使用RAID。当然土豪请随意。
+
+ kafka producer速率可以监控这个JMX指标：
+
+```shell
+kafka.producer:type=[consumer|producer|connect]-node-metrics,client-id=([-.\w]+),node-id=([0-9]+)
+```
+
+##Kafka集群参数
+
+### Broker参数
+
+官方详细文档 -> [Broker Config](http://kafka.apache.org/0110/documentation.html#brokerconfigs)
+
+#### 存储
+
+* log.dirs：指定了 Broker 需要使用的若干个文件目录路径，用逗号分隔多个路径，最好每个路径在不同物理磁盘中，比起单块磁盘，能够提高数据吞吐量。Kafka 1.1版本后，提供了Failover故障转移功能，如果Broker使用了多个磁盘，那坏掉磁盘的数据可以转移到正常磁盘中，而且Broker还能正常工作。
+
+#### ZooKeeper（分布式协调框架）
+
+是一个分布式协调框架，负责协调管理并保存 Kafka 集群的所有元数据信息，比如集群都有哪些 Broker 在运行、创建了哪些 Topic，每个 Topic 都有多少分区以及这些分区的 Leader 副本都在哪些机器上等信息。
+
+* zookeeper.connect：`zk1:2181,zk2:2181,zk3:2181`
+
+#### 通信
+
+* listeners: `协议名://主机名:端口号` 告诉别人，如何访问开放的kafka服务
+* advertised.listeners：对外发布的listeners，如果此配置没有指定，则会使用`listeners`配置
+* listener.security.protocol.map：对于自定义的协议名，需要指定此值声明安全协议
+
+#### Topic管理
+
+* auto.create.topics.enable：是否允许自动创建Topic
+* unclean.leader.election.enable：是否允许unclean leader选举，建议false，防止落后副本当选Leader
+* auto.leader.rebalance.enable：是否允许强制更换leader，建议false，防止没必要的leader切换
+
+#### 数据留存
+
+* log.retention.{hours|minutes|ms}：Kafka数据留存时间，超过这个时间会被删除
+* log.retention.bytes：消息保存的总磁盘大小，超过会删除
+
+* message.max.bytes：kafka最大能接受的消息大小。
+
+### Topic 参数
+
+Topic级别参数会覆盖全局Broker级别参数值
+
+* retention.ms：Topic消息留存时间，默认7天
+* retention.bytes：为该Topic预留多大的磁盘空间
+* max.message.bytes：该Topic能够接受最大消息大小
+
+#### 在创建Topic时指定Topic级别参数
+
+```shell
+bin/kafka-topics.sh --bootstrap-server localhost:9092 \
+	--create --topic transaction \
+	--partitions 1 \
+	--replication-factor 1 \
+	--config retention.ms=15552000000 \
+	--config max.message.bytes=5242880
+```
+
+#### 修改Topic级别参数（推荐）
+
+```shell
+bin/kafka-configs.sh --zookeeper localhost:2181 \
+ 	--entity-type topics \
+ 	--entity-name transaction \
+ 	--alter --add-config max.message.bytes=10485760
+```
+
+### JVM 参数
+
+在启动kafka之前设置两个环境变量：
+
+* KAFKA_HEAP_OPTS：指定堆大小，堆大小的最佳实践经验值为6G
+* KAFKA_JVM_PERFORMANCE_OPTS：指定GC，推荐G1，Java8需显示指定G1
+
+比如：
+
+```shell
+export KAFKA_HEAP_OPTS=--Xms6g  --Xmx6g
+export  KAFKA_JVM_PERFORMANCE_OPTS= -server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true
+bin/kafka-server-start.sh config/server.properties
+```
+
+### 操作系统参数
+
+* 文件描述符：`ulimit -n 1000000`，调大这个值，防止出现 Too many open files 的错误。
+* 文件系统类型：XFS > ext4
+* swap：设置成1，防止触发无预警OOM Killer，设置成1，方便问题定位。
+* 提交时间：即页缓存刷到硬盘的时间，默认5s，可以稍微调大，虽然有数据丢失风险，但kafka的备份冗余机制可以降低风险。
+
+## Kafka生产者
+
+### 分区
+
+#### 分区策略
+
+##### 自定义分区策略
+
+需要实现`org.apache.kafka.clients.producer.Partitioner`接口：
+
+```java
+int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster);
+```
+
+其中，前4个参数属于消息数据，最后一个参数给出了集群的信息，比如集群的topic数，broker数等。实现完成这个接口之后，显示的指定`partitioner.class`参数为类的全量名称。
+
+自定义分区策略，可以根据业务不同灵活的选择合适的分区策略，比如按照地理位置进行分区，从消息中获取到key值，或者将地理位置标记封装进key中，再根据key值保序，那相同key值的消息必然进入同一个分区。或者更极端的，一个地理位置的消息占用一个分区，比如中国每个省或者直辖市占用一个分区，只要实现Partitioner接口，就可以轻松完成这种独占分区的策略。
+
+##### 轮询策略（默认）
+
+顾名思义，就是逐一遍历。
+
+##### 随机策略
+
+随机的将消息发布到不同的分区中，（还不如轮询
+
+##### 消息键保序策略（Key-ordering）
+
+实现接口
+
+```java
+int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster){
+  List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
+	return Math.abs(key.hashCode()) % partitions.size();
+}
+```
+
+统一个key的所有消息都能进入到同一个分区中。
+
+### 压缩
+
+#### 消息格式
+
+Kafka 0.11.0.x版本之后，消息被称为record，消息格式版本为v2，`magic=2` 。官方描述参考 [Message Format](http://kafka.apache.org/0110/documentation.html#messageformat)。消息的写操作总是以batch为单位，一个batch可以包含一个或多个record。
+
+v2版本的消息CRC校验操作，移到了batch层次，不必再逐条record进行CRC校验，同时压缩方式也从之前的逐条压缩后放入batch中，变为将整个batch进行压缩。
+
+#### 压缩方式
+
+kafka能够进行压缩操作的地方有两个，一个是Producer，一个是Broker，而Consumer一般只用解压缩。如果Producer和Broker使用同一种压缩方法（默认Broker跟随Producer），则Broker不会再进行任何压缩，原样保存数据，而一旦Broker端指定了一种不一样的压缩方法，则会引发重新压缩的操作，带来不必要的CPU损耗。
+
+在kafka 2.1.0 之前，kafka支持三种压缩算法：GZIP，Snappy，LZ4，之后的版本开始支持zstd压缩算法。
+
+| 压缩方法     | 压缩比 | 压缩速度 | 解压速度  |
+| ------------ | ------ | -------- | --------- |
+| zstd 1.3.4   | 2.877  | 470 MB/s | 1280 MB/s |
+| lz4 1.8.1    | 2.101  | 750 MB/s | 3700 MB/s |
+| snappy 1.1.4 | 2.091  | 530 MB/s | 1800 MB/s |
+| zlib 1.2.11  | 2.743  | 110 MB/s | 400 MB/s  |
+
+## 无消息丢失配置
+
+kafka只对已提交的消息负责。
+
+#### 最佳实践
+
+* 不要使用`producer.send(msg)`方法，而要使用带回调的`producer.send(msg, callback)`方法。
+  
+* 设置`ack=all`，ack是producer的一个参数，该参数表示当多少个副本broker接受消息时认为消息已提交成功。
+Headset
+
+* 设置retries为较大的值，以防瞬时故障导致的消息发送失败，比如网络抖动。
+  
+* 设置`unclean.leader.election.enable=false`，放止在有些落后的副本Broker通过竞选当上leader，造成数据丢失。
+
+* 设置`replication.factor >=3`，该参数为Broker端参数，表示设置多少个副本。
+
+* 设置`min.insync.replicas>1`，这是Broker端参数，表示消息至少被写入到多少个副本Broker才能被定义为已提交。
+
+* 设置`replication.factor > min.insync.replicas`，如果两者相等，则一旦一个副本GG，那整个分区就GG了。
+
+* 设置`enable.auto.commit=false`，该参数会自动提交offset，在某些异常情况，消费者如果没有消费完消息异常退出，就会造成数据丢失。
