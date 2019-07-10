@@ -125,9 +125,9 @@ bin/kafka-topics.sh --bootstrap-server localhost:9092 \
 
 ```shell
 bin/kafka-configs.sh --zookeeper localhost:2181 \
- 	--entity-type topics \
- 	--entity-name transaction \
- 	--alter --add-config max.message.bytes=10485760
+     --entity-type topics \
+     --entity-name transaction \
+     --alter --add-config max.message.bytes=10485760
 ```
 
 ### JVM 参数
@@ -185,7 +185,7 @@ int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] va
 ```java
 int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster){
   List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
-	return Math.abs(key.hashCode()) % partitions.size();
+    return Math.abs(key.hashCode()) % partitions.size();
 }
 ```
 
@@ -234,3 +234,137 @@ Headset
 * 设置`replication.factor > min.insync.replicas`，如果两者相等，则一旦一个副本GG，那整个分区就GG了。
 
 * 设置`enable.auto.commit=false`，该参数会自动提交offset，在某些异常情况，消费者如果没有消费完消息异常退出，就会造成数据丢失。
+
+## 客户端拦截器
+
+kafka客户端才有拦截器，broker没有拦截器。
+
+要使用kafka拦截器，需要实现其提供的接口，消费者需要实现`org.apache.kafka.clients.consumer.ConsumerInterceptor`，生产者需要实现`org.apache.kafka.clients.producer.ProducerInterceptor`。
+
+### Demo
+
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.stereotype.Service;
+
+import java.util.Properties;
+import java.util.concurrent.*;
+
+@Slf4j
+@Service
+public class KafkaProducerService extends ThreadPoolExecutor {
+    static Properties props = new Properties();
+
+    static KafkaProducer<String, String> producer = null;
+
+    // 核心池大小
+    static int corePoolSize = 5;
+
+    // 最大值
+    static int maximumPoolSize = 20;
+
+    // 无任务时存活时间
+    static long keepAliveTime = 60;
+
+    // 时间单位
+    static TimeUnit timeUnit = TimeUnit.SECONDS;
+
+    // 阻塞队列
+    static BlockingQueue blockingQueue = new LinkedBlockingQueue();
+
+    // 线程池
+    static ExecutorService service = null;
+
+    // 配置项
+    static {
+        // 自定义分区类
+        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, "class qualifed name.");
+        // Kafka服务端的主机名和端口号
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "node22:9092,node22:9092,node23:9092");
+        // 等待所有副本节点的应答
+        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        // 消息发送最大尝试次数
+        props.put(ProducerConfig.RETRIES_CONFIG, 5);
+        // 一批消息处理大小
+        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+        // 增加服务端请求延时
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+        // 发送缓存区内存大小
+        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
+        // key序列化
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        // value序列化
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        // 增加拦截器
+        props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, "com.example.websocketdemo.kafka.interceptor.CustomProducerInterceptor");
+    }
+
+    public KafkaProducerService(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+    }
+
+    public KafkaProducerService(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
+    }
+
+    public KafkaProducerService(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
+    }
+
+    public KafkaProducerService(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+    }
+
+    public KafkaProducerService() {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, timeUnit, blockingQueue);
+    }
+
+    public boolean sendRecord(ProducerRecord record) {
+        Future result = this.submit(new ProducerRunnable(new KafkaProducer<String, String>(props), record));
+
+        try {
+            return (Boolean) result.get(10, timeUnit);
+        } catch (TimeoutException te) {
+            log.error("sending record to kafka timeout.", te.getStackTrace());
+            result.cancel(true);
+        } catch (InterruptedException ie) {
+            log.error("sending record to kafka interrupted. {}", ie.getStackTrace());
+        } catch (ExecutionException ee) {
+            log.error("sending record to kafka execution failed. {}", ee.getStackTrace());
+        }
+        return false;
+    }
+
+    public boolean sendRecord(String value, String topic) {
+        ProducerRecord<String, String> record = new ProducerRecord<>(topic, value);
+        return sendRecord(record);
+    }
+
+    class ProducerRunnable implements Runnable {
+        private KafkaProducer<String, String> producer;
+        private ProducerRecord<String, String> record;
+
+        public ProducerRunnable(KafkaProducer<String, String> producer, ProducerRecord<String, String> record) {
+            this.producer = producer;
+            this.record = record;
+        }
+
+        @Override
+        public void run() {
+            producer.send(record, (metadata, exception) -> {
+                if (exception != null) {
+                    log.error("message send failed. {}", exception.getStackTrace());
+                    return;
+                }
+
+                if (metadata != null) {
+                    log.info("message send successfully, {}", metadata.toString());
+                }
+            });
+        }
+    }
+}
+```
