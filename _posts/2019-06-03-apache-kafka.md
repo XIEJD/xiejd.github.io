@@ -67,7 +67,7 @@ Kafka使用顺序读写磁盘，基本规避了机械磁盘的劣势：随机读
 kafka.producer:type=[consumer|producer|connect]-node-metrics,client-id=([-.\w]+),node-id=([0-9]+)
 ```
 
-##Kafka集群参数
+## Kafka集群参数
 
 ### Broker参数
 
@@ -114,11 +114,11 @@ Topic级别参数会覆盖全局Broker级别参数值
 
 ```shell
 bin/kafka-topics.sh --bootstrap-server localhost:9092 \
-	--create --topic transaction \
-	--partitions 1 \
-	--replication-factor 1 \
-	--config retention.ms=15552000000 \
-	--config max.message.bytes=5242880
+    --create --topic transaction \
+    --partitions 1 \
+    --replication-factor 1 \
+    --config retention.ms=15552000000 \
+    --config max.message.bytes=5242880
 ```
 
 #### 修改Topic级别参数（推荐）
@@ -216,7 +216,7 @@ kafka能够进行压缩操作的地方有两个，一个是Producer，一个是B
 
 kafka只对已提交的消息负责。
 
-#### 最佳实践
+### 最佳实践
 
 * 不要使用`producer.send(msg)`方法，而要使用带回调的`producer.send(msg, callback)`方法。
   
@@ -241,7 +241,17 @@ kafka客户端才有拦截器，broker没有拦截器。
 
 要使用kafka拦截器，需要实现其提供的接口，消费者需要实现`org.apache.kafka.clients.consumer.ConsumerInterceptor`，生产者需要实现`org.apache.kafka.clients.producer.ProducerInterceptor`。
 
-### Demo
+## Kafka如何管理TCP连接
+
+* KafkaProducer 实例创建时启动 Sender 线程，从而创建与 bootstrap.servers 中所有 Broker 的 TCP 连接。
+
+* KafkaProducer 实例首次更新元数据信息之后，还会再次创建与集群中所有 Broker 的 TCP 连接。
+
+* 如果 Producer 端发送消息到某台 Broker 时发现没有与该 Broker 的 TCP 连接，那么也会立即创建连接。
+
+* 如果设置 Producer 端 connections.max.idle.ms 参数大于 0，则步骤 1 中创建的 TCP 连接会被自动关闭；如果设置该参数 =-1，那么步骤 1 中创建的 TCP 连接将无法被关闭，从而成为“僵尸”连接。
+
+## Demo
 
 ```java
 import lombok.extern.slf4j.Slf4j;
@@ -368,13 +378,3 @@ public class KafkaProducerService extends ThreadPoolExecutor {
     }
 }
 ```
-
-## Kafka如何管理TCP连接
-
-* KafkaProducer 实例创建时启动 Sender 线程，从而创建与 bootstrap.servers 中所有 Broker 的 TCP 连接。
-
-* KafkaProducer 实例首次更新元数据信息之后，还会再次创建与集群中所有 Broker 的 TCP 连接。
-
-* 如果 Producer 端发送消息到某台 Broker 时发现没有与该 Broker 的 TCP 连接，那么也会立即创建连接。
-
-* 如果设置 Producer 端 connections.max.idle.ms 参数大于 0，则步骤 1 中创建的 TCP 连接会被自动关闭；如果设置该参数 =-1，那么步骤 1 中创建的 TCP 连接将无法被关闭，从而成为“僵尸”连接。
