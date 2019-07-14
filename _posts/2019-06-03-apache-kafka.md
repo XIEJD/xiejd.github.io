@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Apache Kafka 原理和用途学习笔记
+title: Apache Kafka 笔记
 date: 2019-06-03
 tags: 技术笔记
 author: shareif
@@ -212,6 +212,61 @@ kafka能够进行压缩操作的地方有两个，一个是Producer，一个是B
 | snappy 1.1.4 | 2.091  | 530 MB/s | 1800 MB/s |
 | zlib 1.2.11  | 2.743  | 110 MB/s | 400 MB/s  |
 
+#### 幂等Producer
+
+幂等，在Kafka中，指的是多次操作产生同一个结果，更具体一点讲，就是确保消息精确提交一次，Broker能对幂等Producer发送的消息进行去重，保证同一个消息只成功提交了一次。设置幂等Producer的方法很简单：
+
+```java
+props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG， true)
+```
+
+幂等Producer的局限在于：它只能保证单会话、单Topic、单分区上的幂等。如果跨会话了，或跨Topic、分区了，仍然无法保证幂等，即还是有可能产生重复的消息。
+
+#### 事务Producer
+
+事务保证能将多个消息原子性的写入到多个分区中，即这一批消息中，如果其中有一个消息没有写入到其对应的分区，那这个操作就是失败的，其他已经成功写入的消息也会被“回滚”。换句话说，这一批消息的写入，要么全部成功，要么全部失败。设置事务Producer的方法：
+
+```java
+props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG， true);
+props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "test.producer");
+```
+
+在提交原子消息时：
+
+```java
+producer.initTransactions();
+try {
+            producer.beginTransaction();
+            producer.send(record1);
+            producer.send(record2);
+            producer.commitTransaction();
+} catch (KafkaException e) {
+            producer.abortTransaction();
+}
+```
+
+同时，要保证消费者无法看到提交失败的消息，也要做如下设置：
+
+```java
+props.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
+```
+
+## Kafka 消费者
+
+### 消费者组
+
+Kafka的消费者组绝对是kafka中最为重要的概念之一，借助Kafka的消费者组，kafka非常优雅的实现了点对点发布模型和订阅发布模型，偏颇一点讲，借助Kafka消费者组，kafka既能实现一个消息只被一个消费者消费，又能实现一个消息被多个消费者消费。
+
+* 一个消费者组下面可以有多个消费者实例
+* 一个消费者组由Group ID 唯一标识
+* 一个分区的消息，只能被消费者组中的某一个消费者消费，当然可以被多个消费者组消费。
+
+更简单一点理解，一个消费者组可以看成是一个业务逻辑的横向扩展，一个消息只要被这个特定的业务逻辑消费一次就够了，一个消费者组中的多个实例是消费性能的横向扩展。而对于不同消费者组，是不同的业务逻辑，所以不同的业务逻辑是可以同时消费同一个消息的。理想情况下，一个消费者组中的消费者实例个数 <= 订阅的Topics的所有分区数总和。多出的实例将会处于无分区消费的尴尬状态。
+
+当所以消费者都属于同一个消费者组时，Kafka的一个消息不可能被重复消费，其实际上就是点对点的模型，当所有消费者的消费者组都不一样时，这时候所有消费者消费的都是同样的消息，其实际上就是发布订阅的模型。
+
+PS. Kafka消费者组中的成员变化会导致kafka进行重平衡操作，此操作性能影响极大，所以尽量避免动态的消费者变化
+
 ## 无消息丢失配置
 
 kafka只对已提交的消息负责。
@@ -244,12 +299,11 @@ kafka客户端才有拦截器，broker没有拦截器。
 ## Kafka如何管理TCP连接
 
 * KafkaProducer 实例创建时启动 Sender 线程，从而创建与 bootstrap.servers 中所有 Broker 的 TCP 连接。
-
 * KafkaProducer 实例首次更新元数据信息之后，还会再次创建与集群中所有 Broker 的 TCP 连接。
-
 * 如果 Producer 端发送消息到某台 Broker 时发现没有与该 Broker 的 TCP 连接，那么也会立即创建连接。
-
 * 如果设置 Producer 端 connections.max.idle.ms 参数大于 0，则步骤 1 中创建的 TCP 连接会被自动关闭；如果设置该参数 =-1，那么步骤 1 中创建的 TCP 连接将无法被关闭，从而成为“僵尸”连接。
+
+
 
 ## Demo
 
