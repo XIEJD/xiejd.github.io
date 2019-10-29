@@ -8,11 +8,67 @@ author: shareif
 
 [TOC]
 
-## Springboot 实战分享
+## spring-boot-autoconfiguration
 
-### spring-boot-autoconfiguration
+### Condition
 
-#### Jackson
+AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+
+| 注解                             | 解释                                                  |
+| -------------------------------- | ----------------------------------------------------- |
+| `@ConditionalOnBean`             | 当BeanFactory中存在某个bean时满足条件，可以匹配多个   |
+| `@ConditionalOnClass`            | 当ClassPath下存在某个类时满足条件，可以匹配多个       |
+| `@ConditionalOnCloudPlatform`    |                                                       |
+| `@ConditionalOnExpression`       |                                                       |
+| `@ConditinalOnJava`              | 匹配当前运行JVM版本                                   |
+| `@ConditionalOnJndi`             |                                                       |
+| `@ConditionalOnMissingBean`      |                                                       |
+| `@ConditionalOnMissingClass`     |                                                       |
+| `@ConditinalOnNotWebApplication` |                                                       |
+| `@ConditionalOnProperty`         | 当满足某个属性时满足条件                              |
+| `@ConditionalOnResource`         | 当classpath下存在某个资源文件时满足条件，可以匹配多个 |
+| `@ConditinalOnSingleCandidate`   |                                                       |
+| `@ConditinalOnWebApplication`    |                                                       |
+
+举几个🌰：
+
+```java
+@Configuration
+@ConditionalOnProperty(prefix = "cn.shareif.auth", value = "enabled", matchIfMissing = true)
+public class ShareifAuthAutoConfiguration {
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean bean = new FilterRegistrationBean();
+        bean.setFilter(new AuthFilter());
+        bean.addUrlPatterns("/*");
+        return bean;
+    }
+}
+```
+
+设置Web拦截器，当然设置拦截器有更简单的方法，比如`@WebFilter`注解，此处仅仅是举一个`@ConditinalOnProperty`的栗子。当项目的配置文件中（比如 application.properties）定义了`cn.shareif.auth.enabled=true` 时，就会触发这个自动配置类，如果没有配置属性，默认自动触发。
+
+
+
+```java
+@Slf4j
+@Configuration
+@ConditionalOnResource(resources = "classpath:lib/certificate.so")
+public class LibResourceAutoConfiguration {
+
+    @Bean
+    public CertificateHelper load() {
+        // load from resources and return a helper bean consist of this resource.
+        log.info("Oh, you have loaded the resource");
+        return new CertificateHelper();
+    }
+}
+```
+
+当classpath中存在某个资源文件时，进行自动配置。
+
+### Jackson
 
 Springboot默认的Json实现是Jackson，其对应的自动配置类为`JacksonAutoConfiguration`，同时通过`JacksonHttpMessageConvertersConfiguration` 配置HttpMessageConverter实现类用于Http请求中Json到POJO或者POJO到Json的转换。
 
@@ -112,7 +168,9 @@ public class JacksonUtil {
 
 
 
-#### Mongo
+
+
+### Mongo
 
 有两种Mongo自动配置类，一种是连接真实的mongo配置，一种是内存式的mongo配置。配置顺序为先配置内存式mongo（如果条件满足），再配置真实mongo。
 
@@ -169,3 +227,7 @@ public class MongoAutoConfiguration {}
 ```
 
 `MongoAutoConfiguration`配置仅当容器内缺少`MongoDbFactory` bean时才会生效。
+
+最后，`MongoDataAutoConfiguration`会完成Spring Data for Mongo的支持，这样，在使用的时候直接注入对应的bean即可。该配置提供`MongoTemplate`, `GridFsTemplate` 用于存储小文档和大文档。
+
+至此，如果没有错误抛出，就可以正常使用mongo了~
