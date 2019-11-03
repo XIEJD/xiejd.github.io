@@ -11,8 +11,10 @@ date: 2019-10-20
   - [Condition](#condition)
   - [Jackson](#jackson)
   - [Mongo](#mongo)
-  - [Quartz](#quartz)
+  - [Quartz *[to do]*](#quartz-to-do)
   - [Kafka](#kafka)
+  - [Redis](#redis)
+    - [运行基于Docker的Redis](#%E8%BF%90%E8%A1%8C%E5%9F%BA%E4%BA%8Edocker%E7%9A%84redis)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
