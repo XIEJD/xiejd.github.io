@@ -1,78 +1,22 @@
-# Site settings 配置站点
-title: 'Shareif'
-description: '我只想找个地方放东西'
-keyword: 'Shareif, Blog, Coding, Copy. SB & CC'
-url: 'www.shareif.cn' # your host
+# ----------- CONFIGURABLE START -----------
+title:            "Scribble"
+description:      "Such theme, very cool."
+url:              http://scribble.muan.co # Site url, without a slash at the end.
+signoff:          "muan" # Your name
+facebook_appid:   # APP ID for like button, remove from /_includes/share.html if unwanted.
+google_analytics: # Set tracking, remove from /javascripts/basic.js if unwanted.
+share:            false # Turn on twitter and facebook share buttons
 
-# if you don't need baseurl, you should leave this value blank.
-baseurl: ''
+links:
+  - name:         Posts
+    url:          /
+    external:     false
+  - name:         About me
+    url:          /about
+    external:     false
+# ------------ CONFIGURABLE END ------------
 
-# Navigation links
-nav:
-  home: '/'
-  tags: '/tags.html'
-
-# Footer
-footer:
-  since: 2019
-
-# Author 配置博主信息
-author: 'Shareif'
-nickname: 'NoOne'
-bio: '偶尔想写的东西，偶尔想拍点东西，偶尔什么都不想干'
-avatar: '/assets/img/profile.png'
-
-# Search
-search: true
-
-# Night mode
-nightMode: true
-
-# Comments 评论功能
-comments:
-  disqus: false
-  disqus_url: 'disqus_url'
-
-# MathJax 公式支持 by Ray-Eldath
-mathjax: true
-
-# Share
-social-share: true
-social-share-items: ['wechat', 'weibo', 'douban', 'twitter']
-
-# theme color 主题皮肤
-theme-color: 'default'  # pink or default
-
-# Post header background patterns (when the post no cover): circuitBoard, overlappingCircles, food, glamorous, ticTacToe, seaOfClouds
-postPatterns: 'circuitBoard'
-
-# SNS settings 配置社交网站
-# url: email, weibo, zhihu, twitter, instagram, juejin, github, douban, facebook, dribble, uicn, jianshu, medium, linkedin
-sns:
-  weibo: '//#'
-
-# Tags 设置标签
-recommend-tags: true # whether or not display recommend-tags on the sidebar
-recommend-condition-size: 12 # a tag will be recommended if the size of it is more than this value
-
-# Build settings
-paginate: 6
-paginate_path: 'page:num'
-exclude: ['node_modules', 'dev', 'package.json', 'gulpfile.js', '.gitignore', 'README.md']
-
-# Markdown
-markdown: kramdown
-highlighter: rouge
-kramdown:
-  input: GFM
-
-# RSS
-RSS: false
-
-# Permalink
-# See: https://github.com/kaeyleo/jekyll-theme-H2O/issues/35
-permalink: /:year/:month/:day/:title.html
-
-# Plugins
-plugins_dir: [jekyll-paginate]
-gems: [jekyll-paginate]
+permalink:        /posts/:title
+defaults:
+  - values:
+      layout: "default"

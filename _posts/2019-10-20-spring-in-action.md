@@ -18,8 +18,8 @@ AutoConfiguration的condition包下面有一套条件注解，用来决定什么
 | -------------------------------- | ----------------------------------------------------- |
 | `@ConditionalOnBean`             | 当BeanFactory中存在某个bean时满足条件，可以匹配多个   |
 | `@ConditionalOnClass`            | 当ClassPath下存在某个类时满足条件，可以匹配多个       |
-| `@ConditionalOnCloudPlatform`    |                                                       |
-| `@ConditionalOnExpression`       |                                                       |
+| `@ConditionalOnCloudPlatform`    | 巴拉巴拉                                              |
+| `@ConditionalOnExpression`       | 可以定义SpEL语句进行匹配                              |
 | `@ConditinalOnJava`              | 匹配当前运行JVM版本                                   |
 | `@ConditionalOnJndi`             |                                                       |
 | `@ConditionalOnMissingBean`      |                                                       |
@@ -70,7 +70,9 @@ public class LibResourceAutoConfiguration {
 
 ### Jackson
 
-Springboot默认的Json实现是Jackson，其对应的自动配置类为`JacksonAutoConfiguration`，同时通过`JacksonHttpMessageConvertersConfiguration` 配置HttpMessageConverter实现类用于Http请求中Json到POJO或者POJO到Json的转换。
+无起步依赖。
+
+Springboot默认的Json实现是Jackson，其对应的自动配置类为`JacksonAutoConfiguration`，同时通过`JacksonHttpMessageConvertersConfiguration` 配置HttpMessageConverter实现类用于Http请求中Json到Java对象或者Java对象到Json的转换。
 
 JacksonAutoConfiguration的触发条件为存在类：`com.fasterxml.jackson.databind.ObjectMapper.class`。此配置将提供一些基础bean，比如`ObjectMapper` bean，`JsonComponentModule` bean。`ObjectMapper` bean是POJO和String转换的关键角色，而`JsonComponentModule` bean是配置由`@JsonComponent`定义的序列化和反序列化组件的关键角色。摘取源码中对`@JsonComponent`的注释：
 
@@ -85,11 +87,11 @@ JacksonAutoConfiguration的触发条件为存在类：`com.fasterxml.jackson.dat
  * @JsonComponent
  * public class CustomerJsonComponent {
  *
- *     public static class Serializer extends JsonSerializer<Customer> {
+ *     public static class SomeDTOSerializer extends JsonSerializer<Customer> {
  *         // ...
  *     }
  *
- *     public static class Deserializer extends JsonDeserializer<Customer> {
+ *     public static class SomeDTODeserializer extends JsonDeserializer<Customer> {
  *         // ...
  *     }
  *
@@ -102,9 +104,9 @@ JacksonHttpMessageConvertersConfiguration配置类可以提供两个bean，一�
 
 `MappingJackson2HttpMessageConverter`实现了关键接口`GenericHttpMessageConverter` 用于将http请求转换为指定泛型类型的目标对象，将指定泛型类型的源对象转换为http响应。
 
-总结，在Springboot启动后，就已经自动配置了一系列的bean来支持Json和POJO的转化，如果追求性能，完全不用自己再new一个ObjectMapper甚至多个ObjectMapper，`ObjectMapper`是线程安全的，可以放心大胆的用单例模式。同时由于注解`@JsonComponent` 和bean `JsonComponentModule` ,可以非常方便的自定义某些类型的序列化与反序列化方法。所以一个项目里面有多个`ObjectMapper`的理由是什么呢，甚至一个项目里有多个json实现库，比如gson、json-lib的意义是什么呢？
+总结，在Springboot启动后，就已经自动配置了一系列的bean来支持Json和Java对象的转化，如果追求性能，完全不用自己再new一个ObjectMapper甚至多个ObjectMapper，`ObjectMapper`是线程安全的，可以放心大胆的用单例模式。同时由于注解`@JsonComponent` 和bean `JsonComponentModule` ,可以非常方便的自定义某些类型的序列化与反序列化方法。所以一个项目里面有多个`ObjectMapper`是无意义的。一个项目里有一个json实现库就够了，而且Springboot完全可以针对不同的json库进行自动配置，比如gson。从微服务依赖的角度以及序列化反序列化动作一致性的角度来讲，最好不要引入多个ObjectMapper或者多个json库。
 
-附：如何用Springboot的自己的`ObjectMapper`
+附：如何用Springboot的自己创建的`ObjectMapper`
 
 ```java
 @Component
@@ -160,7 +162,7 @@ public class JacksonUtil {
 }
 ```
 
-
+当然不用静态方法的形式暴露功能，而直接在bean里autowired也是可以滴。
 
 > References:
 >
@@ -230,4 +232,19 @@ public class MongoAutoConfiguration {}
 
 最后，`MongoDataAutoConfiguration`会完成Spring Data for Mongo的支持，这样，在使用的时候直接注入对应的bean即可。该配置提供`MongoTemplate`, `GridFsTemplate` 用于存储小文档和大文档。
 
+对Mongo配置项感兴趣的话，可以直接查看`MongoProperties`配置类
+
 至此，如果没有错误抛出，就可以正常使用mongo了~
+
+
+
+### Quartz
+
+定时任务调度，起步依赖：
+
+
+
+### Kafka
+
+
+
