@@ -11,12 +11,12 @@ fun_serve(){
 fun_newpost(){
     DATEPREFIX=$(date +%Y-%m-%d);
     TEMPLATE="---
-layout: post
 title: $1
 date: $DATEPREFIX
-tags:
-author: shareif
----"
+---
+
+<!-- START doctoc -->
+<!-- END doctoc -->"
     FILENAME="./_posts/$DATEPREFIX-$1";
     touch $FILENAME;
     echo "$TEMPLATE" >> $FILENAME;

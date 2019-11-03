@@ -3,6 +3,24 @@ title: SpringData MongoDB 聚合笔记
 date: 2019-05-14
 ---
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [简介](#%E7%AE%80%E4%BB%8B)
+- [MongoDB聚合框架](#mongodb%E8%81%9A%E5%90%88%E6%A1%86%E6%9E%B6)
+  - [Map-Reduce](#map-reduce)
+- [利用SpringData进行聚合操作](#%E5%88%A9%E7%94%A8springdata%E8%BF%9B%E8%A1%8C%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C)
+  - [基本抽象](#%E5%9F%BA%E6%9C%AC%E6%8A%BD%E8%B1%A1)
+  - [Aggregation](#aggregation)
+  - [AggregationOperations](#aggregationoperations)
+    - [概览](#%E6%A6%82%E8%A7%88)
+- [Example](#example)
+- [REFERENCES](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## 简介
 
 之前一直用Java Stream来处理数据聚合操作，统计一些前端需要的信息，虽然一直没什么大问题，但是总觉的这事饶了一大圈，苦于不熟悉SpringData和MongoDB，对于MongoDB的聚合框架更是一无所知，索性和SpringData MongoDB一起，趁这个机会给自己扫个盲。

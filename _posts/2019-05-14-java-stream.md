@@ -3,6 +3,26 @@ title: '啃一啃Java中的Stream'
 date: 2019-05-14
 ---
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [什么是流](#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B5%81)
+- [Stream API概览](#stream-api%E6%A6%82%E8%A7%88)
+- [流操作](#%E6%B5%81%E6%93%8D%E4%BD%9C)
+  - [中间操作与终端操作（intermediate & terminal）](#%E4%B8%AD%E9%97%B4%E6%93%8D%E4%BD%9C%E4%B8%8E%E7%BB%88%E7%AB%AF%E6%93%8D%E4%BD%9Cintermediate--terminal)
+  - [有状态与无状态 (stateful & stateless)](#%E6%9C%89%E7%8A%B6%E6%80%81%E4%B8%8E%E6%97%A0%E7%8A%B6%E6%80%81-stateful--stateless)
+  - [短路操作 （short-circuiting）](#%E7%9F%AD%E8%B7%AF%E6%93%8D%E4%BD%9C-short-circuiting)
+- [重要方法](#%E9%87%8D%E8%A6%81%E6%96%B9%E6%B3%95)
+  - [函数式接口](#%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3)
+  - [映射（Map）](#%E6%98%A0%E5%B0%84map)
+  - [规约（Reduce）](#%E8%A7%84%E7%BA%A6reduce)
+  - [可变规约（Collect）](#%E5%8F%AF%E5%8F%98%E8%A7%84%E7%BA%A6collect)
+- [REFERENCES](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## 什么是流
 
 比较偏颇的理解，流指代的就是集合类下的`stream()` api，它的作用就是将集合类型转化为`Stream<E>`接口实现的类，

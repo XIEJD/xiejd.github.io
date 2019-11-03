@@ -3,7 +3,47 @@ title: Apache Kafka 笔记
 date: 2019-06-03
 ---
 
-[TOC]
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [概念](#%E6%A6%82%E5%BF%B5)
+- [Kafka版本](#kafka%E7%89%88%E6%9C%AC)
+- [Kafka部署平台](#kafka%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0)
+- [Kafka集群参数](#kafka%E9%9B%86%E7%BE%A4%E5%8F%82%E6%95%B0)
+  - [Broker参数](#broker%E5%8F%82%E6%95%B0)
+    - [存储](#%E5%AD%98%E5%82%A8)
+    - [ZooKeeper（分布式协调框架）](#zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E6%A1%86%E6%9E%B6)
+    - [通信](#%E9%80%9A%E4%BF%A1)
+    - [Topic管理](#topic%E7%AE%A1%E7%90%86)
+    - [数据留存](#%E6%95%B0%E6%8D%AE%E7%95%99%E5%AD%98)
+  - [Topic 参数](#topic-%E5%8F%82%E6%95%B0)
+    - [在创建Topic时指定Topic级别参数](#%E5%9C%A8%E5%88%9B%E5%BB%BAtopic%E6%97%B6%E6%8C%87%E5%AE%9Atopic%E7%BA%A7%E5%88%AB%E5%8F%82%E6%95%B0)
+    - [修改Topic级别参数（推荐）](#%E4%BF%AE%E6%94%B9topic%E7%BA%A7%E5%88%AB%E5%8F%82%E6%95%B0%E6%8E%A8%E8%8D%90)
+  - [JVM 参数](#jvm-%E5%8F%82%E6%95%B0)
+  - [操作系统参数](#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%82%E6%95%B0)
+- [Kafka生产者](#kafka%E7%94%9F%E4%BA%A7%E8%80%85)
+  - [分区](#%E5%88%86%E5%8C%BA)
+    - [分区策略](#%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5)
+      - [自定义分区策略](#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5)
+      - [轮询策略（默认）](#%E8%BD%AE%E8%AF%A2%E7%AD%96%E7%95%A5%E9%BB%98%E8%AE%A4)
+      - [随机策略](#%E9%9A%8F%E6%9C%BA%E7%AD%96%E7%95%A5)
+      - [消息键保序策略（Key-ordering）](#%E6%B6%88%E6%81%AF%E9%94%AE%E4%BF%9D%E5%BA%8F%E7%AD%96%E7%95%A5key-ordering)
+  - [压缩](#%E5%8E%8B%E7%BC%A9)
+    - [消息格式](#%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F)
+    - [压缩方式](#%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F)
+    - [幂等Producer](#%E5%B9%82%E7%AD%89producer)
+    - [事务Producer](#%E4%BA%8B%E5%8A%A1producer)
+- [Kafka 消费者](#kafka-%E6%B6%88%E8%B4%B9%E8%80%85)
+  - [消费者组](#%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84)
+- [无消息丢失配置](#%E6%97%A0%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E9%85%8D%E7%BD%AE)
+  - [最佳实践](#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
+- [客户端拦截器](#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%A6%E6%88%AA%E5%99%A8)
+- [Kafka如何管理TCP连接](#kafka%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86tcp%E8%BF%9E%E6%8E%A5)
+- [Demo](#demo)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## 概念
 

@@ -3,7 +3,19 @@ title: Springboot 源码读后感
 date: 2019-10-20
 ---
 
-[TOC]
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [spring-boot-autoconfiguration](#spring-boot-autoconfiguration)
+  - [Condition](#condition)
+  - [Jackson](#jackson)
+  - [Mongo](#mongo)
+  - [Quartz](#quartz)
+  - [Kafka](#kafka)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## spring-boot-autoconfiguration
 

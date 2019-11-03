@@ -3,6 +3,20 @@ title: Spring Boot 学习笔记
 date: 2019-06-02
 ---
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [What](#what)
+- [How](#how)
+  - [自动配置](#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE)
+  - [起步依赖](#%E8%B5%B7%E6%AD%A5%E4%BE%9D%E8%B5%96)
+- [应用](#%E5%BA%94%E7%94%A8)
+  - [WebSocket](#websocket)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## What
 
 Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
