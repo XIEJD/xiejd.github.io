@@ -1,9 +1,6 @@
 ---
-layout: post
 title: Springboot 源码读后感
 date: 2019-10-20
-tags: 技术笔记
-author: shareif
 ---
 
 [TOC]

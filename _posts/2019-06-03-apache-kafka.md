@@ -1,9 +1,6 @@
 ---
-layout: post
 title: Apache Kafka 笔记
 date: 2019-06-03
-tags: 技术笔记
-author: shareif
 ---
 
 [TOC]

@@ -1,9 +1,6 @@
 ---
-layout: post
 title: '啃一啃Java中的Stream'
-author: shareif
 date: 2019-05-14
-tags: 技术笔记
 ---
 
 ## 什么是流

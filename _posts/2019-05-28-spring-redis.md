@@ -1,9 +1,6 @@
 ---
-layout: post
 title: Spring Redis
 date: 2019-05-28
-tags: 技术笔记
-author: shareif
 ---
 
 ## Basic

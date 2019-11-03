@@ -1,9 +1,6 @@
 ---
-layout: post
 title: SpringData MongoDb Again
 date: 2019-05-26
-tags: 技术笔记
-author: shareif
 ---
 
 ## Basic

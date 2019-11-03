@@ -1,9 +1,6 @@
 ---
-layout: post
 title: SpringData MongoDB 聚合笔记
 date: 2019-05-14
-author: shareif
-tags: 技术笔记
 ---
 
 ## 简介

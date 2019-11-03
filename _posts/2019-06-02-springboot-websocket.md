@@ -1,9 +1,6 @@
 ---
-layout: post
 title: Spring Boot 学习笔记
 date: 2019-06-02
-tags: 技术笔记
-author: shareif
 ---
 
 ## What

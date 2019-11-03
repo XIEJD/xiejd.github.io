@@ -1,9 +1,6 @@
 ---
-layout: post
 title: Java牌定时器
 date: 2019-09-01
-tags:
-author: shareif
 ---
 
 ## ScheduledExecutorService
