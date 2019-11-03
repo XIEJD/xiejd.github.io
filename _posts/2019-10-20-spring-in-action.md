@@ -247,7 +247,7 @@ public class MongoAutoConfiguration {}
 
 
 
-### Quartz
+### Quartz *[to do]*
 
 定时任务调度，起步依赖：
 
@@ -255,5 +255,186 @@ public class MongoAutoConfiguration {}
 
 ### Kafka
 
+Spring提供的对Kafka客户端的封装，起步依赖：
 
+```xml
+<dependency>
+	  <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+</dependency>
+```
+
+自动配置相关类
+
+* `KafkaAutoConfiguration`
+
+```java
+@Configuration
+@ConditionalOnClass(KafkaTemplate.class)
+@EnableConfigurationProperties(KafkaProperties.class)
+@Import({ KafkaAnnotationDrivenConfiguration.class, KafkaStreamsAnnotationDrivenConfiguration.class })
+public class KafkaAutoConfiguration {}
+```
+
+`KafkaTemplate`由spring-kafka包引入。同时完成自动配置后，还会引入`KafkaAnnotationDrivenConfiguration`和`KafkaStreamsAnnotationDrivenConfiguration` 两个配置，前者主要用来支持spring-kafka提供的相关注解，后者和Kafka Stream相关，不做讨论，实际上起步依赖中也不会包含Kafka-Stream相关的东西，所以后者并不会生效。
+
+自动配置提供的最重要的bean就是`KafkaTemplate`了，通过该类提供的方法，可以完成kafka消息的发送。
+
+同时spring-kafka-test提供了内存式的kafka来进行测试，只需要引入依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka-test</artifactId>
+</dependency>
+```
+
+修改配置文件：
+
+```yaml
+spring:  
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      group-id: honeyroom
+```
+
+
+
+测试示例：
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class KafkaTests {
+    @ClassRule
+    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, false, 5).kafkaPorts(9092);
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Test
+    public void testKafka() throws Exception {
+        DemoMessage message = new DemoMessage();
+        message.setKey("key");
+        message.setValue("value");
+        message.setTimestamp(DateTime.now());
+        kafkaTemplate.send("test.consumer", objectMapper.writeValueAsString(message));
+        Thread.sleep(1000000);
+    }
+}
+```
+
+通过在本地执行脚本监听，可以看到测试发出的kafka消息。
+
+```shell
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.consumer --from-beginning
+```
+
+kafka shell文件在[Kafka binary package](http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.3.1/kafka_2.11-2.3.1.tgz) 的bin目录下。
+
+
+
+### Redis
+
+spring提供的Redis客户端的封装，起步依赖：
+
+```xml
+<dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+
+自动配置类`RedisAutoConfiguration`:
+
+```java
+@Configuration
+@ConditionalOnClass(RedisOperations.class)
+@EnableConfigurationProperties(RedisProperties.class)
+@Import({ LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class })
+public class RedisAutoConfiguration {}
+```
+
+熟悉的配方，熟悉的套路，引入起步依赖后能满足`@ConditionalOnClass(RedisOperations.class)`条件，然后配置文件获取`RedisProperties.class`的配置，最后再导入`LettuceConnectionConfiguration.class` 或者 `JedisConnectionConfiguration.class`，这俩都是一个功能，就是提供`RedisTemplate`所依赖的bean，比如 `RedisConnectionFactory.class`，默认`LettuceConnectionConfiguration.class`生效。
+
+#### 运行基于Docker的Redis
+
+```shell
+#1. 获取镜像
+docker pull redis
+
+#2. 运行镜像
+docker run -p 6379:6379 -d redis:latest redis-server --requirepass "123456"
+
+#3. 进入容器内的Redis命令行界面
+docker exec -ti 1729cb4a78c4 redis-cli
+
+#4. 进入后进行鉴权
+auth 123456
+```
+
+* `-p` 映射容器端口到主机端口
+* `-d` 后台运行容器并打印容器ID
+* `redis:latest` docker 镜像
+* `redis-server --requirepass "123456"` 容器内命令
+
+
+
+使用由自动配置生成的`StringRedisTemplate` 。
+
+实际上`StringRedisTemplate`是`RedisTempalte<String,String>` 的子类，因为自动配置的泛型为`<Object, Object>`，而平常的大部分操作都是`<String, String>`，所以Springboot很贴心的单独由搞了个bean专门用于key=String，value=String的template。
+
+和其他template一样，使用上相当简单：
+
+```java
+@Slf4j
+@Service
+@AllArgsConstructor
+public class RedisService {
+    private StringRedisTemplate redisTemplate;
+    private ObjectMapper objectMapper;
+    private static final int DEFAULT_EXPIRE_INTERVAL = 300;
+    private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
+
+    public boolean save(String key, Object value) {
+        try {
+            redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(value));
+            redisTemplate.expire(key, DEFAULT_EXPIRE_INTERVAL, DEFAULT_TIME_UNIT);
+            return true;
+        } catch (Exception e) {
+            log.error("can't cache data, {}", e.getMessage());
+            return false;
+        }
+    }
+}
+```
+
+写个LLT调用一下：
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class RedisTest {
+    @Autowired
+    RedisService redisService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Test
+    public void testSave() throws Exception {
+        DemoMessage message = new DemoMessage();
+        message.setKey("key");
+        message.setValue("value");
+        message.setTimestamp(DateTime.now());
+        redisService.save("test", objectMapper.writeValueAsBytes(message));
+    }
+}
+```
+
+然后通过redis-cli查看容器中redis是否正确缓存。
 
