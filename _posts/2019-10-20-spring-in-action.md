@@ -291,7 +291,7 @@ public class KafkaAutoConfiguration {}
 </dependency>
 ```
 
-修改配置文件：
+* 修改配置文件：
 
 ```yaml
 spring:  
@@ -301,9 +301,36 @@ spring:
       group-id: honeyroom
 ```
 
+* 测试示例（消费者）：
+
+```java
+@Slf4j
+@Component
+public class DemoConsumer {
+
+    @KafkaListener(topics = "test-consumer")
+    public void handle(String message) {
+        log.info("receive message: {}", message);
+        System.out.println("========== kafka message ===========");
+        System.out.println(message);
+    }
+}
+```
+
+其中，`DemoMessage`结构为：
+
+```java
+@Data
+public class DemoMessage {
+    private String key;
+    private String value;
+    private DateTime timestamp; //joda time
+}
+```
 
 
-测试示例：
+
+* 测试示例（生产者）：
 
 ```java
 @RunWith(SpringRunner.class)
