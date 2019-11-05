@@ -85,7 +85,7 @@ public class LibResourceAutoConfiguration {
 
 Springboot默认的Json实现是Jackson，其对应的自动配置类为`JacksonAutoConfiguration`，同时通过`JacksonHttpMessageConvertersConfiguration` 配置HttpMessageConverter实现类用于Http请求中Json到Java对象或者Java对象到Json的转换。
 
-JacksonAutoConfiguration的触发条件为存在类：`com.fasterxml.jackson.databind.ObjectMapper.class`。此配置将提供一些基础bean，比如`ObjectMapper` bean，`JsonComponentModule` bean。`ObjectMapper` bean是POJO和String转换的关键角色，而`JsonComponentModule` bean是配置由`@JsonComponent`定义的序列化和反序列化组件的关键角色。摘取源码中对`@JsonComponent`的注释：
+JacksonAutoConfiguration的触发条件为存在类：`com.fasterxml.jackson.databind.ObjectMapper.class`。此配置将提供一些基础bean，比如`ObjectMapper` bean，`JsonComponentModule` bean。`ObjectMapper` bean是POJO和String转换的关键角色，而`JsonComponentModule` bean是配置由`@JsonComponent`定义的序列化和反序列化组件的关键角色。摘取源码中对`@JsonComponent`的注释（Redis章节有实际应用）：
 
 ```java
 /**
@@ -413,30 +413,82 @@ auth 123456
 
 
 
-使用由自动配置生成的`StringRedisTemplate` 。
+自动配置生成的`StringRedisTemplate` 。慎用，如果项目偏向于用json，而且项目用到了spring mvc，可以使用如下方法配置：
 
-实际上`StringRedisTemplate`是`RedisTempalte<String,String>` 的子类，因为自动配置的泛型为`<Object, Object>`，而平常的大部分操作都是`<String, String>`，所以Springboot很贴心的单独由搞了个bean专门用于key=String，value=String的template。
+* Jackson中，对于joda time的序列化和反序列化自定义方法
 
-和其他template一样，使用上相当简单：
+  ```java
+  @JsonComponent
+  public class DateTimeComponent {
+      public static final String DEFAULT_DATETIME_FORMATTER = "yyyy-MM-dd'T'hh:mm:ss'Z'";
+  
+      public static class SomeDTOSerializer extends JsonSerializer<DateTime> {
+          @Override
+          public void serialize(DateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+              gen.writeString(value.toString(DEFAULT_DATETIME_FORMATTER));
+          }
+      }
+  
+      public static class SomeDTODeserializer extends JsonDeserializer<DateTime> {
+          @Override
+          public DateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+              return DateTime.parse(p.getValueAsString(), DateTimeFormat.forPattern(DEFAULT_DATETIME_FORMATTER));
+          }
+      }
+  }
+  ```
+
+  请注意，此时实际上是对spring mvc中的Jackson做了配置，如需运用在Redis中，还需要以下配置：
+
+* RedisConfig
+
+  ```java
+  @Configuration
+  @AllArgsConstructor
+  public class RedisConfig {
+      private ObjectMapper objectMapper; //类构造器注入
+  
+      @Autowired
+      public void jsonRedisTemplate(RedisTemplate redisTemplate) {
+          redisTemplate.setKeySerializer(RedisSerializer.string());
+          // 使用和MVC的Jackson同一个转换器，mvc的jackson转换器比较方便定义特殊类型的转换，比如joda time
+          redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
+          redisTemplate.setHashKeySerializer(RedisSerializer.string());
+          redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
+      }
+  }
+  ```
+
+* 和其他template一样，使用上相当简单：
 
 ```java
 @Slf4j
 @Service
 @AllArgsConstructor
 public class RedisService {
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate<Object, Object> redisTemplate;
     private ObjectMapper objectMapper;
     private static final int DEFAULT_EXPIRE_INTERVAL = 300;
     private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
 
     public boolean save(String key, Object value) {
         try {
-            redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(value));
+            redisTemplate.opsForValue().set(key, value);
             redisTemplate.expire(key, DEFAULT_EXPIRE_INTERVAL, DEFAULT_TIME_UNIT);
             return true;
         } catch (Exception e) {
             log.error("can't cache data, {}", e.getMessage());
             return false;
+        }
+    }
+
+    public <T> T get(String key, Class<T> clazz) {
+        try {
+            Object value = redisTemplate.opsForValue().get(key);
+            return objectMapper.convertValue(value, clazz);
+        } catch (Exception e) {
+            log.error("can't get cached data, {}", e.getMessage());
+            return null;
         }
     }
 }
@@ -460,10 +512,32 @@ public class RedisTest {
         message.setKey("key");
         message.setValue("value");
         message.setTimestamp(DateTime.now());
-        redisService.save("test", objectMapper.writeValueAsBytes(message));
+        redisService.save("test", message);
+    }
+
+    @Test
+    public void testGet() throws Exception {
+        DemoMessage demoMessage = redisService.get("test", DemoMessage.class);
+        System.out.println("====demomessage===: {}" + demoMessage.toString());
+        Assert.notNull(demoMessage);
+        Assert.isTrue("key".equals(demoMessage.getKey()));
+        Assert.isTrue("value".equals(demoMessage.getValue()));
+        Assert.notNull(demoMessage.getTimestamp());
     }
 }
 ```
 
-然后通过redis-cli查看容器中redis是否正确缓存。
+#### WHY ?
+
+* 为什么要用`@JsonComponent`注解，为什么要用和http消息解析相同的`ObjectMapper`，为什么建议整个项目用同一个`ObjectMapper`？
+
+  个人觉得，这是减少冗余代码的最佳方案，使用springboot提供的注解自定义序列化反序列化方法，能将代码量降到最低，让开发复杂度降到最低。在Redis和Http中使用同一个`ObjectMapper`，能够统一项目内部与项目外部之间的数据转换行为，同时还能将代码量降到最低。当然如果有特殊情况（比如我需要Http的时候DateTime转换成字符串，而存Redis的时候转换成时间戳），当然可以不使用同一个`ObjectMapper`。
+
+  如果一个项目中充斥着`new ObjectMapper()`，绝对是灾难，因为你无法为特殊类型统一行为，一旦需要自定义特殊类型的转换，效率将极其低下，何不将这些时间花在优化结构上，而不是去做那些毫无意义的重复劳动。
+
+* 为什么要做一个中间层`RedisService`，而不是直接在业务中`@Autowired RedisTemplate`？
+
+  好处显而易见，就犹如web开发定义的Controller层，Service层，DAO层类似，在Controller层定义接口，数据校验等；在Service层做事务处理等，在DAO层访问数据。`RedisService`的作用类似，“承上启下”-对上提供面向业务的接口，对下来处理一些通用的公共的“琐事”，比如设置过期时间。通过这种分层，能让代码逻辑更加清晰，可读性，可维护性都变得更好。编程是一项社会活动，写出的代码就如同你说出来的话一样，劝你好好说话。
+
+  **Redis一定要设置过期时间**，否则迟早出事故。
 
