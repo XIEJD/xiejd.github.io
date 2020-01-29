@@ -1,5 +1,5 @@
 ---
-title: Spring Boot 漫游
+title: spring 漫游
 date: 2019-10-20
 ---
 
@@ -16,6 +16,8 @@ date: 2019-10-20
   - [Redis](#redis)
     - [运行基于Docker的Redis](#%E8%BF%90%E8%A1%8C%E5%9F%BA%E4%BA%8Edocker%E7%9A%84redis)
     - [WHY ?](#why-)
+- [Spring Integration](#spring-integration)
+  - [概览](#%E6%A6%82%E8%A7%88)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -541,4 +543,10 @@ public class RedisTest {
   好处显而易见，就犹如web开发定义的Controller层，Service层，DAO层类似，在Controller层定义接口，数据校验等；在Service层做事务处理等，在DAO层访问数据。`RedisService`的作用类似，“承上启下”-对上提供面向业务的接口，对下来处理一些通用的公共的“琐事”，比如设置过期时间。通过这种分层，能让代码逻辑更加清晰，可读性，可维护性都变得更好。编程是一项社会活动，写出的代码就如同你说出来的话一样，劝你好好说话。
 
   **Redis一定要设置过期时间**，否则迟早出事故。
+
+## Spring Integration
+
+### 概览
+
+* spring integration [overview](https://docs.spring.io/spring-integration/docs/5.2.1.RELEASE/reference/html/overview.html#overview-components)
 
