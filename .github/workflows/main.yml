@@ -19,6 +19,6 @@ jobs:
       uses: benmatselby/hugo-deploy-gh-pages@1.1.0
       env:
         HUGO_VERSION: 0.63.2
-        TARGET_REPO: XIEJD/xiejd.github.io.git
+        TARGET_REPO: XIEJD/xiejd.github.io
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CNAME: www.shareif.cn
