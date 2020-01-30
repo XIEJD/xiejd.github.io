@@ -20,5 +20,5 @@ jobs:
       env:
         HUGO_VERSION: 0.63.2
         TARGET_REPO: XIEJD/xiejd.github.io.git
-        TOKEN: ${{ secrets.TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
         CNAME: www.shareif.cn
