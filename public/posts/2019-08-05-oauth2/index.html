@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OAuth2"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ OAuth2 Intro 关键角色 关键阶段  1. 授权  1.1 授权码授权 (Authorization Code Grant) 1.2 隐式授权 (Implicit Grant) 1.3 密码模式 (Resource Owner Password Credentials Grant) 1.4 客户端凭据模式 (Client Credentials Grant)        【RFC6749中文版】https://github.com/jeansfish/RFC6749.zh-cn 【RFC6749原版】https://tools.ietf.org/html/rfc6749   OAuth2 Intro  在传统的客户端-服务器身份验证模式中，客户端请求服务器上访问受限的资源（受保护的资源）时，需要使用资源所有者的凭据在服务器上进行身份验证。 资源所有者为了给第三方应用提供受限资源的访问权限，需要与第三方共享它的凭据。这就导致一些问题和局限：
+ 第三方应用需要存储资源所有者的凭据以供将来使用。该凭据通常是明文密码。 服务器需要支持密码身份认证，尽管密码认证有固有的安全缺陷。 第三方应用获得了对资源所有者的受保护资源的过于宽泛的访问权限，从而导致资源所有者不能限制对资源的有限子集的访问时限或权限。(不利于权限控制) 资源所有者不能撤销某个第三方的访问权限而不影响其它第三方，并且必须更改他们的密码才能做到。（不利于权限撤销） 与任何第三方应用的妥协导致对终端用户的密码及该密码所保护的所有数据的妥协。  OAuth通过引入授权服务器以及从资源所有者角色分离出客户端角色来解决这些问题。在OAuth中，客户端需要使用由资源所有者授权，且由授权服务器生成的凭证（access_token）来获取受保护的资源。
+ 关键角色  资源所有者 - 对资源拥有完全权限的人 资源服务器 - 存放资源的地方 客户端 - 需要访问受限资源的地方 授权服务器 - 控制权限和资源关系的中间人  关键阶段 &#43;--------&#43; &#43;---------------&#43; | |--(A)- Authorization Request -&gt;| Resource | | | | Owner | | |&lt;-(B)-- Authorization Grant ---| | | | &#43;---------------&#43; | | | | &#43;---------------&#43; | |--(C)-- Authorization Grant --&gt;| Authorization | | Client | | Server | | |&lt;-(D)----- Access Token -------| | | | &#43;---------------&#43; | | | | &#43;---------------&#43; | |--(E)----- Access Token ------&gt;| Resource | | | | Server | | |&lt;-(F)--- Protected Resource ---| | &#43;--------&#43; &#43;---------------&#43; Figure 1: 抽象的协议流程图 AB阶段为用户授权阶段，CD阶段为获取访问凭证(access_token)阶段，EF为获取受限资源阶段。"/>
+
+    <meta property="og:title" content="OAuth2" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ OAuth2 Intro 关键角色 关键阶段  1. 授权  1.1 授权码授权 (Authorization Code Grant) 1.2 隐式授权 (Implicit Grant) 1.3 密码模式 (Resource Owner Password Credentials Grant) 1.4 客户端凭据模式 (Client Credentials Grant)        【RFC6749中文版】https://github.com/jeansfish/RFC6749.zh-cn 【RFC6749原版】https://tools.ietf.org/html/rfc6749   OAuth2 Intro  在传统的客户端-服务器身份验证模式中，客户端请求服务器上访问受限的资源（受保护的资源）时，需要使用资源所有者的凭据在服务器上进行身份验证。 资源所有者为了给第三方应用提供受限资源的访问权限，需要与第三方共享它的凭据。这就导致一些问题和局限：
+ 第三方应用需要存储资源所有者的凭据以供将来使用。该凭据通常是明文密码。 服务器需要支持密码身份认证，尽管密码认证有固有的安全缺陷。 第三方应用获得了对资源所有者的受保护资源的过于宽泛的访问权限，从而导致资源所有者不能限制对资源的有限子集的访问时限或权限。(不利于权限控制) 资源所有者不能撤销某个第三方的访问权限而不影响其它第三方，并且必须更改他们的密码才能做到。（不利于权限撤销） 与任何第三方应用的妥协导致对终端用户的密码及该密码所保护的所有数据的妥协。  OAuth通过引入授权服务器以及从资源所有者角色分离出客户端角色来解决这些问题。在OAuth中，客户端需要使用由资源所有者授权，且由授权服务器生成的凭证（access_token）来获取受保护的资源。
+ 关键角色  资源所有者 - 对资源拥有完全权限的人 资源服务器 - 存放资源的地方 客户端 - 需要访问受限资源的地方 授权服务器 - 控制权限和资源关系的中间人  关键阶段 &#43;--------&#43; &#43;---------------&#43; | |--(A)- Authorization Request -&gt;| Resource | | | | Owner | | |&lt;-(B)-- Authorization Grant ---| | | | &#43;---------------&#43; | | | | &#43;---------------&#43; | |--(C)-- Authorization Grant --&gt;| Authorization | | Client | | Server | | |&lt;-(D)----- Access Token -------| | | | &#43;---------------&#43; | | | | &#43;---------------&#43; | |--(E)----- Access Token ------&gt;| Resource | | | | Server | | |&lt;-(F)--- Protected Resource ---| | &#43;--------&#43; &#43;---------------&#43; Figure 1: 抽象的协议流程图 AB阶段为用户授权阶段，CD阶段为获取访问凭证(access_token)阶段，EF为获取受限资源阶段。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-08-05-oauth2/" />
+<meta property="article:published_time" content="2019-08-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-05T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-08-05-oauth2/">
+    
+    <title>
+  OAuth2 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-08-05-oauth2/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">OAuth2</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-08-05T00:00:00Z'>
+                2019-08-05
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#oauth2-intro">OAuth2 Intro</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E8%A7%92%E8%89%B2">关键角色</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E9%98%B6%E6%AE%B5">关键阶段</a>
+<ul>
+<li><a href="#1-%E6%8E%88%E6%9D%83">1. 授权</a>
+<ul>
+<li><a href="#11-%E6%8E%88%E6%9D%83%E7%A0%81%E6%8E%88%E6%9D%83-authorization-code-grant">1.1 授权码授权 (Authorization Code Grant)</a></li>
+<li><a href="#12-%E9%9A%90%E5%BC%8F%E6%8E%88%E6%9D%83-implicit-grant">1.2 隐式授权 (Implicit Grant)</a></li>
+<li><a href="#13-%E5%AF%86%E7%A0%81%E6%A8%A1%E5%BC%8F-resource-owner-password-credentials-grant">1.3 密码模式 (Resource Owner Password Credentials Grant)</a></li>
+<li><a href="#14-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%87%AD%E6%8D%AE%E6%A8%A1%E5%BC%8F-client-credentials-grant">1.4 客户端凭据模式 (Client Credentials Grant)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<blockquote>
+<ul>
+<li>【RFC6749中文版】https://github.com/jeansfish/RFC6749.zh-cn</li>
+<li>【RFC6749原版】https://tools.ietf.org/html/rfc6749</li>
+</ul>
+</blockquote>
+<h2 id="oauth2-intro">OAuth2 Intro</h2>
+<blockquote>
+<p>在传统的客户端-服务器身份验证模式中，客户端请求服务器上访问受限的资源（受保护的资源）时，需要使用资源所有者的凭据在服务器上进行身份验证。 <em><strong>资源所有者为了给第三方应用提供受限资源的访问权限，需要与第三方共享它的凭据</strong></em>。这就导致一些问题和局限：</p>
+<ul>
+<li>第三方应用需要存储资源所有者的凭据以供将来使用。该凭据通常是<em><strong>明文密码</strong></em>。</li>
+<li>服务器需要支持密码身份认证，尽管密码认证有固有的安全缺陷。</li>
+<li>第三方应用获得了对资源所有者的受保护资源的过于宽泛的访问权限，从而导致资源所有者不能限制对资源的有限子集的访问时限或权限。<em><strong>(不利于权限控制)</strong></em></li>
+<li>资源所有者不能撤销某个第三方的访问权限而不影响其它第三方，并且必须更改他们的密码才能做到。<em><strong>（不利于权限撤销）</strong></em></li>
+<li>与任何第三方应用的妥协导致对终端用户的密码及该密码所保护的所有数据的妥协。</li>
+</ul>
+<p>OAuth通过引入<em><strong>授权服务器</strong></em>以及从<em><strong>资源所有者角色分离出客户端角色</strong></em>来解决这些问题。在OAuth中，客户端需要使用由资源所有者授权，且由授权服务器生成的凭证（access_token）来获取受保护的资源。</p>
+</blockquote>
+<h2 id="关键角色">关键角色</h2>
+<ol>
+<li>资源所有者  - 对资源拥有完全权限的人</li>
+<li>资源服务器 - 存放资源的地方</li>
+<li>客户端 - 需要访问受限资源的地方</li>
+<li>授权服务器 - 控制权限和资源关系的中间人</li>
+</ol>
+<h2 id="关键阶段">关键阶段</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">     +--------+                               +---------------+
+     |        |--(A)- Authorization Request -&gt;|   Resource    |
+     |        |                               |     Owner     |
+     |        |&lt;-(B)-- Authorization Grant ---|               |
+     |        |                               +---------------+
+     |        |
+     |        |                               +---------------+
+     |        |--(C)-- Authorization Grant --&gt;| Authorization |
+     | Client |                               |     Server    |
+     |        |&lt;-(D)----- Access Token -------|               |
+     |        |                               +---------------+
+     |        |
+     |        |                               +---------------+
+     |        |--(E)----- Access Token ------&gt;|    Resource   |
+     |        |                               |     Server    |
+     |        |&lt;-(F)--- Protected Resource ---|               |
+     +--------+                               +---------------+
+
+                     Figure 1: 抽象的协议流程图
+</code></pre></div><p>AB阶段为用户授权阶段，CD阶段为获取访问凭证(access_token)阶段，EF为获取受限资源阶段。</p>
+<h3 id="1-授权">1. 授权</h3>
+<h4 id="11-授权码授权-authorization-code-grant">1.1 授权码授权 (Authorization Code Grant)</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">     +----------+
+     | Resource |
+     |   Owner  |
+     |          |
+     +----------+
+          ^
+          |
+         (B)
+     +----|-----+          Client Identifier      +---------------+
+     |         -+----(A)-- &amp; Redirection URI ----&gt;|               |
+     |  User-   |                                 | Authorization |
+     |  Agent  -+----(B)-- User authenticates ---&gt;|     Server    |
+     |          |                                 |               |
+     |         -+----(C)-- Authorization Code ---&lt;|               |
+     +-|----|---+                                 +---------------+
+       |    |                                         ^      v
+      (A)  (C)                                        |      |
+       |    |                                         |      |
+       ^    v                                         |      |
+     +---------+                                      |      |
+     |         |&gt;---(D)-- Authorization Code ---------<span style="font-style:italic">&#39;      |
+</span><span style="font-style:italic">     |  Client |          &amp; Redirection URI                  |
+</span><span style="font-style:italic">     |         |                                             |
+</span><span style="font-style:italic">     |         |&lt;---(E)----- Access Token -------------------&#39;</span>
+     +---------+       (w/ Optional Refresh Token)
+
+   Note: The lines illustrating steps (A), (B), and (C) are broken into
+   two parts as they pass through the user-agent.
+
+                     Figure 3: Authorization Code Flow
+</code></pre></div><p>故事一般由资源所有者来发起（所以你可以看到一个User-Agent，可以理解为一个浏览器），虽然从流程图上体现不出来：</p>
+<ul>
+<li>
+<p>资源所有者想让Client获得自己某些资源的权限。（隐式，流程图上无体现）</p>
+</li>
+<li>
+<p>Client需要访问受限资源，所以需要先获得资源所有者的同意。所以Client会引导用户进入一个由授权服务器提供的授权界面，即A阶段。</p>
+</li>
+<li>
+<p>浏览器将告诉用户需要填写哪些信息，并将这些信息发送给授权服务器，即B阶段。</p>
+</li>
+<li>
+<p>当授权服务器认证通过后，会将授权码发送给Client，即C阶段</p>
+</li>
+<li>
+<p>Client拿到授权码后，会用授权码请求访问凭据，即D阶段</p>
+</li>
+<li>
+<p>授权服务器验证授权码合法后，就会将访问凭据发送给client，即E阶段。</p>
+</li>
+<li>
+<p>最后，Client就可以愉快的访问这些资源啦~</p>
+</li>
+</ul>
+<p>其中，需要注意的是，C阶段是如何将授权码返回给Client的。在A阶段时，Client会提供一个重定向地址，授权服务器认证通过后，会告诉浏览器（HTTP 302），重定向到client提供的那个地址，并带上授权码等参数。</p>
+<p>比如：</p>
+<ul>
+<li>A阶段，Client提供一个<code>www.client.com/auth/code</code>的重定向地址给授权服务器。</li>
+<li>C阶段，当授权服务器完成授权后，会返回一个302响应，重定向到 <code>www.client.com/auth/code?code=授权码&amp;state=random_words</code></li>
+</ul>
+<h4 id="12-隐式授权-implicit-grant">1.2 隐式授权 (Implicit Grant)</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">     +----------+
+     | Resource |
+     |  Owner   |
+     |          |
+     +----------+
+          ^
+          |
+         (B)
+     +----|-----+          Client Identifier     +---------------+
+     |         -+----(A)-- &amp; Redirection URI ---&gt;|               |
+     |  User-   |                                | Authorization |
+     |  Agent  -|----(B)-- User authenticates --&gt;|     Server    |
+     |          |                                |               |
+     |          |&lt;---(C)--- Redirection URI ----&lt;|               |
+     |          |          with Access Token     +---------------+
+     |          |            in Fragment
+     |          |                                +---------------+
+     |          |----(D)--- Redirection URI ----&gt;|   Web-Hosted  |
+     |          |          without Fragment      |     Client    |
+     |          |                                |    Resource   |
+     |     (F)  |&lt;---(E)------- Script ---------&lt;|               |
+     |          |                                +---------------+
+     +-|--------+
+       |    |
+      (A)  (G) Access Token
+       |    |
+       ^    v
+     +---------+
+     |         |
+     |  Client |
+     |         |
+     +---------+
+
+   Note: The lines illustrating steps (A) and (B) are broken into two
+   parts as they pass through the user-agent.
+
+                       Figure 4: Implicit Grant Flow
+</code></pre></div><p>单从流程图上可以看出来，隐式授权与授权码大致有两点不同：</p>
+<ol>
+<li>无Authorization Code的颁发过程。（Client实现更加简单）</li>
+<li>Client的交互过程减少，User-Agent的交互过程增加。（减少Client压力，加快Client响应）</li>
+</ol>
+<p>故事仍然由资源所有者开始：资源所有者想让Client获取到他的受限资源</p>
+<ul>
+<li>A阶段，Client将提供一个获取访问凭证的重定向地址，并引导用户通过授权服务器提供的界面进行授权。</li>
+<li>B阶段，用户进行授权行为。</li>
+<li>C阶段，授权通过后，授权服务器将以302重定向响应返回，其中重定向地址中以哈希形式携带访问凭据。</li>
+<li>D阶段，浏览器重定向到C阶段返回地址（没有携带访问凭据）。</li>
+<li>EF阶段，目标服务器返回一个JS脚本。这个脚本将有浏览器执行，将浏览器本地保存的访问凭据获取到后，发送给Client。</li>
+</ul>
+<h4 id="13-密码模式-resource-owner-password-credentials-grant">1.3 密码模式 (Resource Owner Password Credentials Grant)</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">     +----------+
+     | Resource |
+     |  Owner   |
+     |          |
+     +----------+
+          v
+          |    Resource Owner
+         (A) Password Credentials
+          |
+          v
+     +---------+                                  +---------------+
+     |         |&gt;--(B)---- Resource Owner -------&gt;|               |
+     |         |         Password Credentials     | Authorization |
+     | Client  |                                  |     Server    |
+     |         |&lt;--(C)---- Access Token ---------&lt;|               |
+     |         |    (w/ Optional Refresh Token)   |               |
+     +---------+                                  +---------------+
+
+            Figure 5: Resource Owner Password Credentials Flow
+</code></pre></div><p>这个模式更简单了！</p>
+<p>简而言之，Client直接拿着资源所有者的密码到处浪了，这个模式的前提是：资源所有者必须非常信任Client，如果你不信任Client，可千万别这么玩。</p>
+<p>故事再次由资源所有者开始：</p>
+<ul>
+<li>A阶段：资源所有者将密码交给Client</li>
+<li>B阶段：Client通过资源所有者的密码获取访问凭证，同时可选获取刷新凭证。</li>
+<li>C极端：授权服务器返回访问凭证，可选返回刷新凭证。</li>
+</ul>
+<h4 id="14-客户端凭据模式-client-credentials-grant">1.4 客户端凭据模式 (Client Credentials Grant)</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">     +---------+                                  +---------------+
+     |         |                                  |               |
+     |         |&gt;--(A)- Client Authentication ---&gt;| Authorization |
+     | Client  |                                  |     Server    |
+     |         |&lt;--(B)---- Access Token ---------&lt;|               |
+     |         |                                  |               |
+     +---------+                                  +---------------+
+
+                     Figure 6: Client Credentials Flow
+</code></pre></div><p>简直不能更爽了，没有任何重定向，直接获取，一步到位！</p>
+<p>这次故事不是由资源所有者开始了：</p>
+<ul>
+<li>A阶段：Client通过客户端凭据直接请求访问凭据</li>
+<li>B阶段：授权服务器返回访问凭据</li>
+</ul>
+<p>这种方法有一个前提：需要资源所有者提前为Client在授权服务器上申请一个授权凭据。（有点像公有云的AKSK模式哦）</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

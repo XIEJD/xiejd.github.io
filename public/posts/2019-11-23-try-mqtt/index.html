@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="try mqtt"/>
+<meta name="twitter:description" content="MQTT Startup MQTT &amp; Kafka [To-do]  MQTT Startup   A brief intro on MQTT：MQTT
+Broker：
+   Server QoS 0 QoS 1 QoS 2 auth bridge $SYS SSL dynamic topics cluster websockets plugin system     2lemetry ✔ ✔ ✔ ✔ ✔ § ✔ ✔ ✔ ✔ ✘   Jmqtt ✔ ✔ ✔ ✔ ✔ § § ✔ § ✔ ✔   Apache ActiveMQ ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Apache ActiveMQ Artemis ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Bevywise IoT Platform ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ rm   emitter ✔ § ✘ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   emqttd ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   flespi ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   GnatMQ ✔ ✔ ✔ ✔ ✘ ✘ ✘ ✔ ✘ ✘ ✘   HBMQTT ✔ ✔ ✔ ✔ ✘ ✔ ✔ ✔ ✘ ✔ ✔   HiveMQ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   IBM WIoTP Message Gateway ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   moquette ✔ ✔ ✔ ✔ ?"/>
+
+    <meta property="og:title" content="try mqtt" />
+<meta property="og:description" content="MQTT Startup MQTT &amp; Kafka [To-do]  MQTT Startup   A brief intro on MQTT：MQTT
+Broker：
+   Server QoS 0 QoS 1 QoS 2 auth bridge $SYS SSL dynamic topics cluster websockets plugin system     2lemetry ✔ ✔ ✔ ✔ ✔ § ✔ ✔ ✔ ✔ ✘   Jmqtt ✔ ✔ ✔ ✔ ✔ § § ✔ § ✔ ✔   Apache ActiveMQ ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Apache ActiveMQ Artemis ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Bevywise IoT Platform ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ rm   emitter ✔ § ✘ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   emqttd ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   flespi ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   GnatMQ ✔ ✔ ✔ ✔ ✘ ✘ ✘ ✔ ✘ ✘ ✘   HBMQTT ✔ ✔ ✔ ✔ ✘ ✔ ✔ ✔ ✘ ✔ ✔   HiveMQ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   IBM WIoTP Message Gateway ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   moquette ✔ ✔ ✔ ✔ ?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-11-23-try-mqtt/" />
+<meta property="article:published_time" content="2019-11-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-11-23T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-11-23-try-mqtt/">
+    
+    <title>
+  try mqtt · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-11-23-try-mqtt/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">try mqtt</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-11-23T00:00:00Z'>
+                2019-11-23
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><a href="#mqtt-startup">MQTT Startup</a></li>
+<li><a href="#mqtt--kafka-to-do">MQTT &amp; Kafka [To-do]</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="mqtt-startup">MQTT Startup</h2>
+<ol>
+<li>
+<p>A brief intro on MQTT：<a href="https://github.com/mqtt/mqtt.github.io/wiki">MQTT</a></p>
+<p>Broker：</p>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>QoS 0</th>
+<th>QoS 1</th>
+<th>QoS 2</th>
+<th>auth</th>
+<th><a href="https://github.com/mqtt/mqtt.github.io/wiki/bridge_protocol">bridge</a></th>
+<th><a href="https://github.com/mqtt/mqtt.github.io/wiki/conventions#%24sys">$SYS</a></th>
+<th>SSL</th>
+<th><a href="https://github.com/mqtt/mqtt.github.io/wiki/are_topics_dynamic">dynamic topics</a></th>
+<th>cluster</th>
+<th>websockets</th>
+<th>plugin system</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://2lemetry.com/platform/">2lemetry</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>§</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Cicizz/jmqtt">Jmqtt</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>§</td>
+<td>§</td>
+<td>✔</td>
+<td>§</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="http://activemq.apache.org/">Apache ActiveMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="http://activemq.apache.org/artemis">Apache ActiveMQ Artemis</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://www.bevywise.com/iot-platform/">Bevywise IoT Platform</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td><strong>rm</strong></td>
+</tr>
+<tr>
+<td><a href="https://github.com/emitter-io/emitter">emitter</a></td>
+<td>✔</td>
+<td>§</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="http://emqtt.io/">emqttd</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://flespi.com/mqtt-broker">flespi</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ppatierno/gnatmq">GnatMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="https://github.com/beerfactory/hbmqtt">HBMQTT</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="http://www.hivemq.com/">HiveMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://developer.ibm.com/iotplatform/messagegateway/">IBM WIoTP Message Gateway</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/andsel/moquette">moquette</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>?</td>
+<td>?</td>
+<td>✔</td>
+<td>?</td>
+<td><strong>rm</strong></td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="http://mqtt.jorammq.com/">JoramMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/cesanta/mongoose">Mongoose</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mqtt/mqtt.github.io/wiki/mosca">mosca</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mqtt/mqtt.github.io/wiki/mosquitto_message_broker">mosquitto</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>§</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mqttjs/MQTT.js">MQTT.js</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>§</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Wizzercn/MqttWk">MqttWk</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>?</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="http://www.rabbitmq.com/blog/2012/09/12/mqtt-adapter/">RabbitMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mqtt/mqtt.github.io/wiki/Really-Small-Message-Broker">RSMB</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>?</td>
+</tr>
+<tr>
+<td><a href="http://um.terracotta.org/#page/%2Fum.terracotta.org%2Funiversal-messaging-webhelp%2Fto-mqttoverview.html%23">Software AG Universal Messaging</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>rm</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="http://dev.solacesystems.com/tech">Solace</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>§</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="http://www.swiftmq.com/landing/router/index.html">SwiftMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/trafero/tstack">Trafero Tstack</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✘</td>
+<td>✘</td>
+</tr>
+<tr>
+<td><a href="https://verne.mq/">VerneMQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="http://www-03.ibm.com/software/products/en/wmq/">WebSphere MQ</a></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a href="https://www.jianshu.com/p/cf91f4bea071">MQTT Broker 选型</a></p>
+</li>
+<li>
+<p><a href="https://www.emqx.io/static/files/EMQ_X_product_compare_cn.pdf">EMQ 开源版本和企业版本以及平台版本详细对比</a></p>
+</li>
+</ol>
+<p>纠结了一会，选择EMQX作为MQTT Broker 来搞一个demo。EMQX MQTT协议支持完善，支持集群，Apache License 2.0，文档全，开源社区相对活跃。</p>
+<p>EMQX 官网文档：https://docs.emqx.io/broker/v3/cn/</p>
+<p>EMQX Github：https://github.com/emqx/emqx</p>
+<p>EMQX Docker Hub：https://hub.docker.com/r/emqx/emqx</p>
+<p>EMQX文档相当完善，中文，建议完全阅读。</p>
+<p>Targets:</p>
+<ol>
+<li>
+<p>运行EMQX作为MQTT Broker</p>
+<p>容器部署：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull emqx/emqx:v3.2.5
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx
+</code></pre></div><table>
+<thead>
+<tr>
+<th>1883</th>
+<th>MQTT 协议端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8883</td>
+<td>MQTT/SSL 端口</td>
+</tr>
+<tr>
+<td>8083</td>
+<td>MQTT/WebSocket 端口</td>
+</tr>
+<tr>
+<td>8080</td>
+<td>HTTP API 端口</td>
+</tr>
+<tr>
+<td>18083</td>
+<td>Dashboard 管理控制台端口</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>客户端使用spring-integration-mqtt作为mqtt客户端，</p>
+<p>依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">            <span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+                <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.integration<span style="font-weight:bold">&lt;/groupId&gt;</span>
+                <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-integration-mqtt<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+                <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>5.2.1.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
+            <span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div><p>Java Configuration:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MqttConfiguration</span> {
+    @Bean
+    <span style="font-weight:bold">public</span> MqttPahoClientFactory mqttClientFactory() {
+        DefaultMqttPahoClientFactory factory = <span style="font-weight:bold">new</span> DefaultMqttPahoClientFactory();
+        MqttConnectOptions options = <span style="font-weight:bold">new</span> MqttConnectOptions();
+        options.setServerURIs(<span style="font-weight:bold">new</span> String[]{<span style="font-style:italic">&#34;tcp://localhost:1883&#34;</span>});
+        factory.setConnectionOptions(options);
+        <span style="font-weight:bold">return</span> factory;
+    }
+   
+    @Bean
+    <span style="font-weight:bold">public</span> MessageChannel mqttInputChannel() {
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> DirectChannel();
+    }
+   
+    @Bean
+    <span style="font-weight:bold">public</span> MessageProducer inbound() {
+        MqttPahoMessageDrivenChannelAdapter adapter = <span style="font-weight:bold">new</span> MqttPahoMessageDrivenChannelAdapter(<span style="font-style:italic">&#34;mqttSubscriber&#34;</span>,
+                mqttClientFactory(), <span style="font-style:italic">&#34;mqtt-test&#34;</span>);
+        adapter.setCompletionTimeout(5000);
+        adapter.setConverter(<span style="font-weight:bold">new</span> DefaultPahoMessageConverter());
+        adapter.setQos(1);
+        adapter.setOutputChannel(mqttInputChannel());
+        <span style="font-weight:bold">return</span> adapter;
+    }
+   
+    @Bean
+    @ServiceActivator(inputChannel = <span style="font-style:italic">&#34;mqttInputChannel&#34;</span>)
+    <span style="font-weight:bold">public</span> MessageHandler handler() {
+        <span style="font-weight:bold">return</span> message -&gt; {
+            String payload = message.getPayload().toString();
+            String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
+            System.out.println(<span style="font-style:italic">&#34;收到来自&#34;</span> + topic + <span style="font-style:italic">&#34;的消息：&#34;</span> + payload);
+        };
+    }
+   
+    @Bean
+    <span style="font-weight:bold">public</span> MessageChannel mqttOutboundChannel() {
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> DirectChannel();
+    }
+   
+    @Bean
+    @ServiceActivator(inputChannel = <span style="font-style:italic">&#34;mqttOutboundChannel&#34;</span>)
+    <span style="font-weight:bold">public</span> MessageHandler outbound() {
+        <span style="font-style:italic">// 在这里进行mqttOutboundChannel的相关设置
+</span><span style="font-style:italic"></span>        MqttPahoMessageHandler messageHandler =
+                <span style="font-weight:bold">new</span> MqttPahoMessageHandler(<span style="font-style:italic">&#34;mqttPublisher&#34;</span>, mqttClientFactory());
+        messageHandler.setAsync(<span style="font-weight:bold">true</span>); <span style="font-style:italic">//如果设置成true，发送消息时将不会阻塞。
+</span><span style="font-style:italic"></span>        messageHandler.setDefaultTopic(<span style="font-style:italic">&#34;mqtt-test&#34;</span>);
+        <span style="font-weight:bold">return</span> messageHandler;
+    }
+}
+</code></pre></div><p>Mqtt Message Gateway：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@MessagingGateway(defaultRequestChannel = <span style="font-style:italic">&#34;mqttOutboundChannel&#34;</span>)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">MqttPublisher</span> {
+    <span style="">void</span> sendToMqtt(String payload);
+    <span style="">void</span> sendToMqtt(@Header(MqttHeaders.TOPIC) String topic, String payload);
+    <span style="">void</span> sendToMqtt(@Header(MqttHeaders.TOPIC) String topic, @Header(MqttHeaders.QOS) <span style="">int</span> qos, String payload);
+}
+</code></pre></div><p>来个LLT测试一下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MqttTest</span> {
+    @Autowired
+    <span style="font-weight:bold">private</span> MqttPublisher mqttGateway;
+   
+    @Test
+    <span style="font-weight:bold">public</span> <span style="">void</span> init() {
+        <span style="font-weight:bold">try</span> {
+            mqttGateway.sendToMqtt(<span style="font-style:italic">&#34;mqtt-test&#34;</span>, <span style="font-style:italic">&#34;this is a mqtt message from test&#34;</span>);
+            System.out.println(<span style="font-style:italic">&#34;send mqtt message successfully.&#34;</span>);
+        } <span style="font-weight:bold">catch</span> (Exception e) {
+            System.out.println(<span style="font-style:italic">&#34;send mqtt message failed.&#34;</span>);
+        }
+    }
+}
+</code></pre></div><p>执行成功后，配置中定义的订阅消费者MessageHandler会收到消息，并打印：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">收到来自mqtt-test的消息：this is a mqtt message from test
+</code></pre></div></li>
+</ol>
+<h2 id="mqtt--kafka-to-do">MQTT &amp; Kafka [To-do]</h2>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

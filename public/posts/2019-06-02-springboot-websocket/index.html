@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Springboot Websocket"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
+How 如何利用Spring Boot 快速开发
+自动配置 核心：classpath
+通过classpath上出现的配置类，自动进行配置
+SpringFactoriesLoader加载配置类
+所谓自动配置，其实是各种逻辑分支
+起步依赖 应用 WebSocket   客户端测试脚本(Python)
+import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&#39;ws://localhost:8080/ws&#39;) as websocket: req = {&#34;protocol&#34;:&#34;history_req&#34;,&#39;code&#39;:&#39;XAGODS&#39;,&#39;type&#39;:&#39;MINUTE&#39;,&#39;start_pos&#39;:&#39;0&#39;,&#39;pos_num&#39;:&#39;10&#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类"/>
+
+    <meta property="og:title" content="Springboot Websocket" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
+How 如何利用Spring Boot 快速开发
+自动配置 核心：classpath
+通过classpath上出现的配置类，自动进行配置
+SpringFactoriesLoader加载配置类
+所谓自动配置，其实是各种逻辑分支
+起步依赖 应用 WebSocket   客户端测试脚本(Python)
+import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&#39;ws://localhost:8080/ws&#39;) as websocket: req = {&#34;protocol&#34;:&#34;history_req&#34;,&#39;code&#39;:&#39;XAGODS&#39;,&#39;type&#39;:&#39;MINUTE&#39;,&#39;start_pos&#39;:&#39;0&#39;,&#39;pos_num&#39;:&#39;10&#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-06-02-springboot-websocket/" />
+<meta property="article:published_time" content="2019-06-02T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-02T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-06-02-springboot-websocket/">
+    
+    <title>
+  Springboot Websocket · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-06-02-springboot-websocket/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Springboot Websocket</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-06-02T00:00:00Z'>
+                2019-06-02
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              1-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#what">What</a></li>
+<li><a href="#how">How</a>
+<ul>
+<li><a href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE">自动配置</a></li>
+<li><a href="#%E8%B5%B7%E6%AD%A5%E4%BE%9D%E8%B5%96">起步依赖</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BA%94%E7%94%A8">应用</a>
+<ul>
+<li><a href="#websocket">WebSocket</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="what">What</h2>
+<p>Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。</p>
+<h2 id="how">How</h2>
+<p>如何利用Spring Boot 快速开发</p>
+<h3 id="自动配置">自动配置</h3>
+<p>核心：classpath</p>
+<p>通过classpath上出现的配置类，自动进行配置</p>
+<p>SpringFactoriesLoader加载配置类</p>
+<p>所谓自动配置，其实是各种逻辑分支</p>
+<h3 id="起步依赖">起步依赖</h3>
+<h2 id="应用">应用</h2>
+<h3 id="websocket">WebSocket</h3>
+<ul>
+<li>
+<p>客户端测试脚本(Python)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">import</span> <span style="font-weight:bold">asyncio</span>
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">websockets</span>
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">json</span>
+  
+async <span style="font-weight:bold">def</span> test_ws_quote():
+    async <span style="font-weight:bold">with</span> websockets.connect(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">ws://localhost:8080/ws</span><span style="font-style:italic">&#39;</span>) <span style="font-weight:bold">as</span> websocket:
+        req = {<span style="font-style:italic"></span><span style="font-style:italic">&#34;</span><span style="font-style:italic">protocol</span><span style="font-style:italic">&#34;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#34;</span><span style="font-style:italic">history_req</span><span style="font-style:italic">&#34;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">code</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">XAGODS</span><span style="font-style:italic">&#39;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">type</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">MINUTE</span><span style="font-style:italic">&#39;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">start_pos</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">0</span><span style="font-style:italic">&#39;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">pos_num</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">10</span><span style="font-style:italic">&#39;</span>}
+        await websocket.send(json.dumps(req))
+        <span style="font-weight:bold">while</span> True:
+            quote = await websocket.recv()
+            <span style="font-weight:bold">print</span>(quote)
+  
+asyncio.get_event_loop().run_until_complete(test_ws_quote())
+</code></pre></div></li>
+<li>
+<p>Java服务器端maven依赖，配置类，业务处理类</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+          <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
+          <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+      <span style="font-weight:bold">&lt;/dependency&gt;</span>
+  
+      <span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+          <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
+          <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-websocket<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+      <span style="font-weight:bold">&lt;/dependency&gt;</span>
+      <span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+          <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.projectlombok<span style="font-weight:bold">&lt;/groupId&gt;</span>
+          <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>lombok<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+  <span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
+@Configuration
+@EnableWebSocket
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MyWebSocketConfig</span> <span style="font-weight:bold">implements</span> WebSocketConfigurer {
+  
+    @Override
+    <span style="font-weight:bold">public</span> <span style="">void</span> registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
+        webSocketHandlerRegistry.addHandler(<span style="font-weight:bold">new</span> MyWebSocketHandler(), <span style="font-style:italic">&#34;/ws&#34;</span>)
+                .addInterceptors(<span style="font-weight:bold">new</span> HttpSessionHandshakeInterceptor());
+    }
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MyWebSocketHandler</span> <span style="font-weight:bold">extends</span> TextWebSocketHandler {
+  
+    @Override
+    <span style="font-weight:bold">public</span> <span style="">void</span> handleTextMessage(WebSocketSession session, TextMessage message) {
+        log.info(<span style="font-style:italic">&#34;new message: {}&#34;</span>, message.getPayload());
+        WebSocketMessage&lt;String&gt; webSocketMessage = <span style="font-weight:bold">new</span> TextMessage(<span style="font-style:italic">&#34;Hello world&#34;</span>);
+        <span style="font-weight:bold">try</span> {
+            <span style="font-weight:bold">for</span> (<span style="">int</span> i = 0; i &lt; 10; i++) {
+                session.sendMessage(webSocketMessage);
+                Thread.sleep(2000);
+            }
+        } <span style="font-weight:bold">catch</span> (Exception e) {
+            log.error(<span style="font-style:italic">&#34;{}&#34;</span>, e.getMessage());
+        }
+    }
+}
+</code></pre></div></li>
+</ul>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

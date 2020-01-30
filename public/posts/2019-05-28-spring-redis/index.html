@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spring Redis"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ Basic  Maven依赖 Redis Docker    Basic Maven依赖   对于SpringBoot Starter项目
+&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt; &lt;/dependency&gt;   SpringData
+&lt;!--https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis --&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.data&lt;/groupId&gt; &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt; &lt;version&gt;2.1.8.RELEASE&lt;/version&gt; &lt;/dependency&gt;   Redis Docker # 拉取镜像 docker pull redis # 运行容器 docker run --name redis -d -p 6379:6379 redis "/>
+
+    <meta property="og:title" content="Spring Redis" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ Basic  Maven依赖 Redis Docker    Basic Maven依赖   对于SpringBoot Starter项目
+&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt; &lt;/dependency&gt;   SpringData
+&lt;!--https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis --&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.data&lt;/groupId&gt; &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt; &lt;version&gt;2.1.8.RELEASE&lt;/version&gt; &lt;/dependency&gt;   Redis Docker # 拉取镜像 docker pull redis # 运行容器 docker run --name redis -d -p 6379:6379 redis " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-05-28-spring-redis/" />
+<meta property="article:published_time" content="2019-05-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-05-28T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-05-28-spring-redis/">
+    
+    <title>
+  Spring Redis · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-05-28-spring-redis/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Spring Redis</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-05-28T00:00:00Z'>
+                2019-05-28
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              1-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#basic">Basic</a>
+<ul>
+<li><a href="#maven%E4%BE%9D%E8%B5%96">Maven依赖</a></li>
+<li><a href="#redis-docker">Redis Docker</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="basic">Basic</h2>
+<h3 id="maven依赖">Maven依赖</h3>
+<ul>
+<li>
+<p>对于SpringBoot Starter项目</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-redis<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+<li>
+<p>SpringData</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/org.springframework.data/spring</span><span style="font-style:italic">-</span><span style="font-style:italic">data</span><span style="font-style:italic">-</span><span style="font-style:italic">redis </span><span style="font-style:italic">--&gt;</span>
+<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.data<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-data-redis<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>2.1.8.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+</ul>
+<h3 id="redis-docker">Redis Docker</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># 拉取镜像</span>
+docker pull redis
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># 运行容器</span>
+docker run --name redis -d -p 6379:6379 redis
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

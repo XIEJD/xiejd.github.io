@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PEP8 代码风格指南（翻译）"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ 前言 简介 避免教条主义 代码的布局  缩进 制表符还是空格？ 最大行长度 应该在二元运算符之前断行还是之后断行？ 空行 源文件编码 导入库 模块层次的魔法名字   字符串引号 表达式和语句中的空格  难念的经 其他建议   什么时候尾随一个逗号 注释  块注释 内联注释(行尾注释) 文档注释   命名约定  最重要的原则 命名样式分类 Prescriptive: 命名约定  禁忌 ASCII兼容性 包和模块命名 类名 类型变量名 异常名 全局变量名 函数名 函数和方法的参数 方法名和实例变量 常量 继承的设计   公共接口和内部接口   编程建议  函数注释   参考文献  前言 由于英语水平的限制以及对Python语言的理解程度可能不足，在翻译时，可能会有词不达意甚至错译的情况，有些我自己无法理解的语句会将原文贴出，如果有更好的翻译，Github传送门。译文仅供参考。"/>
+
+    <meta property="og:title" content="PEP8 代码风格指南（翻译）" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ 前言 简介 避免教条主义 代码的布局  缩进 制表符还是空格？ 最大行长度 应该在二元运算符之前断行还是之后断行？ 空行 源文件编码 导入库 模块层次的魔法名字   字符串引号 表达式和语句中的空格  难念的经 其他建议   什么时候尾随一个逗号 注释  块注释 内联注释(行尾注释) 文档注释   命名约定  最重要的原则 命名样式分类 Prescriptive: 命名约定  禁忌 ASCII兼容性 包和模块命名 类名 类型变量名 异常名 全局变量名 函数名 函数和方法的参数 方法名和实例变量 常量 继承的设计   公共接口和内部接口   编程建议  函数注释   参考文献  前言 由于英语水平的限制以及对Python语言的理解程度可能不足，在翻译时，可能会有词不达意甚至错译的情况，有些我自己无法理解的语句会将原文贴出，如果有更好的翻译，Github传送门。译文仅供参考。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-08-11-pep8/" />
+<meta property="article:published_time" content="2019-08-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-11T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-08-11-pep8/">
+    
+    <title>
+  PEP8 代码风格指南（翻译） · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-08-11-pep8/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">PEP8 代码风格指南（翻译）</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-08-11T00:00:00Z'>
+                2019-08-11
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              8-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E9%81%BF%E5%85%8D%E6%95%99%E6%9D%A1%E4%B8%BB%E4%B9%89">避免教条主义</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%9A%84%E5%B8%83%E5%B1%80">代码的布局</a>
+<ul>
+<li><a href="#%E7%BC%A9%E8%BF%9B">缩进</a></li>
+<li><a href="#%E5%88%B6%E8%A1%A8%E7%AC%A6%E8%BF%98%E6%98%AF%E7%A9%BA%E6%A0%BC">制表符还是空格？</a></li>
+<li><a href="#%E6%9C%80%E5%A4%A7%E8%A1%8C%E9%95%BF%E5%BA%A6">最大行长度</a></li>
+<li><a href="#%E5%BA%94%E8%AF%A5%E5%9C%A8%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%B9%8B%E5%89%8D%E6%96%AD%E8%A1%8C%E8%BF%98%E6%98%AF%E4%B9%8B%E5%90%8E%E6%96%AD%E8%A1%8C">应该在二元运算符之前断行还是之后断行？</a></li>
+<li><a href="#%E7%A9%BA%E8%A1%8C">空行</a></li>
+<li><a href="#%E6%BA%90%E6%96%87%E4%BB%B6%E7%BC%96%E7%A0%81">源文件编码</a></li>
+<li><a href="#%E5%AF%BC%E5%85%A5%E5%BA%93">导入库</a></li>
+<li><a href="#%E6%A8%A1%E5%9D%97%E5%B1%82%E6%AC%A1%E7%9A%84%E9%AD%94%E6%B3%95%E5%90%8D%E5%AD%97">模块层次的魔法名字</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%95%E5%8F%B7">字符串引号</a></li>
+<li><a href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E4%B8%AD%E7%9A%84%E7%A9%BA%E6%A0%BC">表达式和语句中的空格</a>
+<ul>
+<li><a href="#%E9%9A%BE%E5%BF%B5%E7%9A%84%E7%BB%8F">难念的经</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96%E5%BB%BA%E8%AE%AE">其他建议</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%B0%BE%E9%9A%8F%E4%B8%80%E4%B8%AA%E9%80%97%E5%8F%B7">什么时候尾随一个逗号</a></li>
+<li><a href="#%E6%B3%A8%E9%87%8A">注释</a>
+<ul>
+<li><a href="#%E5%9D%97%E6%B3%A8%E9%87%8A">块注释</a></li>
+<li><a href="#%E5%86%85%E8%81%94%E6%B3%A8%E9%87%8A%E8%A1%8C%E5%B0%BE%E6%B3%A8%E9%87%8A">内联注释(行尾注释)</a></li>
+<li><a href="#%E6%96%87%E6%A1%A3%E6%B3%A8%E9%87%8A">文档注释</a></li>
+</ul>
+</li>
+<li><a href="#%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A">命名约定</a>
+<ul>
+<li><a href="#%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E5%8E%9F%E5%88%99">最重要的原则</a></li>
+<li><a href="#%E5%91%BD%E5%90%8D%E6%A0%B7%E5%BC%8F%E5%88%86%E7%B1%BB">命名样式分类</a></li>
+<li><a href="#prescriptive-%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A">Prescriptive: 命名约定</a>
+<ul>
+<li><a href="#%E7%A6%81%E5%BF%8C">禁忌</a></li>
+<li><a href="#ascii%E5%85%BC%E5%AE%B9%E6%80%A7">ASCII兼容性</a></li>
+<li><a href="#%E5%8C%85%E5%92%8C%E6%A8%A1%E5%9D%97%E5%91%BD%E5%90%8D">包和模块命名</a></li>
+<li><a href="#%E7%B1%BB%E5%90%8D">类名</a></li>
+<li><a href="#%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%90%8D">类型变量名</a></li>
+<li><a href="#%E5%BC%82%E5%B8%B8%E5%90%8D">异常名</a></li>
+<li><a href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%90%8D">全局变量名</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E5%90%8D">函数名</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0">函数和方法的参数</a></li>
+<li><a href="#%E6%96%B9%E6%B3%95%E5%90%8D%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F">方法名和实例变量</a></li>
+<li><a href="#%E5%B8%B8%E9%87%8F">常量</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E7%9A%84%E8%AE%BE%E8%AE%A1">继承的设计</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%AC%E5%85%B1%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%86%85%E9%83%A8%E6%8E%A5%E5%8F%A3">公共接口和内部接口</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BC%96%E7%A8%8B%E5%BB%BA%E8%AE%AE">编程建议</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A">函数注释</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="前言">前言</h3>
+<p>由于英语水平的限制以及对Python语言的理解程度可能不足，在翻译时，可能会有词不达意甚至错译的情况，有些我自己无法理解的语句会将原文贴出，如果有更好的翻译，<a href="xiejidong888@qq.com">Github传送门</a>。译文仅供参考。</p>
+<p><img src="images/pep8.png" alt="pep8"></p>
+<p>PS. 本文实际翻译于2017年 <a href="https://github.com/XIEJD/pep-translation">传送门</a></p>
+<h3 id="简介">简介</h3>
+<p>本文档给出了主要Python发行版中所包含的标准库的Python代码的编码约定。请参阅Python的C语言实现代码风格指南[1]</p>
+<p>这份文档和 <a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a> (文档字符串的约定) 改编自Guido 的原始 Python 代码风格指南的文章，同时从 Barry 的风格指南[2] 中加入了一些额外的参考。</p>
+<p>这份文档所描述的代码风格，随着时间的推进以及Python语言本身的改变，会引入新的编码约定，淘汰旧的过时编码约定。</p>
+<p>许多项目拥有自己的编码约定，如果和此文档存在冲突，应该以项目的编码约定为主。</p>
+<h3 id="避免教条主义">避免教条主义</h3>
+<p>Guido有一个重要见解是，代码被阅读的更多而不是被写的更多 (code is read much more often than it is written)，这里提供的准则旨在提高代码的可读性，并使其在广泛的Python代码中保持一致性，正如 <a href="https://www.python.org/dev/peps/pep-0020">PEP 20</a> 说的:  &ldquo;Readability counts&rdquo;.</p>
+<p>编码风格指南的核心就是编码的一致性，这种一致性非常重要。模块或功能的一致性大于项目内的一致性。</p>
+<p>然而，当不一致出现的时候，有时风格指南建议并不适用。有疑问的时候，用你的最佳判断。也可以参考看看其它的例子和决定，再选择最好的解决方案。同时毫不犹豫的说出你的疑惑！(去求助)</p>
+<p>特别的：不要为了只是遵守代码风格指南而破坏了向后兼容性 (do not break backwards compatibility just to comply with this PEP!)。</p>
+<p>一些需要随机应变的情况:</p>
+<ol>
+<li>当应用此代码风格会使得代码更加难以阅读时。即便对已经习惯这种风格(此文档)的人也是如此。</li>
+<li>与周围的代码保持一致(可能处于历史原因) - 尽管这是一个清理混乱代码的机会 (真正的 XP 风格)</li>
+<li>代码先于风格指南被提出，且没有其他理由需要对代码进行修改时。</li>
+<li>当代码需要兼容不支持样式指南中样式的旧版Python时。</li>
+</ol>
+<h3 id="代码的布局">代码的布局</h3>
+<h4 id="缩进">缩进</h4>
+<p>用4个空格表示一个缩进。</p>
+<p>连续行应该用有隐式连接作用的圆括号、方括号、花括号包裹并且垂直对齐。或者使用悬挂缩进<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。当使用悬挂缩进时，应考虑以下事项：第一行不应有任何参数，应使用进一步缩进来清楚地将其区分为连续行。</p>
+<p><em><strong>Yes:</strong></em></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 与起始分割符垂直对齐</span>
+foo = long_function_name(var_one, var_two,
+                         var_three, var_four)
+
+<span style="font-style:italic"># 缩进更多以和其他代码区分开。</span>
+<span style="font-weight:bold">def</span> long_function_name(
+        var_one, var_two, var_three,
+        var_four):
+    <span style="font-weight:bold">print</span>(var_one)
+
+<span style="font-style:italic"># 悬挂缩进需要多缩进一个层次。</span>
+foo = long_function_name(
+    var_one, var_two,
+    var_three, var_four)
+</code></pre></div><p><em><strong>No:</strong></em></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 当第一行包含参数时，只能和起始分隔符垂直对齐。</span>
+foo = long_function_name(var_one, var_two,
+    var_three, var_four)
+
+<span style="font-style:italic"># 当连续行无法和其他代码区分时，需要多进行缩进。</span>
+<span style="font-weight:bold">def</span> long_function_name(
+    var_one, var_two, var_three,
+    var_four):
+    <span style="font-weight:bold">print</span>(var_one)
+</code></pre></div><p>4个空格等于1缩进的规则在连续行中是可选的。</p>
+<p><em><strong>Optional:</strong></em></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 悬挂缩进中缩进不一定非得是4个空格。</span>
+foo = long_function_name(
+  var_one, var_two,
+  var_three, var_four)
+</code></pre></div><p>当条件判断语句(if-statement)足够长而需要进行多行书写时，需要注意 &ldquo;if&rdquo; 这个单词加一个空格，加一个括弧总共会占用4个空格从而导致和if的内嵌代码缩进一致产生视觉混淆。对于如何进一步区分这些条件行和内嵌代码，此文档没有明确规定，可以接受的情况包括但不仅限于以下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 无额外缩进</span>
+<span style="font-weight:bold">if</span> (this_is_one_thing <span style="font-weight:bold">and</span>
+    that_is_another_thing):
+    do_something()
+
+<span style="font-style:italic"># 插入注释</span>
+<span style="font-weight:bold">if</span> (this_is_one_thing <span style="font-weight:bold">and</span>
+    that_is_another_thing):
+    <span style="font-style:italic"># Since both conditions are true, we can frobnicate.</span>
+    do_something()
+
+<span style="font-style:italic"># 加入额外缩进</span>
+<span style="font-weight:bold">if</span> (this_is_one_thing
+        <span style="font-weight:bold">and</span> that_is_another_thing):
+    do_something()
+</code></pre></div><p>右圆括号/方括号/花括号在多行结构时，可以将其放在第一个非空字符下面，比如：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_list = [
+    1, 2, 3,
+    4, 5, 6,
+    ]
+result = some_function_that_takes_arguments(
+    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">a</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">b</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">c</span><span style="font-style:italic">&#39;</span>,
+    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">d</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">e</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">f</span><span style="font-style:italic">&#39;</span>,
+    )
+</code></pre></div><p>或者也可以放在最后一行行首：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_list = [
+    1, 2, 3,
+    4, 5, 6,
+]
+result = some_function_that_takes_arguments(
+    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">a</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">b</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">c</span><span style="font-style:italic">&#39;</span>,
+    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">d</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">e</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">f</span><span style="font-style:italic">&#39;</span>,
+)
+</code></pre></div><h4 id="制表符还是空格">制表符还是空格？</h4>
+<p>空格是缩进的首选方法。</p>
+<p>制表符仅用于和已使用制表符的代码保持一致性。</p>
+<p>Python3 不允许制表符和空格混用。</p>
+<p>Python2 中制表符和空格混用的代码应该统一转换为使用空格。</p>
+<p>当使用带 &lsquo;-t&rsquo; 选项命令调用 Python2 解释器时，它会将制表符和空格混用视为警告，当使用 &lsquo;-tt&rsquo; 选项时，它会将其视为错误，这些选项被高度推荐使用。</p>
+<h4 id="最大行长度">最大行长度</h4>
+<p>最大行长度限制在79个字符。</p>
+<p>对于流动的大块少结构性限制的文本，行长度应该限制在72个字符。</p>
+<p>限制所需的编辑器窗口宽度可以使多个文件并排打开，并且在使用代码审查工具阅读两个版本的代码时非常方便。</p>
+<p>大部分工具中默认的行包装会破坏代码的可视化结构，使其更难被理解。这个限制是为了避免在编辑器可视化窗口宽度设定为80个字符时，最后一列可能被放置一些图形标记的情况，一些基于Web的工具可能不会提供动态的行包装功能。</p>
+<p>有些团队需要更长的行长度。主要维护团队可以对这个问题达成一个约定，将其行长度从名义上的80个字符扩展到100个字符（除去最后一列用于给编辑器放置标记状态，实际长度是99个字符）。注释和文档行长度任然保持72个字符。</p>
+<p>Python标准库是保守的，需要限制行为79个字符（文档字符串/评论72个字符）。</p>
+<p>长行的首选方法是使用Python在圆括号、fa方括号和花括号中进行隐式的行延续。长的行可以在括号中进行换行。这些应该优先用于使用反斜杠进行行延续。</p>
+<p>反斜杠在某些情况下任然适用，比如，在长with-statements中，无法隐式的进行行延续，这是需要使用反斜杠：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">with</span> open(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">/path/to/some/file/you/want/to/read</span><span style="font-style:italic">&#39;</span>) <span style="font-weight:bold">as</span> file_1, \
+     open(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">/path/to/some/file/being/written</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">w</span><span style="font-style:italic">&#39;</span>) <span style="font-weight:bold">as</span> file_2:
+    file_2.write(file_1.read())
+</code></pre></div><p>（类似if-statements，这里的with语句延续行的缩进和with内嵌代码同样产生了缩进混淆问题）</p>
+<p>另外一个例子是 assert statements。</p>
+<p>确保适当的对延续行进行缩进。</p>
+<h4 id="应该在二元运算符之前断行还是之后断行">应该在二元运算符之前断行还是之后断行？</h4>
+<p>几十年来，推荐的方式都是在二元运算符后面断行，这对代码可读性会产生两个坏影响：一是运算符分散在屏幕上不同列，二是运算符被移到了它运算元的之前一行，阅读时需要耗费额外的精力来区分是对这个运算元做加法还是减法：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># No: operators sit far away from their operands</span>
+income = (gross_wages +
+          taxable_interest +
+          (dividends - qualified_dividends) -
+          ira_deduction -
+          student_loan_interest)
+</code></pre></div><p>为了解决可读性问题，数学家和出版社们采取了截然相反的方式，Donald Knuth在他的《Computers and Typesetting》系列中对传统的规则解释道：“Although formulas within a paragraph always break after binary operations and relations, displayed formulas always break before binary operations”[^3]。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: easy to match operators with operands</span>
+income = (gross_wages
+          + taxable_interest
+          + (dividends - qualified_dividends)
+          - ira_deduction
+          - student_loan_interest)
+</code></pre></div><p>在Python代码中，不管在二元运算符之前还是之后断行都是允许的，只要保持一致即可。新代码应听从 Knuth 的风格建议。</p>
+<h4 id="空行">空行</h4>
+<p>顶层的函数和类定义前应有两空行。</p>
+<p>类中的方法定义前应只有一行空行。</p>
+<p>额外的空行（少量的）可以用来分离功能相关的一组函数。Blank lines may be omitted between a bunch of related one-liners (e.g. a set of dummy implementations).</p>
+<p>利用空行来表明函数中的逻辑结构。</p>
+<p>Python允许 control-L 形式作为空白字符，许多工具将这些字符当成分页符，所以你也可以用其来对你的文件进行分页。注意，有些基于Web的代码审查工具可能无法识别这个字符形式而将其显示为其他标记。</p>
+<h4 id="源文件编码">源文件编码</h4>
+<p>Python的核心发行版代码应始终使用 UTF-8 进行编码（Python2 中用 ASCII）。</p>
+<p>Python2中使用ASCII码编码，和Python3中使用UTF-8编码时，<strong>不应该</strong>进行编码声明。</p>
+<p>在标准库中，非默认编码应只用于测试目的或者当注释和文档字符串需要用到非ASCII码字符是，否则，推荐用 <code>\x, \u, \U, \N</code> 来转义非ASCII字符。</p>
+<p>对于Python3.0及之后的版本，标准库需要遵循一些约定：所有Python标准库中的标识符<strong>必须</strong>只使用利用ASCII码字符，<strong>应该</strong>尽可能的使用英文字符（许多情况下，简写和专业短语并不是使用的英文字符）。同时，字面字符串和注释必须使用ASCII码字符。唯一例外的情况是，(a) 测试非ASCII编码特性，(b) 作者姓名，如果其姓名中包含非拉丁字符，<strong>必须</strong>提供翻译的拉丁版本。</p>
+<p>国际性的开源项目鼓励其采用相似的策略。</p>
+<h4 id="导入库">导入库</h4>
+<ul>
+<li>
+<p>导入时每个库都应该分行</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yes: <span style="font-weight:bold">import</span> <span style="font-weight:bold">os</span>
+     <span style="font-weight:bold">import</span> <span style="font-weight:bold">sys</span>
+
+No:  <span style="font-weight:bold">import</span> <span style="font-weight:bold">sys</span>, <span style="font-weight:bold">os</span>
+</code></pre></div><p>这种情况是可以的：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">subprocess</span> <span style="font-weight:bold">import</span> Popen, PIPE
+</code></pre></div></li>
+<li>
+<p>导入语句应该放在文件的最上面，同时处于模块注释和文档注释之下，模块全局变量和常量之上。</p>
+<p>导入顺序应该是：</p>
+<ol>
+<li>标准库</li>
+<li>相关第三方库</li>
+<li>本地应用或库</li>
+</ol>
+<p>在每一类导入之间加一个空行。</p>
+</li>
+<li>
+<p>推荐使用绝对方式导入，一般而言绝对方式导入更易读，当导入系统配置错误时表现的更好（至少可以给出更好的错误信息）。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">import</span> <span style="font-weight:bold">mypkg.sibling</span>
+<span style="font-weight:bold">from</span> <span style="font-weight:bold">mypkg</span> <span style="font-weight:bold">import</span> sibling
+<span style="font-weight:bold">from</span> <span style="font-weight:bold">mypkg.sibling</span> <span style="font-weight:bold">import</span> example
+</code></pre></div><p>然而，相对导入仍然是绝对导入的可接受替代方案，尤其是当导入拥有复杂结构的包时，使用绝对导入会增加不必要的冗余。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">.</span> <span style="font-weight:bold">import</span> sibling
+<span style="font-weight:bold">from</span> <span style="font-weight:bold">.sibling</span> <span style="font-weight:bold">import</span> example
+</code></pre></div><p>标准库代码应该避免复杂的包结构同时使用绝对导入方式。</p>
+<p>隐式相对导入已经从Python3中移除。</p>
+</li>
+<li>
+<p>从包含类的模块中导入类的时候，通常可以这些写：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">myclass</span> <span style="font-weight:bold">import</span> MyClass
+<span style="font-weight:bold">from</span> <span style="font-weight:bold">foo.bar.yourclass</span> <span style="font-weight:bold">import</span> YourClass
+</code></pre></div><p>如果和本地名称产生了冲突，可以这样写：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">import</span> <span style="font-weight:bold">myclass</span>
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">foo.bar.yourclass</span>
+</code></pre></div><p>然后用 <code>myclass.MyClass</code> 和 <code>foo.bar.yourclass.YourClass</code> 来调用。</p>
+</li>
+<li>
+<p>避免使用通配符导入（<code>from &lt;module&gt; import *</code>），因为不清楚命名空间中存在哪些名称，所以会使读者和许多自动化工具感到困惑。但是有一种情况需要用到通配符导入，就是将内部接口重新发布为公共接口</p>
+<p>当使用这种方式重新发布接口时，下面的指南对于公共和内部接口仍然适用。</p>
+</li>
+</ul>
+<h4 id="模块层次的魔法名字">模块层次的魔法名字</h4>
+<p>模块级“dunders”（即名字前后有两个下划线）如<code>__all__，__author__，__version__</code>等等，除了<code>__future__</code>都应该放在模块注释之后和导入语句之前。Python中future导入语句必须所有语句之前出现，除了文档注释。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span><span style="font-style:italic">This is the example module.</span><span style="font-style:italic">
+</span><span style="font-style:italic"></span><span style="font-style:italic">
+</span><span style="font-style:italic"></span><span style="font-style:italic">This module does stuff.</span><span style="font-style:italic">
+</span><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span>
+
+<span style="font-weight:bold">from</span> <span style="font-weight:bold">__future__</span> <span style="font-weight:bold">import</span> barry_as_FLUFL
+
+__all__ = [<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">a</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">b</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">c</span><span style="font-style:italic">&#39;</span>]
+__version__ = <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">0.1</span><span style="font-style:italic">&#39;</span>
+__author__ = <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">Cardinal Biggles</span><span style="font-style:italic">&#39;</span>
+
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">os</span>
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">sys</span>
+</code></pre></div><h3 id="字符串引号">字符串引号</h3>
+<p>在Python中，单引号和双引号的作用是一样的，此文档不会选择偏好哪一个，你只需要选择其中一个并坚持就行了。当需要在字符串中使用引号时，用另外一种引号来包围字符串可以避免使用反斜杠，提高代码易读性。</p>
+<p>对于三引号，始终用双引号表示以确保一致性 <a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>。</p>
+<h3 id="表达式和语句中的空格">表达式和语句中的空格</h3>
+<h4 id="难念的经">难念的经</h4>
+<p>在下面几种情况下避免使用无关的空格。</p>
+<ul>
+<li>
+<p>立即在圆括号、方括号、花括号前后使用空格。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+spam(ham[1], {eggs: 2})
+
+<span style="font-style:italic"># No:  </span>
+spam( ham[ 1 ], { eggs: 2 } )
+</code></pre></div></li>
+<li>
+<p>在一个跟着右括号的逗号后面。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+foo = (0,)
+
+<span style="font-style:italic"># No:  </span>
+bar = (0, )
+</code></pre></div></li>
+<li>
+<p>在逗号、分号、冒号之前。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+<span style="font-weight:bold">if</span> x == 4: <span style="font-weight:bold">print</span> x, y; x, y = y, x
+
+<span style="font-style:italic"># No:  </span>
+<span style="font-weight:bold">if</span> x == 4 : <span style="font-weight:bold">print</span> x , y ; x , y = y , x
+</code></pre></div></li>
+<li>
+<p>在切片中，冒号就像一个二进制运算符，在两边应该有相等量的数（把他当成优先级最低的运算符），在一个扩展切片中，所有冒号的两边的空格数必须相同。一个另外：如果切片中有一个参数省略了，那空格也将被省略。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+ham[lower:upper], ham[lower:upper:], ham[lower::step]
+ham[lower+offset : upper+offset]
+ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
+ham[lower + offset : upper + offset]
+
+<span style="font-style:italic"># No:</span>
+
+ham[lower + offset:upper + offset]
+ham[1: 9], ham[1 :9], ham[1:9 :3]
+ham[lower : : upper]
+ham[ : upper]
+</code></pre></div></li>
+<li>
+<p>在函数的参数列表的左括号前。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+spam(1)
+
+<span style="font-style:italic"># No:  </span>
+spam (1)
+</code></pre></div></li>
+<li>
+<p>在切片的左括号前。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+dct[<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">key</span><span style="font-style:italic">&#39;</span>] = lst[index]
+
+<span style="font-style:italic"># No:  </span>
+dct [<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">key</span><span style="font-style:italic">&#39;</span>] = lst [index]
+</code></pre></div></li>
+<li>
+<p>为了对齐等号而在之前添加多个空格。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+x = 1
+y = 2
+long_variable = 3
+
+<span style="font-style:italic"># No:</span>
+
+x             = 1
+y             = 2
+long_variable = 3
+</code></pre></div></li>
+</ul>
+<h4 id="其他建议">其他建议</h4>
+<ul>
+<li>
+<p>避免在任何地方尾随一个空格，这个空格通常是不可见的，它会引发疑惑：比如，一个反斜杠后面跟一个空格时，是否算作一个续行标记。有些编辑器不会允许这种行为，大部分项目里面也会有预提交来放止这种情况发生。</p>
+</li>
+<li>
+<p>总是在二元运算符两边加上空格：等号（=）、增强赋值（+=、-=等）、比较（==、&gt;、&lt;、!=、&lt;&gt;、&lt;=、&gt;=、in、not in、is、is not）、布尔运算（and、or、not）。</p>
+</li>
+<li>
+<p>如果表达式中有不同优先级的运算符，可以在最低优先级运算符两边加上空格，但是不要超过一个且运算符两边空格数相等。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+i = i + 1
+submitted += 1
+x = x*2 - 1
+hypot2 = x*x + y*y
+c = (a+b) * (a-b)
+
+<span style="font-style:italic"># No:</span>
+
+i=i+1
+submitted +=1
+x = x * 2 - 1
+hypot2 = x * x + y * y
+c = (a + b) * (a - b)
+</code></pre></div></li>
+<li>
+<p>在关键字参数的等号两边，不要加空格。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+<span style="font-weight:bold">def</span> complex(real, imag=0.0):
+    <span style="font-weight:bold">return</span> magic(r=real, i=imag)
+      
+<span style="font-style:italic"># No:</span>
+
+<span style="font-weight:bold">def</span> complex(real, imag = 0.0):
+    <span style="font-weight:bold">return</span> magic(r = real, i = imag)
+</code></pre></div></li>
+<li>
+<p>函数注解中，对于冒号应该采用通常的办法来添加空格，而对于<code>'-&gt;'</code>应该在两边都加上空格（查看更多关于函数注解<a href="https://www.python.org/dev/peps/pep-0008/#function-annotations">Function Annotations</a>）。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+<span style="font-weight:bold">def</span> munge(input: AnyStr): ...
+<span style="font-weight:bold">def</span> munge() -&gt; AnyStr: ...
+
+<span style="font-style:italic"># No:</span>
+
+<span style="font-weight:bold">def</span> munge(input:AnyStr): ...
+<span style="font-weight:bold">def</span> munge()-&gt;PosInt: ...
+</code></pre></div></li>
+<li>
+<p>当参数注释时，如果有默认值，则在等号两边加上空格。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+<span style="font-weight:bold">def</span> munge(sep: AnyStr = None): ...
+<span style="font-weight:bold">def</span> munge(input: AnyStr, sep: AnyStr = None, limit=1000): ...
+
+<span style="font-style:italic"># No:</span>
+
+<span style="font-weight:bold">def</span> munge(input: AnyStr=None): ...
+<span style="font-weight:bold">def</span> munge(input: AnyStr, limit = 1000): ...
+</code></pre></div></li>
+<li>
+<p>复合语句通常是不被鼓励的（多条语句写在同一行）</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+
+<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>:
+    do_blah_thing()
+do_one()
+do_two()
+do_three()
+
+<span style="font-style:italic"># Rather not:</span>
+
+<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: do_blah_thing()
+do_one(); do_two(); do_three()
+</code></pre></div></li>
+<li>
+<p>但是有时将很短的 if/for/while 放在同一行是可以的。但是永远别将有多个关键字的语句（multi-clause statements）放在同一行，不要试图折叠它们。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Rather not:</span>
+<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: do_blah_thing()
+<span style="font-weight:bold">for</span> x <span style="font-weight:bold">in</span> lst: total += x
+<span style="font-weight:bold">while</span> t &lt; 10: t = delay()
+
+<span style="font-style:italic"># Definitely not:</span>
+<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: do_blah_thing()
+<span style="font-weight:bold">else</span>: do_non_blah_thing()
+
+<span style="font-weight:bold">try</span>: something()
+<span style="font-weight:bold">finally</span>: cleanup()
+
+do_one(); do_two(); do_three(long, argument,
+                             list, like, this)
+
+<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: one(); two(); three()
+</code></pre></div></li>
+</ul>
+<h3 id="什么时候尾随一个逗号">什么时候尾随一个逗号</h3>
+<p>尾随一个逗号通常是可选的，除非是为了得到一个元素的元组而强制添加（在Python2的<code>print</code>语句中是有意义的）。为清楚起见，建议在后者加上括号（技术上是冗余的）</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+FILES = (<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>,)
+
+<span style="font-style:italic"># OK, but confusing:</span>
+FILES = <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>,
+</code></pre></div><p>当使用版本控制系统时，当需要扩展一串参数时，多尾随一个逗号通常是有用的。这种模式是将每一个参数放在单独的一行，然后在行尾添加一个逗号，再在最后，另起一行括上右括号。如果将一串参数写在同一行，多添加一个逗号通常是无用的（除了单元素元组情况外）。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+FILES = [
+    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>,
+    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">tox.ini</span><span style="font-style:italic">&#39;</span>,
+    ]
+initialize(FILES,
+           error=True,
+           )
+           
+<span style="font-style:italic"># No:</span>
+FILES = [<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">tox.ini</span><span style="font-style:italic">&#39;</span>,]
+initialize(FILES, error=True,)
+</code></pre></div><h3 id="注释">注释</h3>
+<p>与代码相悖的注释比没有注释更加糟糕，始终将更新代码注释保持最高的优先级。</p>
+<p>注释应该是完整的句子。如果注释是一个短语或句子，它的第一个词应该大写，除非它是一个以小写字母开头的标识符（不要改变标识符的写法）！</p>
+<p>如果注释很短，则何时结束注释可以省略。块注释一般由完整句构成的一个或多个段落组成，每个句子应以一个句号结束。</p>
+<p>在句子结束后跟两个空格。[注：这一条好像被严重鄙视了。]</p>
+<p>用英语写作时，遵循Strunk and White原则。</p>
+<p>来自非英语国家的Python程序员，请务必用英文来对你的代码进行注释，除非你120%确定你的代码不会被不懂你的语言的程序员读到。</p>
+<h4 id="块注释">块注释</h4>
+<p>块注释一般写在被注释代码的上方，且和被注释代码保持相同的缩进，每一行注释都以一个&rsquo;#&lsquo;和一个空格开头。</p>
+<p>块注释中用单独的&rsquo;#&lsquo;进行断行。</p>
+<h4 id="内联注释行尾注释">内联注释(行尾注释)</h4>
+<p>尽量少用内联注释。内联注释是与语句在同一行上的注释。内联注释应该和代码保持至少两个空格的间隔。他们应该以一个&rsquo;#&lsquo;和一个空格开头。</p>
+<p>不要进行无必要的注释来分散注意力：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x = x + 1                 <span style="font-style:italic"># Increment x</span>
+</code></pre></div><p>但是如果这样注释是可以的：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x = x + 1                 <span style="font-style:italic"># Compensate for border</span>
+</code></pre></div><h4 id="文档注释">文档注释</h4>
+<p>关于良好书写文档注释的约定文件（又名 “docstrings”）已经作为<a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>永久生效。</p>
+<ul>
+<li>
+<p>对所有公开的模块、函数、类、方法进行文档注释，对于非公开的则没有必要，但是最好说明代码时干什么的。文档注释应该放在 <code>def</code>下面。</p>
+</li>
+<li>
+<p><a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>描述了良好的文档注释规范。注意最重要的一点：用 <code>&quot;&quot;&quot;</code> 结束文档注释时，应该单独起一行。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span><span style="font-style:italic">Return a foobang</span><span style="font-style:italic">
+</span><span style="font-style:italic"></span><span style="font-style:italic">
+</span><span style="font-style:italic"></span><span style="font-style:italic">Optional plotz says to frobnicate the bizbaz first.</span><span style="font-style:italic">
+</span><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span>
+</code></pre></div></li>
+<li>
+<p>对于单行文档注释，应该写在同一行。</p>
+</li>
+</ul>
+<h3 id="命名约定">命名约定</h3>
+<p>Python库的命名规范有些混乱，所以我们没有强制要求保持一致性。尽管如此，我们仍然推荐目前的命名标准。新的模块和包（包括第三方框架）应该遵循这些标准，但是现有的不同风格的库，保持内部一致性是首选。</p>
+<h4 id="最重要的原则">最重要的原则</h4>
+<p>作为对用户可见的公共API的命名，应该以反映其用处为主，而非反映实现方法。</p>
+<h4 id="命名样式分类">命名样式分类</h4>
+<p>有许多种不同的命名样式， It helps to be able to recognize what naming style is being used, independently from what they are used for。</p>
+<p>以下样式通常是可区分的：</p>
+<ul>
+<li>
+<p><code>b</code> (单个小写字母)</p>
+</li>
+<li>
+<p><code>B</code> (单个大写字母)</p>
+</li>
+<li>
+<p><code>lowercase</code></p>
+</li>
+<li>
+<p><code>lower_case_with_underscores</code></p>
+</li>
+<li>
+<p><code>UPPERCASE</code></p>
+</li>
+<li>
+<p><code>UPPER_CASE_WITH_UNDERSCORES</code></p>
+</li>
+<li>
+<p><code>CapitalizedWords</code> (or CapWords, or CamelWords — 这么命名主要因为其大写字母看起来像驼峰[4])。有时也叫 StudlyCaps。</p>
+<p>注意：当在 CapWords 中使用缩略词时，大写缩略词中的所有字母。比如 <code>HTTPServerError</code> 优于<code>HttpServerError</code>。</p>
+</li>
+<li>
+<p><code>mixedCase</code> (和 CapWords 不同的是首个字母全部小写)</p>
+</li>
+<li>
+<p><code>Capitalized_Words_With_Underscores</code> (丑！)</p>
+</li>
+</ul>
+<p>还有一种使用简短唯一前缀的方法来标记同一组名字，在Python中这种方法不是很常用。为了完整性，也会提到使用这种方法的情况。比如，函数<code>os.stat()</code>返回一个拥有传统命名的元组，<code>st_mode, st_size, st_mtime</code>等等。这样做是为了强调和 POSIX的调用结构保持对应，以方便程序员。</p>
+<p>此外，在命名前后添加下划线的特殊情况也是可以使用的（这种方式通常可以和任何命名规则联合使用）。</p>
+<ul>
+<li><code>_single_leading_underscore</code> : 表示弱内部使用，比如，<code>from M import *</code> 不会导入以下划线开头的对象。</li>
+<li><code>single_trailing_underscore_</code> : 在后面加下划线是为了不和 Python 中内建的关键字冲突。比如，<code>Tkinter.Toplevel(master, class_='ClassName')</code>。</li>
+<li><code>__double_leading_underscore</code> : 当命名一个类属性时，方便带上前缀（在类 <code>Foobar</code> 内部，<code>__boo</code> 变成 <code>_Foobar__boo</code>）。</li>
+<li><code>__double_leading_and_trailing_underscore__</code> : 魔法对象或者用户自定义的属性。比如，<code>__init__, __import__, __file__</code>。不要自定义这类名字，最好使用文档里面已经标注的。</li>
+</ul>
+<h4 id="prescriptive-命名约定">Prescriptive: 命名约定</h4>
+<h5 id="禁忌">禁忌</h5>
+<p>不要将字符“l”（小写字母，音同&rsquo;el&rsquo;）、“O”（大写字母，音同&rsquo;oh&rsquo;）或“I”（大写字母，音同&rsquo;eye&rsquo;）作为单个字符变量名。</p>
+<p>在某些字体中，这些字母和数字1和0无法区分，如果非要用&rsquo;el&rsquo;，最好用大写L。</p>
+<h5 id="ascii兼容性">ASCII兼容性</h5>
+<p>标准库中使用的标识符必须是ASCII兼容的，如PEP 3131的策略部分中描述的那样。</p>
+<h5 id="包和模块命名">包和模块命名</h5>
+<p>模块应该有简短的小写字母。如果可以提高可读性，则可以在模块名中使用下划线。Python包也应该有简短的全部小写的名称，不鼓励使用下划线。</p>
+<p>当一个扩展模块使用C/C++完成并有一个更高层次的Python模块作为接口时，在C/C++模块的名字前加一个下划线（比如，<code>_socket</code>）。</p>
+<h5 id="类名">类名</h5>
+<p>类名应该使用驼峰命名法。</p>
+<p>当接口已记录在文档主要作为可调用对象时，可以使用函数的命名规范。(The naming convention for functions may be used instead in cases where the interface is documented and used primarily as a callable. )</p>
+<p>注意，对内置的名字单独约定：大多数的内置对象的名字是单个单词（或两个词写在一起），包括异常类命名和内置常量命名都使用驼峰命名法。</p>
+<h5 id="类型变量名">类型变量名</h5>
+<p>在<a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> 中介绍的类型变量名一般使用简短的驼峰命名法：<code>T, AnyStr, Num</code>等，最好在名字前加上前缀，比如<code>_co, _contra</code>等来表明其行为特点。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">typing</span> <span style="font-weight:bold">import</span> TypeVar
+
+VT_co = TypeVar(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">VT_co</span><span style="font-style:italic">&#39;</span>, covariant=True)
+KT_contra = TypeVar(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">KT_contra</span><span style="font-style:italic">&#39;</span>, contravariant=True)
+</code></pre></div><h5 id="异常名">异常名</h5>
+<p>因为异常应该是类，所以类命名约定适用于这里。但是，您应该在异常名称上使用后缀“Error”（如果该异常确实表示的是一个错误）。</p>
+<h5 id="全局变量名">全局变量名</h5>
+<p>（假设这些变量都是在这些在同一个模块中使用的）这些约定与函数的约定大致相同。</p>
+<p>通过<code>from M import *</code>来导入的模块，应该用<code>__all__</code>来防止全局变量的导入。或者用一个老方法，在变量名前加上一个下划线以表明这些变量是非公开的。</p>
+<h5 id="函数名">函数名</h5>
+<p>函数名应该全部小写，用下划线来分割单词以提高可读性。</p>
+<p>混合风格只允许在为了保持向后兼容的已经是混合风格的上下文（比如，treading.py）中使用。</p>
+<h5 id="函数和方法的参数">函数和方法的参数</h5>
+<p>总是使用<code>self</code>作为实例方法的第一个参数。</p>
+<p>总是使用<code>cls</code>作为类方法的第一个参数。</p>
+<p>如果函数参数的名称与保留关键字冲突，一般最好追加一个尾部下划线，而不是使用缩写或拼写损坏。因此<code>class_</code>比<code>clss</code>更好。（最好是使用同义词避免这种冲突。）</p>
+<h5 id="方法名和实例变量">方法名和实例变量</h5>
+<p>使用函数命名规则：小写，用下划线分隔单词，以提高可读性。</p>
+<p>仅在非公开的方法和非公开的实例变量名前面添加一个下划线。</p>
+<p>To avoid name clashes with subclasses, use two leading underscores to invoke Python&rsquo;s name mangling rules.（为了避免与子类名冲突，援引python的名字转换规则，添加两个前导下划线）</p>
+<p>Python会将名字和类名连接在一起，如果类<code>Foo</code>有一个属性<code>__a</code>，这个属性无法被<code>Foo.__a</code>访问（但是仍然可以被<code>Foo._Foo__a</code>访问），一般来说，双下划线应该只是用在为了避免类中属性为子类时名字冲突的情况。</p>
+<p>注：有关于<code>__names</code>使用一些争议（见下文）。</p>
+<h5 id="常量">常量</h5>
+<p>常量通常定义在模块级别，所有字母全部大写，并用下划线分隔单词，比如<code>MAX_OVERFLOW, TOTAL</code>。</p>
+<h5 id="继承的设计">继承的设计</h5>
+<p>始终优先确定一个类的方法或者实例中的变量（统称为属性）是公开的还是非公开的。如果心存疑虑，那就选择非公开的，因为把非公开的改为公开的总比公开的改为非公开的容易。</p>
+<p>公开的类属性是给那些和该类没什么关系的对象使用的，同时承诺避免向后不兼容的更改。非公开的属性是不打算被第三方使用的，因为无法保证这些非公开属性不被更改甚至删除。</p>
+<p>我们不使用“私有”一词，因为在Python中并没有什么属性是真正私有的（减少一些不必要的工作量）。</p>
+<p>另一类属性是“子类API”的一部分（通常在其他语言称为<code>protected</code>）。有些类是为了继承、扩展或修改类的行为方面而设计得。在设计这样一个类时，要谨慎地决定哪些属性是公开的，哪些属性是只供基类使用的子类API的一部分。</p>
+<p>所以，以下是让代码Pythonic的指导方针：</p>
+<ul>
+<li>公开的属性不应该有前导下划线。</li>
+<li>如果你的公共属性的名称与保留关键字冲突，在属性名尾部附加一个下划线。这比缩写或故意错误的拼写更好。（然而，尽管有这条规则，<code>cls</code>是一个众所周知的用来表示类的一个变量名或参数名，尤其是类方法的第一个参数。）
+注：类方法的参数命名推荐规则见上文</li>
+<li>对于简单的公开数据属性，最好不要用复杂的存和取的方法来管理，而是简单的将属性名暴露即可。Python提供了简单的扩展方法，如果你发现你的数据属性需要扩展成一个拥有复杂行为的方法时，用函数式属性来隐藏掉方法机制，从而可以使用属性的方法来访问它。
+注1：函数式属性仅可以在新式类中使用
+注2：尽量不要让函数行为产生副作用，但是像缓存这种事可以的。
+注3：尽量不要讲函数式属性用在计算量巨大的函数上，因为这会让访问它的人觉得属性访问的代价非常小。</li>
+<li>如果你的类有可能被继承（If your class is intended to be subclassed），但是你又不想让你这个类的属性被子类所用，可以考虑在属性名前加两个下划线，而尾部无下划线，这会触发Python的名字变换算法（name mangling algorithm），类名将会拼接到属性名的前面，这可以避免子类命名属性的时候和基类属性名重名的问题。
+注1：注意名字变换只是简单的把类名拼接到属性名前，如果你的属性名前本来就有类名，那么仍然有可能冲突。
+注2：名字转换有一些特定用途，比如调试和<code>__getattr__()</code>，虽然不方便，但是名字转换有良好的文档以及易于手动操作。
+注3：不是每个人都喜欢名字转换，Try to balance the need to avoid accidental name clashes with potential use by advanced callers.</li>
+</ul>
+<h4 id="公共接口和内部接口">公共接口和内部接口</h4>
+<p>任何向后兼容性保证仅适用于公共接口。因此，用户能够清楚地区分公共接口和内部接口是非常重要的。</p>
+<p>文档注释过的接口被认为是公开的，除非文档明确声明它们是临时或内部接口，不受通常的向后兼容性保证。所有未记录的接口都应该是内部的。</p>
+<p>为了更好地支持自省机制，模块应该显式在<code>__all__</code>属性中声明自己的公共接口。<code>__all__</code>设置为一个空列表表示模块没有公共API。</p>
+<p>就算<code>__all__</code>已经设置妥当，内部接口（包名，模块名，类名，函数名，属性名或者其他名字）仍然应该加上一个前导下划线。</p>
+<p>如果命名空间（包、模块、类）是内部的，那么其包含的接口也被认为是内部的。（An interface is also considered internal if any containing namespace (package, module or class) is considered internal.）</p>
+<p>导入的名字应该被认为是一种细节实现的方式，其他模块不应该依赖于对这些名字的简介访问，除非他们是模块中拥有明确文档的API，比如 <code>os.path</code> 或者包的 <code>__init__</code>模块将子模块的功能暴露出来。</p>
+<h3 id="编程建议">编程建议</h3>
+<ol>
+<li>
+<p>代码不应该选择一种在其他Python（PyPy、Jython、IronPython、Cython、Psyco等等）中不被鼓励的实现。
+比如，在以“in-place”的方式连接字符串时，不要依赖于在CPython中有效的实现形式：<code>a += b or a = a + b</code> ，就算在CPython中，这种形式也是非常脆弱的（它只适用于某些类型），而且根本不存在不使用引用计数的实现。在库中性能敏感的部分，应该使用 <code>''.join()</code> 的形式，这样就能保证在其他Python中也是线性运行时间。</p>
+</li>
+<li>
+<p>在比较单例实例时，应该使用 <code>is</code> 或 <code>is not</code> 而不是相等号。
+另外，注意当你的意思是 <code>if x is not None</code> 时，才可以写成 <code>if x</code>，比如在测试一个变量或者参数是否是None还是其他值时。其他值有可能是有类型的（比如容器之类），这样有可能在布尔测试时判断为假。</p>
+</li>
+<li>
+<p>用 <code>is not</code> 而不是 <code>not ... is</code> 虽然两者的意思是一样的。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<span style="font-weight:bold">if</span> foo <span style="font-weight:bold">is</span> <span style="font-weight:bold">not</span> None:
+
+<span style="font-style:italic"># No:</span>
+<span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> foo <span style="font-weight:bold">is</span> None:
+</code></pre></div></li>
+<li>
+<p>当实现比较丰富的比较操作时，最好实现所有六种比较操作（<code>__eq__, __ne__, __lt__, __le__, __gt__, __ge__</code>）而不是只是实现其中一种操作。
+<code>functools.total_ordering()</code> 装饰器可以补全缺省的比较操作。</p>
+</li>
+<li>
+<p><a href="https://www.python.org/dev/peps/pep-0207">PEP 207</a> 表明，自反性规则在Python中是成立的，所以，解释器会将 <code>y &gt; x</code> 变换成 <code>x &lt; y</code>，<code>y &gt;= x</code> 变换成 <code>x &lt;= y</code>，<code>x == y</code> 变换成 <code>x != y</code>。<code>sort()</code> 和 <code>min()</code> 使用 <code>&lt;</code> 操作符，<code>max()</code> 使用的是 <code>&gt;</code> 操作符，但是，最好还是实现所有六种操作以避免在其他上下文中产生歧义。</p>
+</li>
+<li>
+<p>总是使用 <code>def</code> 语句，而不是直接将lambda表达式绑定到标识符。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<span style="font-weight:bold">def</span> f(x): <span style="font-weight:bold">return</span> 2*x
+
+<span style="font-style:italic"># No:</span>
+f = <span style="font-weight:bold">lambda</span> x: 2*x
+</code></pre></div><p>第一个表单意味着生成的函数对象的名称是 <code>f</code> 而不是泛型“&lt; lambda &gt;”。这在一般的回溯和字符串表示更有用。赋值语句的使用消除了lambda表达式在和显式 <code>def</code> 语句（即它可以嵌入较大表达式中）比较时所能提供的唯一好处。</p>
+</li>
+<li>
+<p>从 <code>Exception</code> 而不是 <code>BaseException</code> 来继承异常类，直接从 <code>BaseException</code> 继承的异常类通常是用来表示不要试图捕捉该异常。
+基于代码所捕获的异常的区别来设计异常层次结构，而不是引发异常的位置。要回答的是“什么东西出错了？”，而不是只是说“出错了”。（详见 <a href="https://www.python.org/dev/peps/pep-3151">PEP 3151</a> 来了解内建异常层次结构）
+类名约定可以应用在此处，如果你的异常类表示的是一个错误，那应该在类名后面添加“Error”后缀，用于非本地流控制或其他形式信令的非错误异常不需要特殊后缀。</p>
+</li>
+<li>
+<p>适当的使用异常链。在Python3中，<code>raise x from y</code> 应该清晰的表明这种替换而不失去原始的回溯信息。
+当替换一个内部异常时（Python2中用 <code>raise x</code> ，Python3.3+中用 <code>raise x from None</code>），确保相关详细信息都被转移到了新的异常中（比如当 <code>KeyError</code>转换为 <code>AttributeError</code> 时保存属性名信息，或者将原始异常信息的文本嵌入到新异常中）。</p>
+</li>
+<li>
+<p>在Python2中，当抛出一个异常时，使用 <code>raise ValueError('message')</code> 而不是老的表达方式 <code>raise ValueError, 'message'</code> 。
+后一种表达方式在Python3中不合法。因为括号的使用，也意味着当异常参数过长或者包含字符串时，你不需要使用续行符了。</p>
+</li>
+<li>
+<p>当捕捉异常时，尽可能的提及具体的异常，而不是使用一个简单的 <code>except:</code> 语句。比如用以下形式：</p>
+</li>
+</ol>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">try</span>:
+    <span style="font-weight:bold">import</span> <span style="font-weight:bold">platform_specific_module</span>
+<span style="font-weight:bold">except</span> <span style="font-weight:bold">ImportError</span>:
+    platform_specific_module = None
+</code></pre></div><p>毫无修饰的使用 <code>except:</code> 会捕获 <code>SystemExit</code> 和 <code>KeyboardInterrupt</code> 异常，使得程序更难以被 Control-C 中断，也会掩盖其他问题。如果你想捕获用来表示程序错误的所有异常，使用 <code>except Exception:</code> ，毫无修饰的 <code>except:</code> 等于 <code>except BaseException</code> 。</p>
+<p>一个很好的经验是限制在以下两种情况中使用 <code>except:</code></p>
+<ul>
+<li>如果异常处理程序将打印或记录异常回溯信息，至少让用户知道发生了一个错误。</li>
+<li>如果代码在遇到错误后需要做一些善后工作，然后再让异常向上传播，使用 <code>try ... finaly</code> 可以更好的处理这种情况。</li>
+</ul>
+<ol start="11">
+<li>
+<p>当捕获操作系统异常时，参考Python3.3中<code>errno</code>模块中的异常结构。</p>
+</li>
+<li>
+<p>另外，对于所有 <code>try...except...</code> 语句，将 <code>try</code> 中的必要代码最少化，这样能避免掩盖错误。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<span style="font-weight:bold">try</span>:
+    value = collection[key]
+<span style="font-weight:bold">except</span> <span style="font-weight:bold">KeyError</span>:
+    <span style="font-weight:bold">return</span> key_not_found(key)
+<span style="font-weight:bold">else</span>:
+    <span style="font-weight:bold">return</span> handle_value(value)
+        
+<span style="font-style:italic"># No:</span>
+<span style="font-weight:bold">try</span>:
+    <span style="font-style:italic"># Too broad!</span>
+    <span style="font-weight:bold">return</span> handle_value(collection[key])
+<span style="font-weight:bold">except</span> <span style="font-weight:bold">KeyError</span>:
+    <span style="font-style:italic"># Will also catch KeyError raised by handle_value()</span>
+    <span style="font-weight:bold">return</span> key_not_found(key)
+</code></pre></div></li>
+<li>
+<p>当某个资源仅在一段代码中起作用时，用 <code>with</code> 语句来及时和有效的关闭/清理该资源。使用 <code>try...finally...</code>也是可以接受的。</p>
+</li>
+<li>
+<p>无论何时获取和释放资源，都应该通过单独的函数或方法调用上下文管理器。例如:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<span style="font-weight:bold">with</span> conn.begin_transaction():
+    do_stuff_in_transaction(conn)
+        
+<span style="font-style:italic"># No:</span>
+<span style="font-weight:bold">with</span> conn:
+    do_stuff_in_transaction(conn)
+</code></pre></div><p>后一个例子，除了能在 transaction 之后关闭连接之外，没有提供任何信息表明 <code>__enter__</code> 和 <code>__exit__</code> 方法做了些事情。明确表示出来是很重要的。</p>
+</li>
+<li>
+<p>保持返回语句的一致性，在一个函数中，要不所有 return 都能返回一个表达式，要不就都不要。如果有一些语句返回了表达式，所有没有返回值的 return语句应该明确的写成 <code>return None</code> 。并且如果函数能运行到末尾，那应该在末尾明确的写一个返回语句。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="font-style:italic"># Yes:</span>
+<span style="font-weight:bold">def</span> foo(x):
+    <span style="font-weight:bold">if</span> x &gt;= 0:
+        <span style="font-weight:bold">return</span> math.sqrt(x)
+    <span style="font-weight:bold">else</span>:
+        <span style="font-weight:bold">return</span> None
+
+<span style="font-weight:bold">def</span> bar(x):
+    <span style="font-weight:bold">if</span> x &lt; 0:
+        <span style="font-weight:bold">return</span> None
+    <span style="font-weight:bold">return</span> math.sqrt(x)
+      
+<span style="font-style:italic"># No:</span>
+<span style="font-weight:bold">def</span> foo(x):
+    <span style="font-weight:bold">if</span> x &gt;= 0:
+        <span style="font-weight:bold">return</span> math.sqrt(x)
+
+<span style="font-weight:bold">def</span> bar(x):
+    <span style="font-weight:bold">if</span> x &lt; 0:
+        <span style="font-weight:bold">return</span>
+    <span style="font-weight:bold">return</span> math.sqrt(x)
+</code></pre></div></li>
+<li>
+<p>使用字符串方法而不是字符串模块。
+字符串方法总是更快，而且和 unicode 字符串共享API。在Python2.0以前的版本中因为兼容问题忽略此规则。</p>
+</li>
+<li>
+<p>使用 <code>''.startswith()</code> 和 <code>''.endswith()</code> 代替字符串切片来检查字符串前缀和后缀，这两个方法看上去更加干净且不容易出错：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+<span style="font-weight:bold">if</span> foo.startswith(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">bar</span><span style="font-style:italic">&#39;</span>):
+      
+<span style="font-style:italic"># No:  </span>
+<span style="font-weight:bold">if</span> foo[:3] == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">bar</span><span style="font-style:italic">&#39;</span>:
+</code></pre></div></li>
+<li>
+<p>对象类型比较应该用 <code>isinstance()</code> 方法而不是直接比较类型。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+<span style="font-weight:bold">if</span> isinstance(obj, int):
+
+<span style="font-style:italic"># No:  </span>
+<span style="font-weight:bold">if</span> type(obj) <span style="font-weight:bold">is</span> type(1):
+</code></pre></div><p>当检查对象是否是字符串时，请记住它可能也是一个unicode字符串！在Python 2，str和unicode字符都有一个共同的基类，basestring，所以你能这样做：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="font-weight:bold">if</span> isinstance(obj, basestring):
+</code></pre></div><p>在Python 3，unicode和basestring不再存在（只有str），bytes object 不再是一种字符串（它是一个整数序列代替）</p>
+</li>
+<li>
+<p>对于序列，（string, lists, tuples），记住，空序列的条件判断为假。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
+<span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> seq:
+     <span style="font-weight:bold">if</span> seq:
+
+<span style="font-style:italic"># No: </span>
+<span style="font-weight:bold">if</span> len(seq):
+    <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> len(seq):
+</code></pre></div></li>
+<li>
+<p>不要写依赖于有意义的尾空格的字符串，这些尾空格视觉上难以区分，而且一些编辑程序（比如最近的 reindent.py）会修剪掉这些空格。</p>
+</li>
+<li>
+<p>不要用<code>==</code>来比较布尔值。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yes:   <span style="font-weight:bold">if</span> greeting:
+No:    <span style="font-weight:bold">if</span> greeting == True:
+Worse: <span style="font-weight:bold">if</span> greeting <span style="font-weight:bold">is</span> True:
+</code></pre></div></li>
+</ol>
+<h4 id="函数注释">函数注释</h4>
+<p>随着 <a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> 的接受，函数注释的样式规则正在改变。</p>
+<ul>
+<li>
+<p>为了向前兼容，Python 3代码中的函数注释最好使用 <a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a>语法。（在前一节中有一些注释的格式化建议。）</p>
+</li>
+<li>
+<p>先前在PEP中推荐的注释样式的实验不再受到鼓励。</p>
+</li>
+<li>
+<p>然而，在标准库<code>stdlib</code>之外，PEP 484规定的样式试验正在被鼓励。例如，在大型的第三方库或PEP 484风格的注释类型的应用中，浏览它的代码是多么容易添加注释，并观察是否他们的存在增加了代码的可理解性。</p>
+</li>
+<li>
+<p>Python 的标准库应该保守的接受这种注释风格，但是新代码和大型重构是允许使用这种注释风格的。</p>
+</li>
+<li>
+<p>如果想要让注释发挥一些不一样得作用，建议使用这种格式：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="font-style:italic"># type: ignore</span>
+</code></pre></div><p>在文件的顶部；这告诉类型检查器忽略所有注释。（在 <a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> 中可以找到更细粒度的禁用类型检查器的方法。）</p>
+</li>
+<li>
+<p>像linters一样，类型检查器是可选的，单独的工具。默认情况下，Python解释器不应该因为类型检查而发出任何消息，也不应该基于注释改变它们的行为。</p>
+</li>
+<li>
+<p>不想使用类型检查的用户可以忽略他们，然而，第三方库包的用户可能希望在这些包上运行类型检查器。为此<a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a>建议使用桩文件：.pyi 文件会优先于对应的.py文件被读取，桩文件可以被分配到一个库中，或者使用 Typeshed repo[5]来分别存放（在作者的许可下）。</p>
+</li>
+<li>
+<p>对于需要向后兼容的代码，可以以注释的形式添加类型注释。参见 <a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> 的相关章节[6]。</p>
+</li>
+</ul>
+<h3 id="参考文献">参考文献</h3>
+<blockquote>
+<p>[1]. <a href="https://www.python.org/dev/peps/pep-0007">PEP 7</a>, Style Guide for C Code, van Rossum</p>
+<p>[2]. Barry&rsquo;s GNU Mailman style guide <a href="http://barry.warsaw.us/software/STYLEGUIDE.txt">http://barry.warsaw.us/software/STYLEGUIDE.txt</a></p>
+<p>[3]. Donald Knuth&rsquo;s <em>The TeXBook</em>, pages 195 and 196.</p>
+<p>[4]. <a href="http://www.wikipedia.com/wiki/CamelCase">http://www.wikipedia.com/wiki/CamelCase</a></p>
+<p>[5]. Typeshed repo <a href="https://github.com/python/typeshed">https://github.com/python/typeshed</a></p>
+<p>[6]. Suggested syntax for Python 2.7 and straddling code <a href="https://www.python.org/dev/peps/pep-0484/#suggested-syntax-for-python-2-7-and-straddling-code">https://www.python.org/dev/peps/pep-0484/#suggested-syntax-for-python-2-7-and-straddling-code</a></p>
+</blockquote>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><em>Hanging indentation</em> is a type-setting style where all the lines in a paragraph are indented except the first line. In the context of Python, the term is used to describe a style where the opening parenthesis of a parenthesized statement is the last non-whitespace character of the line, with subsequent lines being indented until the closing parenthesis. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

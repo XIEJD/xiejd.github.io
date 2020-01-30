@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="spring 漫游"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+   注解 解释     @ConditionalOnBean 当BeanFactory中存在某个bean时满足条件，可以匹配多个   @ConditionalOnClass 当ClassPath下存在某个类时满足条件，可以匹配多个   @ConditionalOnCloudPlatform 巴拉巴拉   @ConditionalOnExpression 可以定义SpEL语句进行匹配   @ConditinalOnJava 匹配当前运行JVM版本   @ConditionalOnJndi    @ConditionalOnMissingBean    @ConditionalOnMissingClass    @ConditinalOnNotWebApplication    @ConditionalOnProperty 当满足某个属性时满足条件   @ConditionalOnResource 当classpath下存在某个资源文件时满足条件，可以匹配多个   @ConditinalOnSingleCandidate    @ConditinalOnWebApplication     举几个🌰："/>
+
+    <meta property="og:title" content="spring 漫游" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+   注解 解释     @ConditionalOnBean 当BeanFactory中存在某个bean时满足条件，可以匹配多个   @ConditionalOnClass 当ClassPath下存在某个类时满足条件，可以匹配多个   @ConditionalOnCloudPlatform 巴拉巴拉   @ConditionalOnExpression 可以定义SpEL语句进行匹配   @ConditinalOnJava 匹配当前运行JVM版本   @ConditionalOnJndi    @ConditionalOnMissingBean    @ConditionalOnMissingClass    @ConditinalOnNotWebApplication    @ConditionalOnProperty 当满足某个属性时满足条件   @ConditionalOnResource 当classpath下存在某个资源文件时满足条件，可以匹配多个   @ConditinalOnSingleCandidate    @ConditinalOnWebApplication     举几个🌰：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-10-20-spring-in-action/" />
+<meta property="article:published_time" content="2019-10-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-10-20T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-10-20-spring-in-action/">
+    
+    <title>
+  spring 漫游 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-10-20-spring-in-action/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">spring 漫游</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-10-20T00:00:00Z'>
+                2019-10-20
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              5-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#spring-boot-autoconfiguration">spring-boot-autoconfiguration</a>
+<ul>
+<li><a href="#condition">Condition</a></li>
+<li><a href="#jackson">Jackson</a></li>
+<li><a href="#mongo">Mongo</a></li>
+<li><a href="#quartz-to-do">Quartz *[to do]*</a></li>
+<li><a href="#kafka">Kafka</a></li>
+<li><a href="#redis">Redis</a>
+<ul>
+<li><a href="#%E8%BF%90%E8%A1%8C%E5%9F%BA%E4%BA%8Edocker%E7%9A%84redis">运行基于Docker的Redis</a></li>
+<li><a href="#why-">WHY ?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-integration">Spring Integration</a>
+<ul>
+<li><a href="#%E6%A6%82%E8%A7%88">概览</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="spring-boot-autoconfiguration">spring-boot-autoconfiguration</h2>
+<h3 id="condition">Condition</h3>
+<p>AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@ConditionalOnBean</code></td>
+<td>当BeanFactory中存在某个bean时满足条件，可以匹配多个</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnClass</code></td>
+<td>当ClassPath下存在某个类时满足条件，可以匹配多个</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnCloudPlatform</code></td>
+<td>巴拉巴拉</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnExpression</code></td>
+<td>可以定义SpEL语句进行匹配</td>
+</tr>
+<tr>
+<td><code>@ConditinalOnJava</code></td>
+<td>匹配当前运行JVM版本</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnJndi</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@ConditionalOnMissingBean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@ConditionalOnMissingClass</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@ConditinalOnNotWebApplication</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@ConditionalOnProperty</code></td>
+<td>当满足某个属性时满足条件</td>
+</tr>
+<tr>
+<td><code>@ConditionalOnResource</code></td>
+<td>当classpath下存在某个资源文件时满足条件，可以匹配多个</td>
+</tr>
+<tr>
+<td><code>@ConditinalOnSingleCandidate</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@ConditinalOnWebApplication</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>举几个🌰：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@ConditionalOnProperty(prefix = <span style="font-style:italic">&#34;cn.shareif.auth&#34;</span>, value = <span style="font-style:italic">&#34;enabled&#34;</span>, matchIfMissing = <span style="font-weight:bold">true</span>)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">ShareifAuthAutoConfiguration</span> {
+
+    @Bean
+    <span style="font-weight:bold">public</span> FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean bean = <span style="font-weight:bold">new</span> FilterRegistrationBean();
+        bean.setFilter(<span style="font-weight:bold">new</span> AuthFilter());
+        bean.addUrlPatterns(<span style="font-style:italic">&#34;/*&#34;</span>);
+        <span style="font-weight:bold">return</span> bean;
+    }
+}
+</code></pre></div><p>设置Web拦截器，当然设置拦截器有更简单的方法，比如<code>@WebFilter</code>注解，此处仅仅是举一个<code>@ConditinalOnProperty</code>的栗子。当项目的配置文件中（比如 application.properties）定义了<code>cn.shareif.auth.enabled=true</code> 时，就会触发这个自动配置类，如果没有配置属性，默认自动触发。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
+@Configuration
+@ConditionalOnResource(resources = <span style="font-style:italic">&#34;classpath:lib/certificate.so&#34;</span>)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">LibResourceAutoConfiguration</span> {
+
+    @Bean
+    <span style="font-weight:bold">public</span> CertificateHelper load() {
+        <span style="font-style:italic">// load from resources and return a helper bean consist of this resource.
+</span><span style="font-style:italic"></span>        log.info(<span style="font-style:italic">&#34;Oh, you have loaded the resource&#34;</span>);
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> CertificateHelper();
+    }
+}
+</code></pre></div><p>当classpath中存在某个资源文件时，进行自动配置。</p>
+<h3 id="jackson">Jackson</h3>
+<p>无起步依赖。</p>
+<p>Springboot默认的Json实现是Jackson，其对应的自动配置类为<code>JacksonAutoConfiguration</code>，同时通过<code>JacksonHttpMessageConvertersConfiguration</code> 配置HttpMessageConverter实现类用于Http请求中Json到Java对象或者Java对象到Json的转换。</p>
+<p>JacksonAutoConfiguration的触发条件为存在类：<code>com.fasterxml.jackson.databind.ObjectMapper.class</code>。此配置将提供一些基础bean，比如<code>ObjectMapper</code> bean，<code>JsonComponentModule</code> bean。<code>ObjectMapper</code> bean是POJO和String转换的关键角色，而<code>JsonComponentModule</code> bean是配置由<code>@JsonComponent</code>定义的序列化和反序列化组件的关键角色。摘取源码中对<code>@JsonComponent</code>的注释（Redis章节有实际应用）：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
+</span><span style="font-style:italic"> * {@link Component} that provides {@link JsonSerializer} and/or {@link JsonDeserializer}
+</span><span style="font-style:italic"> * implementations to be registered with Jackson when {@link JsonComponentModule} is in
+</span><span style="font-style:italic"> * use. Can be used to annotate {@link JsonSerializer} or {@link JsonDeserializer}
+</span><span style="font-style:italic"> * implementations directly or a class that contains them as inner-classes. For example:
+</span><span style="font-style:italic"> * 
+</span><span style="font-style:italic"> * 用法举例：
+</span><span style="font-style:italic"> * @JsonComponent
+</span><span style="font-style:italic"> * public class CustomerJsonComponent {
+</span><span style="font-style:italic"> *
+</span><span style="font-style:italic"> *     public static class SomeDTOSerializer extends JsonSerializer&lt;Customer&gt; {
+</span><span style="font-style:italic"> *         // ...
+</span><span style="font-style:italic"> *     }
+</span><span style="font-style:italic"> *
+</span><span style="font-style:italic"> *     public static class SomeDTODeserializer extends JsonDeserializer&lt;Customer&gt; {
+</span><span style="font-style:italic"> *         // ...
+</span><span style="font-style:italic"> *     }
+</span><span style="font-style:italic"> *
+</span><span style="font-style:italic"> * }
+</span><span style="font-style:italic"> *
+</span><span style="font-style:italic"> */</span>
+</code></pre></div><p>JacksonHttpMessageConvertersConfiguration配置类可以提供两个bean，一个为<code>MappingJackson2HttpMessageConverter</code>，另一个为<code>MappingJackson2XmlHttpMessageConverter</code> 。前者解析媒体类型为<code>application/json</code>的数据，后者解析<code>application/xml</code>的数据。</p>
+<p><code>MappingJackson2HttpMessageConverter</code>实现了关键接口<code>GenericHttpMessageConverter</code> 用于将http请求转换为指定泛型类型的目标对象，将指定泛型类型的源对象转换为http响应。</p>
+<p>总结，在Springboot启动后，就已经自动配置了一系列的bean来支持Json和Java对象的转化，如果追求性能，完全不用自己再new一个ObjectMapper甚至多个ObjectMapper，<code>ObjectMapper</code>是线程安全的，可以放心大胆的用单例模式。同时由于注解<code>@JsonComponent</code> 和bean <code>JsonComponentModule</code> ,可以非常方便的自定义某些类型的序列化与反序列化方法。所以一个项目里面有多个<code>ObjectMapper</code>是无意义的。一个项目里有一个json实现库就够了，而且Springboot完全可以针对不同的json库进行自动配置，比如gson。从微服务依赖的角度以及序列化反序列化动作一致性的角度来讲，最好不要引入多个ObjectMapper或者多个json库。</p>
+<p>附：如何用Springboot的自己创建的<code>ObjectMapper</code></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Component
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">SpringUtil</span> <span style="font-weight:bold">implements</span> BeanFactoryAware {
+
+    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> BeanFactory beanFactory;
+
+    @Override
+    <span style="font-weight:bold">public</span> <span style="">void</span> setBeanFactory(BeanFactory beanFactory) <span style="font-weight:bold">throws</span> BeansException {
+        SpringUtil.beanFactory = beanFactory;
+    }
+
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Object getBean(String beanName){
+        <span style="font-weight:bold">return</span> beanFactory.getBean(beanName);
+    }
+
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Object getBean(Class&lt;?&gt; clazz) {
+        <span style="font-weight:bold">return</span> beanFactory.getBean(clazz);
+    }
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">JacksonUtil</span> {
+    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> ObjectMapper objectMapper;
+
+    <span style="font-weight:bold">static</span> {
+        objectMapper = SpringUtil.getBean(ObjectMapper.class);
+    }
+
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> String toJson(Object obj) {
+        Assert.notNull(obj, <span style="font-style:italic">&#34;Object must not be null&#34;</span>);
+        <span style="font-weight:bold">try</span> {
+            <span style="font-weight:bold">return</span> objectMapper.writeValueAsString(obj);
+        } <span style="font-weight:bold">catch</span> (Exception e) {
+            log.error(<span style="font-style:italic">&#34;convert to string failed, {}&#34;</span>, e.getStackTrace());
+            <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+        }
+    }
+
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; T fromJson(String json, Class&lt;T&gt; clazz) {
+        Assert.notNull(json, <span style="font-style:italic">&#34;json string must not be null&#34;</span>);
+        Assert.notNull(clazz, <span style="font-style:italic">&#34;Class Type must not be null&#34;</span>);
+
+        <span style="font-weight:bold">try</span> {
+            <span style="font-weight:bold">return</span> objectMapper.readValue(json, clazz);
+        } <span style="font-weight:bold">catch</span> (Exception e) {
+            log.error(<span style="font-style:italic">&#34;convert to obj failed, {}&#34;</span>, e.getStackTrace());
+            <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+        }
+    }
+}
+</code></pre></div><p>当然不用静态方法的形式暴露功能，而直接在bean里autowired也是可以滴。</p>
+<blockquote>
+<p>References:</p>
+<ol>
+<li><a href="https://www.baeldung.com/spring-boot-jsoncomponent">https://www.baeldung.com/spring-boot-jsoncomponent</a></li>
+</ol>
+</blockquote>
+<h3 id="mongo">Mongo</h3>
+<p>有两种Mongo自动配置类，一种是连接真实的mongo配置，一种是内存式的mongo配置。配置顺序为先配置内存式mongo（如果条件满足），再配置真实mongo。</p>
+<ol>
+<li>
+<p>内存式mongo自动配置依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo </span><span style="font-style:italic">--&gt;</span>
+<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>de.flapdoodle.embed<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>de.flapdoodle.embed.mongo<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>x.x.x<span style="font-weight:bold">&lt;/version&gt;</span>
+    <span style="font-weight:bold">&lt;scope</span><span style="font-weight:bold">&gt;</span>test<span style="font-weight:bold">&lt;/scope&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+   
+<span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/org.springframework.boot/spring</span><span style="font-style:italic">-</span><span style="font-style:italic">boot</span><span style="font-style:italic">-</span><span style="font-style:italic">starter</span><span style="font-style:italic">-</span><span style="font-style:italic">data</span><span style="font-style:italic">-</span><span style="font-style:italic">mongodb </span><span style="font-style:italic">--&gt;</span>
+<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-mongodb<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>x.x.x.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+<li>
+<p>真实mongo配置可以直接依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/org.springframework.boot/spring</span><span style="font-style:italic">-</span><span style="font-style:italic">boot</span><span style="font-style:italic">-</span><span style="font-style:italic">starter</span><span style="font-style:italic">-</span><span style="font-style:italic">data</span><span style="font-style:italic">-</span><span style="font-style:italic">mongodb </span><span style="font-style:italic">--&gt;</span>
+<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-mongodb<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>x.x.x.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+</ol>
+<p>所以，当要使用mongodb时，引入<code>spring-boot-starter-data-mongodb</code>即可，如果需要用到内存式mongo，则在此基础上再引入<code>de.flapdoodle.embed.mongo</code>即可。AutoConfiguration就是这么叼，他能根据你引入的包来自动配置对应的bean。</p>
+<p>首先，内存式mongo的自动配置类条件：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@EnableConfigurationProperties({ MongoProperties.class, EmbeddedMongoProperties.class })
+@AutoConfigureBefore(MongoAutoConfiguration.class)
+@ConditionalOnClass({ MongoClient.class, MongodStarter.class })
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">EmbeddedMongoAutoConfiguration</span> {}
+</code></pre></div><p>该配置早于<code>MongoAutoConfiguration</code>配置：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@ConditionalOnClass(MongoClient.class)
+@EnableConfigurationProperties(MongoProperties.class)
+@ConditionalOnMissingBean(type = <span style="font-style:italic">&#34;org.springframework.data.mongodb.MongoDbFactory&#34;</span>)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MongoAutoConfiguration</span> {}
+</code></pre></div><p><code>MongoAutoConfiguration</code>配置仅当容器内缺少<code>MongoDbFactory</code> bean时才会生效。</p>
+<p>最后，<code>MongoDataAutoConfiguration</code>会完成Spring Data for Mongo的支持，这样，在使用的时候直接注入对应的bean即可。该配置提供<code>MongoTemplate</code>, <code>GridFsTemplate</code> 用于存储小文档和大文档。</p>
+<p>对Mongo配置项感兴趣的话，可以直接查看<code>MongoProperties</code>配置类</p>
+<p>至此，如果没有错误抛出，就可以正常使用mongo了~</p>
+<h3 id="quartz-to-do">Quartz <em>[to do]</em></h3>
+<p>定时任务调度，起步依赖：</p>
+<h3 id="kafka">Kafka</h3>
+<p>Spring提供的对Kafka客户端的封装，起步依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+	  <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.kafka<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-kafka<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div><p>自动配置相关类</p>
+<ul>
+<li><code>KafkaAutoConfiguration</code></li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@ConditionalOnClass(KafkaTemplate.class)
+@EnableConfigurationProperties(KafkaProperties.class)
+@Import({ KafkaAnnotationDrivenConfiguration.class, KafkaStreamsAnnotationDrivenConfiguration.class })
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">KafkaAutoConfiguration</span> {}
+</code></pre></div><p><code>KafkaTemplate</code>由spring-kafka包引入。同时完成自动配置后，还会引入<code>KafkaAnnotationDrivenConfiguration</code>和<code>KafkaStreamsAnnotationDrivenConfiguration</code> 两个配置，前者主要用来支持spring-kafka提供的相关注解，后者和Kafka Stream相关，不做讨论，实际上起步依赖中也不会包含Kafka-Stream相关的东西，所以后者并不会生效。</p>
+<p>自动配置提供的最重要的bean就是<code>KafkaTemplate</code>了，通过该类提供的方法，可以完成kafka消息的发送。</p>
+<p>同时spring-kafka-test提供了内存式的kafka来进行测试，只需要引入依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.kafka<span style="font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-kafka-test<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div><ul>
+<li>修改配置文件：</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="font-weight:bold">spring</span>:  
+  <span style="font-weight:bold">kafka</span>:
+    <span style="font-weight:bold">bootstrap-servers</span>: ${spring.embedded.kafka.brokers}
+    <span style="font-weight:bold">consumer</span>:
+      <span style="font-weight:bold">group-id</span>: honeyroom
+</code></pre></div><ul>
+<li>测试示例（消费者）：</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
+@Component
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">DemoConsumer</span> {
+
+    @KafkaListener(topics = <span style="font-style:italic">&#34;test-consumer&#34;</span>)
+    <span style="font-weight:bold">public</span> <span style="">void</span> handle(String message) {
+        log.info(<span style="font-style:italic">&#34;receive message: {}&#34;</span>, message);
+        System.out.println(<span style="font-style:italic">&#34;========== kafka message ===========&#34;</span>);
+        System.out.println(message);
+    }
+}
+</code></pre></div><p>其中，<code>DemoMessage</code>结构为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Data
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">DemoMessage</span> {
+    <span style="font-weight:bold">private</span> String key;
+    <span style="font-weight:bold">private</span> String value;
+    <span style="font-weight:bold">private</span> DateTime timestamp; <span style="font-style:italic">//joda time
+</span><span style="font-style:italic"></span>}
+</code></pre></div><ul>
+<li>测试示例（生产者）：</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">KafkaTests</span> {
+    @ClassRule
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> EmbeddedKafkaRule embeddedKafka = <span style="font-weight:bold">new</span> EmbeddedKafkaRule(1, <span style="font-weight:bold">false</span>, 5).kafkaPorts(9092);
+
+    @Autowired
+    <span style="font-weight:bold">private</span> KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Test
+    <span style="font-weight:bold">public</span> <span style="">void</span> testKafka() <span style="font-weight:bold">throws</span> Exception {
+        DemoMessage message = <span style="font-weight:bold">new</span> DemoMessage();
+        message.setKey(<span style="font-style:italic">&#34;key&#34;</span>);
+        message.setValue(<span style="font-style:italic">&#34;value&#34;</span>);
+        message.setTimestamp(DateTime.now());
+        kafkaTemplate.send(<span style="font-style:italic">&#34;test.consumer&#34;</span>, objectMapper.writeValueAsString(message));
+        Thread.sleep(1000000);
+    }
+}
+</code></pre></div><p>通过在本地执行脚本监听，可以看到测试发出的kafka消息。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.consumer --from-beginning
+</code></pre></div><p>kafka shell文件在<a href="http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.3.1/kafka_2.11-2.3.1.tgz">Kafka binary package</a> 的bin目录下。</p>
+<h3 id="redis">Redis</h3>
+<p>spring提供的Redis客户端的封装，起步依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
+     <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
+     <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-redis<span style="font-weight:bold">&lt;/artifactId&gt;</span>
+<span style="font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div><p>自动配置类<code>RedisAutoConfiguration</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@ConditionalOnClass(RedisOperations.class)
+@EnableConfigurationProperties(RedisProperties.class)
+@Import({ LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class })
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisAutoConfiguration</span> {}
+</code></pre></div><p>熟悉的配方，熟悉的套路，引入起步依赖后能满足<code>@ConditionalOnClass(RedisOperations.class)</code>条件，然后配置文件获取<code>RedisProperties.class</code>的配置，最后再导入<code>LettuceConnectionConfiguration.class</code> 或者 <code>JedisConnectionConfiguration.class</code>，这俩都是一个功能，就是提供<code>RedisTemplate</code>所依赖的bean，比如 <code>RedisConnectionFactory.class</code>，默认<code>LettuceConnectionConfiguration.class</code>生效。</p>
+<h4 id="运行基于docker的redis">运行基于Docker的Redis</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic">#1. 获取镜像</span>
+docker pull redis
+
+<span style="font-style:italic">#2. 运行镜像</span>
+docker run -p 6379:6379 -d redis:latest redis-server --requirepass <span style="font-style:italic">&#34;123456&#34;</span>
+
+<span style="font-style:italic">#3. 进入容器内的Redis命令行界面</span>
+docker exec -ti 1729cb4a78c4 redis-cli
+
+<span style="font-style:italic">#4. 进入后进行鉴权</span>
+auth 123456
+</code></pre></div><ul>
+<li><code>-p</code> 映射容器端口到主机端口</li>
+<li><code>-d</code> 后台运行容器并打印容器ID</li>
+<li><code>redis:latest</code> docker 镜像</li>
+<li><code>redis-server --requirepass &quot;123456&quot;</code> 容器内命令</li>
+</ul>
+<p>自动配置生成的<code>StringRedisTemplate</code> 。慎用，如果项目偏向于用json，而且项目用到了spring mvc，可以使用如下方法配置：</p>
+<ul>
+<li>
+<p>Jackson中，对于joda time的序列化和反序列化自定义方法</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@JsonComponent
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">DateTimeComponent</span> {
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> String DEFAULT_DATETIME_FORMATTER = <span style="font-style:italic">&#34;yyyy-MM-dd&#39;T&#39;hh:mm:ss&#39;Z&#39;&#34;</span>;
+  
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">SomeDTOSerializer</span> <span style="font-weight:bold">extends</span> JsonSerializer&lt;DateTime&gt; {
+        @Override
+        <span style="font-weight:bold">public</span> <span style="">void</span> serialize(DateTime value, JsonGenerator gen, SerializerProvider serializers) <span style="font-weight:bold">throws</span> IOException {
+            gen.writeString(value.toString(DEFAULT_DATETIME_FORMATTER));
+        }
+    }
+  
+    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">SomeDTODeserializer</span> <span style="font-weight:bold">extends</span> JsonDeserializer&lt;DateTime&gt; {
+        @Override
+        <span style="font-weight:bold">public</span> DateTime deserialize(JsonParser p, DeserializationContext ctxt) <span style="font-weight:bold">throws</span> IOException, JsonProcessingException {
+            <span style="font-weight:bold">return</span> DateTime.parse(p.getValueAsString(), DateTimeFormat.forPattern(DEFAULT_DATETIME_FORMATTER));
+        }
+    }
+}
+</code></pre></div><p>请注意，此时实际上是对spring mvc中的Jackson做了配置，如需运用在Redis中，还需要以下配置：</p>
+</li>
+<li>
+<p>RedisConfig</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@AllArgsConstructor
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisConfig</span> {
+    <span style="font-weight:bold">private</span> ObjectMapper objectMapper; <span style="font-style:italic">//类构造器注入
+</span><span style="font-style:italic"></span>  
+    @Autowired
+    <span style="font-weight:bold">public</span> <span style="">void</span> jsonRedisTemplate(RedisTemplate redisTemplate) {
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        <span style="font-style:italic">// 使用和MVC的Jackson同一个转换器，mvc的jackson转换器比较方便定义特殊类型的转换，比如joda time
+</span><span style="font-style:italic"></span>        redisTemplate.setValueSerializer(<span style="font-weight:bold">new</span> GenericJackson2JsonRedisSerializer(objectMapper));
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashValueSerializer(<span style="font-weight:bold">new</span> GenericJackson2JsonRedisSerializer(objectMapper));
+    }
+}
+</code></pre></div></li>
+<li>
+<p>和其他template一样，使用上相当简单：</p>
+</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
+@Service
+@AllArgsConstructor
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisService</span> {
+    <span style="font-weight:bold">private</span> RedisTemplate&lt;Object, Object&gt; redisTemplate;
+    <span style="font-weight:bold">private</span> ObjectMapper objectMapper;
+    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> <span style="">int</span> DEFAULT_EXPIRE_INTERVAL = 300;
+    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
+
+    <span style="font-weight:bold">public</span> <span style="">boolean</span> save(String key, Object value) {
+        <span style="font-weight:bold">try</span> {
+            redisTemplate.opsForValue().set(key, value);
+            redisTemplate.expire(key, DEFAULT_EXPIRE_INTERVAL, DEFAULT_TIME_UNIT);
+            <span style="font-weight:bold">return</span> <span style="font-weight:bold">true</span>;
+        } <span style="font-weight:bold">catch</span> (Exception e) {
+            log.error(<span style="font-style:italic">&#34;can&#39;t cache data, {}&#34;</span>, e.getMessage());
+            <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
+        }
+    }
+
+    <span style="font-weight:bold">public</span> &lt;T&gt; T get(String key, Class&lt;T&gt; clazz) {
+        <span style="font-weight:bold">try</span> {
+            Object value = redisTemplate.opsForValue().get(key);
+            <span style="font-weight:bold">return</span> objectMapper.convertValue(value, clazz);
+        } <span style="font-weight:bold">catch</span> (Exception e) {
+            log.error(<span style="font-style:italic">&#34;can&#39;t get cached data, {}&#34;</span>, e.getMessage());
+            <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+        }
+    }
+}
+</code></pre></div><p>写个LLT调用一下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisTest</span> {
+    @Autowired
+    RedisService redisService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Test
+    <span style="font-weight:bold">public</span> <span style="">void</span> testSave() <span style="font-weight:bold">throws</span> Exception {
+        DemoMessage message = <span style="font-weight:bold">new</span> DemoMessage();
+        message.setKey(<span style="font-style:italic">&#34;key&#34;</span>);
+        message.setValue(<span style="font-style:italic">&#34;value&#34;</span>);
+        message.setTimestamp(DateTime.now());
+        redisService.save(<span style="font-style:italic">&#34;test&#34;</span>, message);
+    }
+
+    @Test
+    <span style="font-weight:bold">public</span> <span style="">void</span> testGet() <span style="font-weight:bold">throws</span> Exception {
+        DemoMessage demoMessage = redisService.get(<span style="font-style:italic">&#34;test&#34;</span>, DemoMessage.class);
+        System.out.println(<span style="font-style:italic">&#34;====demomessage===: {}&#34;</span> + demoMessage.toString());
+        Assert.notNull(demoMessage);
+        Assert.isTrue(<span style="font-style:italic">&#34;key&#34;</span>.equals(demoMessage.getKey()));
+        Assert.isTrue(<span style="font-style:italic">&#34;value&#34;</span>.equals(demoMessage.getValue()));
+        Assert.notNull(demoMessage.getTimestamp());
+    }
+}
+</code></pre></div><h4 id="why-">WHY ?</h4>
+<ul>
+<li>
+<p>为什么要用<code>@JsonComponent</code>注解，为什么要用和http消息解析相同的<code>ObjectMapper</code>，为什么建议整个项目用同一个<code>ObjectMapper</code>？</p>
+<p>个人觉得，这是减少冗余代码的最佳方案，使用springboot提供的注解自定义序列化反序列化方法，能将代码量降到最低，让开发复杂度降到最低。在Redis和Http中使用同一个<code>ObjectMapper</code>，能够统一项目内部与项目外部之间的数据转换行为，同时还能将代码量降到最低。当然如果有特殊情况（比如我需要Http的时候DateTime转换成字符串，而存Redis的时候转换成时间戳），当然可以不使用同一个<code>ObjectMapper</code>。</p>
+<p>如果一个项目中充斥着<code>new ObjectMapper()</code>，绝对是灾难，因为你无法为特殊类型统一行为，一旦需要自定义特殊类型的转换，效率将极其低下，何不将这些时间花在优化结构上，而不是去做那些毫无意义的重复劳动。</p>
+</li>
+<li>
+<p>为什么要做一个中间层<code>RedisService</code>，而不是直接在业务中<code>@Autowired RedisTemplate</code>？</p>
+<p>好处显而易见，就犹如web开发定义的Controller层，Service层，DAO层类似，在Controller层定义接口，数据校验等；在Service层做事务处理等，在DAO层访问数据。<code>RedisService</code>的作用类似，“承上启下”-对上提供面向业务的接口，对下来处理一些通用的公共的“琐事”，比如设置过期时间。通过这种分层，能让代码逻辑更加清晰，可读性，可维护性都变得更好。编程是一项社会活动，写出的代码就如同你说出来的话一样，劝你好好说话。</p>
+<p><strong>Redis一定要设置过期时间</strong>，否则迟早出事故。</p>
+</li>
+</ul>
+<h2 id="spring-integration">Spring Integration</h2>
+<h3 id="概览">概览</h3>
+<ul>
+<li>spring integration <a href="https://docs.spring.io/spring-integration/docs/5.2.1.RELEASE/reference/html/overview.html#overview-components">overview</a></li>
+</ul>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

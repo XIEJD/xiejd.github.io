@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Apache Kafka 笔记"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ 概念 Kafka版本 Kafka部署平台 Kafka集群参数  Broker参数  存储 ZooKeeper（分布式协调框架） 通信 Topic管理 数据留存   Topic 参数  在创建Topic时指定Topic级别参数 修改Topic级别参数（推荐）   JVM 参数 操作系统参数   Kafka生产者  分区  分区策略  自定义分区策略 轮询策略（默认） 随机策略 消息键保序策略（Key-ordering）     压缩  消息格式 压缩方式 幂等Producer 事务Producer     Kafka 消费者  消费者组   无消息丢失配置  最佳实践   客户端拦截器 Kafka如何管理TCP连接 Demo  概念   Producer - Topic - Consumer"/>
+
+    <meta property="og:title" content="Apache Kafka 笔记" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ 概念 Kafka版本 Kafka部署平台 Kafka集群参数  Broker参数  存储 ZooKeeper（分布式协调框架） 通信 Topic管理 数据留存   Topic 参数  在创建Topic时指定Topic级别参数 修改Topic级别参数（推荐）   JVM 参数 操作系统参数   Kafka生产者  分区  分区策略  自定义分区策略 轮询策略（默认） 随机策略 消息键保序策略（Key-ordering）     压缩  消息格式 压缩方式 幂等Producer 事务Producer     Kafka 消费者  消费者组   无消息丢失配置  最佳实践   客户端拦截器 Kafka如何管理TCP连接 Demo  概念   Producer - Topic - Consumer" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-06-03-apache-kafka/" />
+<meta property="article:published_time" content="2019-06-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-03T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-06-03-apache-kafka/">
+    
+    <title>
+  Apache Kafka 笔记 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-06-03-apache-kafka/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Apache Kafka 笔记</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-06-03T00:00:00Z'>
+                2019-06-03
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              4-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#%E6%A6%82%E5%BF%B5">概念</a></li>
+<li><a href="#kafka%E7%89%88%E6%9C%AC">Kafka版本</a></li>
+<li><a href="#kafka%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0">Kafka部署平台</a></li>
+<li><a href="#kafka%E9%9B%86%E7%BE%A4%E5%8F%82%E6%95%B0">Kafka集群参数</a>
+<ul>
+<li><a href="#broker%E5%8F%82%E6%95%B0">Broker参数</a>
+<ul>
+<li><a href="#%E5%AD%98%E5%82%A8">存储</a></li>
+<li><a href="#zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E6%A1%86%E6%9E%B6">ZooKeeper（分布式协调框架）</a></li>
+<li><a href="#%E9%80%9A%E4%BF%A1">通信</a></li>
+<li><a href="#topic%E7%AE%A1%E7%90%86">Topic管理</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%95%99%E5%AD%98">数据留存</a></li>
+</ul>
+</li>
+<li><a href="#topic-%E5%8F%82%E6%95%B0">Topic 参数</a>
+<ul>
+<li><a href="#%E5%9C%A8%E5%88%9B%E5%BB%BAtopic%E6%97%B6%E6%8C%87%E5%AE%9Atopic%E7%BA%A7%E5%88%AB%E5%8F%82%E6%95%B0">在创建Topic时指定Topic级别参数</a></li>
+<li><a href="#%E4%BF%AE%E6%94%B9topic%E7%BA%A7%E5%88%AB%E5%8F%82%E6%95%B0%E6%8E%A8%E8%8D%90">修改Topic级别参数（推荐）</a></li>
+</ul>
+</li>
+<li><a href="#jvm-%E5%8F%82%E6%95%B0">JVM 参数</a></li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%82%E6%95%B0">操作系统参数</a></li>
+</ul>
+</li>
+<li><a href="#kafka%E7%94%9F%E4%BA%A7%E8%80%85">Kafka生产者</a>
+<ul>
+<li><a href="#%E5%88%86%E5%8C%BA">分区</a>
+<ul>
+<li><a href="#%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5">分区策略</a>
+<ul>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5">自定义分区策略</a></li>
+<li><a href="#%E8%BD%AE%E8%AF%A2%E7%AD%96%E7%95%A5%E9%BB%98%E8%AE%A4">轮询策略（默认）</a></li>
+<li><a href="#%E9%9A%8F%E6%9C%BA%E7%AD%96%E7%95%A5">随机策略</a></li>
+<li><a href="#%E6%B6%88%E6%81%AF%E9%94%AE%E4%BF%9D%E5%BA%8F%E7%AD%96%E7%95%A5key-ordering">消息键保序策略（Key-ordering）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8E%8B%E7%BC%A9">压缩</a>
+<ul>
+<li><a href="#%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F">消息格式</a></li>
+<li><a href="#%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F">压缩方式</a></li>
+<li><a href="#%E5%B9%82%E7%AD%89producer">幂等Producer</a></li>
+<li><a href="#%E4%BA%8B%E5%8A%A1producer">事务Producer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#kafka-%E6%B6%88%E8%B4%B9%E8%80%85">Kafka 消费者</a>
+<ul>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84">消费者组</a></li>
+</ul>
+</li>
+<li><a href="#%E6%97%A0%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E9%85%8D%E7%BD%AE">无消息丢失配置</a>
+<ul>
+<li><a href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">最佳实践</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8B%A6%E6%88%AA%E5%99%A8">客户端拦截器</a></li>
+<li><a href="#kafka%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86tcp%E8%BF%9E%E6%8E%A5">Kafka如何管理TCP连接</a></li>
+<li><a href="#demo">Demo</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="概念">概念</h2>
+<ul>
+<li>
+<p>Producer - Topic - Consumer</p>
+<p>kafka消息流模式遵循从Producer到Topic到Consumer的模式，其中Producer为生产者，像特定的Topic中发布消息，Consumer为消费者，持续不断的向Topic轮询消费消息。</p>
+</li>
+<li>
+<p>Client - Broker</p>
+<p>kafka中Producer和Consumer都叫Client(客户端)，而存储消息的kafka server称为Broker，作为数据掮客。</p>
+</li>
+<li>
+<p>Replication (Leader - Follower)</p>
+<p>高可用的实现机制，数据备份，Leader作为一个信任根，消息的读写操作都由Leader提供，而Follower目前仅从Leader不断同步数据作为备份节点，不对外提供读。</p>
+</li>
+<li>
+<p>Partitioning</p>
+<p>高扩展的实现机制，将一个庞大的消息队列（Topic）分成若干个区，消费者通过从不同分区读数据来缓解单个分区的性能压力，达到负载均衡。</p>
+</li>
+<li>
+<p>Log Segment</p>
+<p>在一个分区之中，kafka还会分成若干Log Segment，通过不断老化可以被老化的Segment来释放磁盘空间，这样既能利用空间，同时也能利用顺序I/O带来的高效。</p>
+</li>
+<li>
+<p>消费模型(点对点，发布订阅)</p>
+<p>消费模型建立在消费者组的基础上，一个消费者组通常是用来消费同一个Topic的消息，如果Topic有分区，则每个分区最多会被这个消费者组中的某一个消费者消费。如果这个消费者组只有一个消费者，则为点对点模型，如果有多个消费者组消费同一个Topic，则为发布订阅模型，注意发布订阅模型中，同一个消息可以被多个消费者组消费。</p>
+</li>
+<li>
+<p>重平衡</p>
+<p>重平衡会在一个消费者组中某个消费者挂掉之后发生，这个挂掉的消费者所消费的分区将被重新分配给这个组中的其他消费者。</p>
+</li>
+<li>
+<p>Offset &amp; Consumer Offset</p>
+<p>Offset是站在Broker的角度的，表示的是一个消息队列已经被消费到了哪里。而Consumer Offset是站在消费者的角度记录消费者消费了哪些记录。</p>
+</li>
+</ul>
+<h2 id="kafka版本">Kafka版本</h2>
+<ul>
+<li>0.7版本，上古版本，Kafka开源时的版本</li>
+<li>0.8版本，加入了副本机制</li>
+<li>0.9版本，增加基础安全/权限功能，引入kafka connect</li>
+<li>0.10版本，引入Kafka Streams</li>
+<li>0.11版本，提供幂等性Producer API，事务API，重构Kafka消息格式（推荐版本0.11.0.3）</li>
+<li>1.0版本/2.0版本，Kafka Streams改进。</li>
+</ul>
+<h2 id="kafka部署平台">Kafka部署平台</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Linux</th>
+<th>Windows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I/O模型</td>
+<td>epoll (多路复用-&gt;信号驱动)</td>
+<td>select (I/O多路复用)</td>
+</tr>
+<tr>
+<td>网络传输</td>
+<td>Zero Copy</td>
+<td>Zero Copy (&gt;Java8 60版本)</td>
+</tr>
+<tr>
+<td>社区</td>
+<td>Bug尽力修复</td>
+<td>Bug基本不会修复</td>
+</tr>
+</tbody>
+</table>
+<p>Kafka使用顺序读写磁盘，基本规避了机械磁盘的劣势：随机读写慢，所以可以使用机械磁盘，同时Kafka在软件层面提供了高可靠高可用，也没有必要使用RAID。当然土豪请随意。</p>
+<p>kafka producer速率可以监控这个JMX指标：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kafka.producer:type=[consumer|producer|connect]-node-metrics,client-id=([-.<span style="font-weight:bold;font-style:italic">\w</span>]+),node-id=([0-9]+)
+</code></pre></div><h2 id="kafka集群参数">Kafka集群参数</h2>
+<h3 id="broker参数">Broker参数</h3>
+<p>官方详细文档 -&gt; <a href="http://kafka.apache.org/0110/documentation.html#brokerconfigs">Broker Config</a></p>
+<h4 id="存储">存储</h4>
+<ul>
+<li>log.dirs：指定了 Broker 需要使用的若干个文件目录路径，用逗号分隔多个路径，最好每个路径在不同物理磁盘中，比起单块磁盘，能够提高数据吞吐量。Kafka 1.1版本后，提供了Failover故障转移功能，如果Broker使用了多个磁盘，那坏掉磁盘的数据可以转移到正常磁盘中，而且Broker还能正常工作。</li>
+</ul>
+<h4 id="zookeeper分布式协调框架">ZooKeeper（分布式协调框架）</h4>
+<p>是一个分布式协调框架，负责协调管理并保存 Kafka 集群的所有元数据信息，比如集群都有哪些 Broker 在运行、创建了哪些 Topic，每个 Topic 都有多少分区以及这些分区的 Leader 副本都在哪些机器上等信息。</p>
+<ul>
+<li>zookeeper.connect：<code>zk1:2181,zk2:2181,zk3:2181</code></li>
+</ul>
+<h4 id="通信">通信</h4>
+<ul>
+<li>listeners: <code>协议名://主机名:端口号</code> 告诉别人，如何访问开放的kafka服务</li>
+<li>advertised.listeners：对外发布的listeners，如果此配置没有指定，则会使用<code>listeners</code>配置</li>
+<li>listener.security.protocol.map：对于自定义的协议名，需要指定此值声明安全协议</li>
+</ul>
+<h4 id="topic管理">Topic管理</h4>
+<ul>
+<li>auto.create.topics.enable：是否允许自动创建Topic</li>
+<li>unclean.leader.election.enable：是否允许unclean leader选举，建议false，防止落后副本当选Leader</li>
+<li>auto.leader.rebalance.enable：是否允许强制更换leader，建议false，防止没必要的leader切换</li>
+</ul>
+<h4 id="数据留存">数据留存</h4>
+<ul>
+<li>
+<p>log.retention.{hours|minutes|ms}：Kafka数据留存时间，超过这个时间会被删除</p>
+</li>
+<li>
+<p>log.retention.bytes：消息保存的总磁盘大小，超过会删除</p>
+</li>
+<li>
+<p>message.max.bytes：kafka最大能接受的消息大小。</p>
+</li>
+</ul>
+<h3 id="topic-参数">Topic 参数</h3>
+<p>Topic级别参数会覆盖全局Broker级别参数值</p>
+<ul>
+<li>retention.ms：Topic消息留存时间，默认7天</li>
+<li>retention.bytes：为该Topic预留多大的磁盘空间</li>
+<li>max.message.bytes：该Topic能够接受最大消息大小</li>
+</ul>
+<h4 id="在创建topic时指定topic级别参数">在创建Topic时指定Topic级别参数</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/kafka-topics.sh --bootstrap-server localhost:9092 <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>    --create --topic transaction <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>    --partitions 1 <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>    --replication-factor 1 <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>    --config retention.ms=15552000000 <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>    --config max.message.bytes=5242880
+</code></pre></div><h4 id="修改topic级别参数推荐">修改Topic级别参数（推荐）</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/kafka-configs.sh --zookeeper localhost:2181 <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>     --entity-type topics <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>     --entity-name transaction <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>     --alter --add-config max.message.bytes=10485760
+</code></pre></div><h3 id="jvm-参数">JVM 参数</h3>
+<p>在启动kafka之前设置两个环境变量：</p>
+<ul>
+<li>KAFKA_HEAP_OPTS：指定堆大小，堆大小的最佳实践经验值为6G</li>
+<li>KAFKA_JVM_PERFORMANCE_OPTS：指定GC，推荐G1，Java8需显示指定G1</li>
+</ul>
+<p>比如：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export KAFKA_HEAP_OPTS=--Xms6g  --Xmx6g
+export  KAFKA_JVM_PERFORMANCE_OPTS= -server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true
+bin/kafka-server-start.sh config/server.properties
+</code></pre></div><h3 id="操作系统参数">操作系统参数</h3>
+<ul>
+<li>文件描述符：<code>ulimit -n 1000000</code>，调大这个值，防止出现 Too many open files 的错误。</li>
+<li>文件系统类型：XFS &gt; ext4</li>
+<li>swap：设置成1，防止触发无预警OOM Killer，设置成1，方便问题定位。</li>
+<li>提交时间：即页缓存刷到硬盘的时间，默认5s，可以稍微调大，虽然有数据丢失风险，但kafka的备份冗余机制可以降低风险。</li>
+</ul>
+<h2 id="kafka生产者">Kafka生产者</h2>
+<h3 id="分区">分区</h3>
+<h4 id="分区策略">分区策略</h4>
+<h5 id="自定义分区策略">自定义分区策略</h5>
+<p>需要实现<code>org.apache.kafka.clients.producer.Partitioner</code>接口：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="">int</span> partition(String topic, Object key, <span style="">byte</span>[] keyBytes, Object value, <span style="">byte</span>[] valueBytes, Cluster cluster);
+</code></pre></div><p>其中，前4个参数属于消息数据，最后一个参数给出了集群的信息，比如集群的topic数，broker数等。实现完成这个接口之后，显示的指定<code>partitioner.class</code>参数为类的全量名称。</p>
+<p>自定义分区策略，可以根据业务不同灵活的选择合适的分区策略，比如按照地理位置进行分区，从消息中获取到key值，或者将地理位置标记封装进key中，再根据key值保序，那相同key值的消息必然进入同一个分区。或者更极端的，一个地理位置的消息占用一个分区，比如中国每个省或者直辖市占用一个分区，只要实现Partitioner接口，就可以轻松完成这种独占分区的策略。</p>
+<h5 id="轮询策略默认">轮询策略（默认）</h5>
+<p>顾名思义，就是逐一遍历。</p>
+<h5 id="随机策略">随机策略</h5>
+<p>随机的将消息发布到不同的分区中，（还不如轮询</p>
+<h5 id="消息键保序策略key-ordering">消息键保序策略（Key-ordering）</h5>
+<p>实现接口</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="">int</span> partition(String topic, Object key, <span style="">byte</span>[] keyBytes, Object value, <span style="">byte</span>[] valueBytes, Cluster cluster){
+  List&lt;PartitionInfo&gt; partitions = cluster.partitionsForTopic(topic);
+    <span style="font-weight:bold">return</span> Math.abs(key.hashCode()) % partitions.size();
+}
+</code></pre></div><p>统一个key的所有消息都能进入到同一个分区中。</p>
+<h3 id="压缩">压缩</h3>
+<h4 id="消息格式">消息格式</h4>
+<p>Kafka 0.11.0.x版本之后，消息被称为record，消息格式版本为v2，<code>magic=2</code> 。官方描述参考 <a href="http://kafka.apache.org/0110/documentation.html#messageformat">Message Format</a>。消息的写操作总是以batch为单位，一个batch可以包含一个或多个record。</p>
+<p>v2版本的消息CRC校验操作，移到了batch层次，不必再逐条record进行CRC校验，同时压缩方式也从之前的逐条压缩后放入batch中，变为将整个batch进行压缩。</p>
+<h4 id="压缩方式">压缩方式</h4>
+<p>kafka能够进行压缩操作的地方有两个，一个是Producer，一个是Broker，而Consumer一般只用解压缩。如果Producer和Broker使用同一种压缩方法（默认Broker跟随Producer），则Broker不会再进行任何压缩，原样保存数据，而一旦Broker端指定了一种不一样的压缩方法，则会引发重新压缩的操作，带来不必要的CPU损耗。</p>
+<p>在kafka 2.1.0 之前，kafka支持三种压缩算法：GZIP，Snappy，LZ4，之后的版本开始支持zstd压缩算法。</p>
+<table>
+<thead>
+<tr>
+<th>压缩方法</th>
+<th>压缩比</th>
+<th>压缩速度</th>
+<th>解压速度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zstd 1.3.4</td>
+<td>2.877</td>
+<td>470 MB/s</td>
+<td>1280 MB/s</td>
+</tr>
+<tr>
+<td>lz4 1.8.1</td>
+<td>2.101</td>
+<td>750 MB/s</td>
+<td>3700 MB/s</td>
+</tr>
+<tr>
+<td>snappy 1.1.4</td>
+<td>2.091</td>
+<td>530 MB/s</td>
+<td>1800 MB/s</td>
+</tr>
+<tr>
+<td>zlib 1.2.11</td>
+<td>2.743</td>
+<td>110 MB/s</td>
+<td>400 MB/s</td>
+</tr>
+</tbody>
+</table>
+<h4 id="幂等producer">幂等Producer</h4>
+<p>幂等，在Kafka中，指的是多次操作产生同一个结果，更具体一点讲，就是确保消息精确提交一次，Broker能对幂等Producer发送的消息进行去重，保证同一个消息只成功提交了一次。设置幂等Producer的方法很简单：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG<span style="">，</span> <span style="font-weight:bold">true</span>)
+</code></pre></div><p>幂等Producer的局限在于：它只能保证单会话、单Topic、单分区上的幂等。如果跨会话了，或跨Topic、分区了，仍然无法保证幂等，即还是有可能产生重复的消息。</p>
+<h4 id="事务producer">事务Producer</h4>
+<p>事务保证能将多个消息原子性的写入到多个分区中，即这一批消息中，如果其中有一个消息没有写入到其对应的分区，那这个操作就是失败的，其他已经成功写入的消息也会被“回滚”。换句话说，这一批消息的写入，要么全部成功，要么全部失败。设置事务Producer的方法：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG<span style="">，</span> <span style="font-weight:bold">true</span>);
+props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, <span style="font-style:italic">&#34;test.producer&#34;</span>);
+</code></pre></div><p>在提交原子消息时：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">producer.initTransactions();
+<span style="font-weight:bold">try</span> {
+            producer.beginTransaction();
+            producer.send(record1);
+            producer.send(record2);
+            producer.commitTransaction();
+} <span style="font-weight:bold">catch</span> (KafkaException e) {
+            producer.abortTransaction();
+}
+</code></pre></div><p>同时，要保证消费者无法看到提交失败的消息，也要做如下设置：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, <span style="font-style:italic">&#34;read_committed&#34;</span>);
+</code></pre></div><h2 id="kafka-消费者">Kafka 消费者</h2>
+<h3 id="消费者组">消费者组</h3>
+<p>Kafka的消费者组绝对是kafka中最为重要的概念之一，借助Kafka的消费者组，kafka非常优雅的实现了点对点发布模型和订阅发布模型，偏颇一点讲，借助Kafka消费者组，kafka既能实现一个消息只被一个消费者消费，又能实现一个消息被多个消费者消费。</p>
+<ul>
+<li>一个消费者组下面可以有多个消费者实例</li>
+<li>一个消费者组由Group ID 唯一标识</li>
+<li>一个分区的消息，只能被消费者组中的某一个消费者消费，当然可以被多个消费者组消费。</li>
+</ul>
+<p>更简单一点理解，一个消费者组可以看成是一个业务逻辑的横向扩展，一个消息只要被这个特定的业务逻辑消费一次就够了，一个消费者组中的多个实例是消费性能的横向扩展。而对于不同消费者组，是不同的业务逻辑，所以不同的业务逻辑是可以同时消费同一个消息的。理想情况下，一个消费者组中的消费者实例个数 &lt;= 订阅的Topics的所有分区数总和。多出的实例将会处于无分区消费的尴尬状态。</p>
+<p>当所以消费者都属于同一个消费者组时，Kafka的一个消息不可能被重复消费，其实际上就是点对点的模型，当所有消费者的消费者组都不一样时，这时候所有消费者消费的都是同样的消息，其实际上就是发布订阅的模型。</p>
+<p>PS. Kafka消费者组中的成员变化会导致kafka进行重平衡操作，此操作性能影响极大，所以尽量避免动态的消费者变化</p>
+<h2 id="无消息丢失配置">无消息丢失配置</h2>
+<p>kafka只对已提交的消息负责。</p>
+<h3 id="最佳实践">最佳实践</h3>
+<ul>
+<li>
+<p>不要使用<code>producer.send(msg)</code>方法，而要使用带回调的<code>producer.send(msg, callback)</code>方法。</p>
+</li>
+<li>
+<p>设置<code>ack=all</code>，ack是producer的一个参数，该参数表示当多少个副本broker接受消息时认为消息已提交成功。
+Headset</p>
+</li>
+<li>
+<p>设置retries为较大的值，以防瞬时故障导致的消息发送失败，比如网络抖动。</p>
+</li>
+<li>
+<p>设置<code>unclean.leader.election.enable=false</code>，放止在有些落后的副本Broker通过竞选当上leader，造成数据丢失。</p>
+</li>
+<li>
+<p>设置<code>replication.factor &gt;=3</code>，该参数为Broker端参数，表示设置多少个副本。</p>
+</li>
+<li>
+<p>设置<code>min.insync.replicas&gt;1</code>，这是Broker端参数，表示消息至少被写入到多少个副本Broker才能被定义为已提交。</p>
+</li>
+<li>
+<p>设置<code>replication.factor &gt; min.insync.replicas</code>，如果两者相等，则一旦一个副本GG，那整个分区就GG了。</p>
+</li>
+<li>
+<p>设置<code>enable.auto.commit=false</code>，该参数会自动提交offset，在某些异常情况，消费者如果没有消费完消息异常退出，就会造成数据丢失。</p>
+</li>
+</ul>
+<h2 id="客户端拦截器">客户端拦截器</h2>
+<p>kafka客户端才有拦截器，broker没有拦截器。</p>
+<p>要使用kafka拦截器，需要实现其提供的接口，消费者需要实现<code>org.apache.kafka.clients.consumer.ConsumerInterceptor</code>，生产者需要实现<code>org.apache.kafka.clients.producer.ProducerInterceptor</code>。</p>
+<h2 id="kafka如何管理tcp连接">Kafka如何管理TCP连接</h2>
+<ul>
+<li>KafkaProducer 实例创建时启动 Sender 线程，从而创建与 bootstrap.servers 中所有 Broker 的 TCP 连接。</li>
+<li>KafkaProducer 实例首次更新元数据信息之后，还会再次创建与集群中所有 Broker 的 TCP 连接。</li>
+<li>如果 Producer 端发送消息到某台 Broker 时发现没有与该 Broker 的 TCP 连接，那么也会立即创建连接。</li>
+<li>如果设置 Producer 端 connections.max.idle.ms 参数大于 0，则步骤 1 中创建的 TCP 连接会被自动关闭；如果设置该参数 =-1，那么步骤 1 中创建的 TCP 连接将无法被关闭，从而成为“僵尸”连接。</li>
+</ul>
+<h2 id="demo">Demo</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">import</span> <span style="font-weight:bold">lombok.extern.slf4j.Slf4j</span>;
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.apache.kafka.clients.producer.KafkaProducer</span>;
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.apache.kafka.clients.producer.ProducerConfig</span>;
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.apache.kafka.clients.producer.ProducerRecord</span>;
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.springframework.stereotype.Service</span>;
+
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">java.util.Properties</span>;
+<span style="font-weight:bold">import</span> <span style="font-weight:bold">java.util.concurrent.*</span>;
+
+@Slf4j
+@Service
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">KafkaProducerService</span> <span style="font-weight:bold">extends</span> ThreadPoolExecutor {
+    <span style="font-weight:bold">static</span> Properties props = <span style="font-weight:bold">new</span> Properties();
+
+    <span style="font-weight:bold">static</span> KafkaProducer&lt;String, String&gt; producer = <span style="font-weight:bold">null</span>;
+
+    <span style="font-style:italic">// 核心池大小
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> <span style="">int</span> corePoolSize = 5;
+
+    <span style="font-style:italic">// 最大值
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> <span style="">int</span> maximumPoolSize = 20;
+
+    <span style="font-style:italic">// 无任务时存活时间
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> <span style="">long</span> keepAliveTime = 60;
+
+    <span style="font-style:italic">// 时间单位
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> TimeUnit timeUnit = TimeUnit.SECONDS;
+
+    <span style="font-style:italic">// 阻塞队列
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> BlockingQueue blockingQueue = <span style="font-weight:bold">new</span> LinkedBlockingQueue();
+
+    <span style="font-style:italic">// 线程池
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> ExecutorService service = <span style="font-weight:bold">null</span>;
+
+    <span style="font-style:italic">// 配置项
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> {
+        <span style="font-style:italic">// 自定义分区类
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, <span style="font-style:italic">&#34;class qualifed name.&#34;</span>);
+        <span style="font-style:italic">// Kafka服务端的主机名和端口号
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span style="font-style:italic">&#34;node22:9092,node22:9092,node23:9092&#34;</span>);
+        <span style="font-style:italic">// 等待所有副本节点的应答
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.ACKS_CONFIG, <span style="font-style:italic">&#34;all&#34;</span>);
+        <span style="font-style:italic">// 消息发送最大尝试次数
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.RETRIES_CONFIG, 5);
+        <span style="font-style:italic">// 一批消息处理大小
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+        <span style="font-style:italic">// 增加服务端请求延时
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+        <span style="font-style:italic">// 发送缓存区内存大小
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
+        <span style="font-style:italic">// key序列化
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, <span style="font-style:italic">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span>);
+        <span style="font-style:italic">// value序列化
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, <span style="font-style:italic">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span>);
+        <span style="font-style:italic">// 增加拦截器
+</span><span style="font-style:italic"></span>        props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, <span style="font-style:italic">&#34;com.example.websocketdemo.kafka.interceptor.CustomProducerInterceptor&#34;</span>);
+    }
+
+    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue) {
+        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+    }
+
+    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory) {
+        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
+    }
+
+    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, RejectedExecutionHandler handler) {
+        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
+    }
+
+    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
+        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+    }
+
+    <span style="font-weight:bold">public</span> KafkaProducerService() {
+        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, timeUnit, blockingQueue);
+    }
+
+    <span style="font-weight:bold">public</span> <span style="">boolean</span> sendRecord(ProducerRecord record) {
+        Future result = <span style="font-weight:bold">this</span>.submit(<span style="font-weight:bold">new</span> ProducerRunnable(<span style="font-weight:bold">new</span> KafkaProducer&lt;String, String&gt;(props), record));
+
+        <span style="font-weight:bold">try</span> {
+            <span style="font-weight:bold">return</span> (Boolean) result.get(10, timeUnit);
+        } <span style="font-weight:bold">catch</span> (TimeoutException te) {
+            log.error(<span style="font-style:italic">&#34;sending record to kafka timeout.&#34;</span>, te.getStackTrace());
+            result.cancel(<span style="font-weight:bold">true</span>);
+        } <span style="font-weight:bold">catch</span> (InterruptedException ie) {
+            log.error(<span style="font-style:italic">&#34;sending record to kafka interrupted. {}&#34;</span>, ie.getStackTrace());
+        } <span style="font-weight:bold">catch</span> (ExecutionException ee) {
+            log.error(<span style="font-style:italic">&#34;sending record to kafka execution failed. {}&#34;</span>, ee.getStackTrace());
+        }
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
+    }
+
+    <span style="font-weight:bold">public</span> <span style="">boolean</span> sendRecord(String value, String topic) {
+        ProducerRecord&lt;String, String&gt; record = <span style="font-weight:bold">new</span> ProducerRecord&lt;&gt;(topic, value);
+        <span style="font-weight:bold">return</span> sendRecord(record);
+    }
+
+    <span style="font-weight:bold">class</span> <span style="font-weight:bold">ProducerRunnable</span> <span style="font-weight:bold">implements</span> Runnable {
+        <span style="font-weight:bold">private</span> KafkaProducer&lt;String, String&gt; producer;
+        <span style="font-weight:bold">private</span> ProducerRecord&lt;String, String&gt; record;
+
+        <span style="font-weight:bold">public</span> ProducerRunnable(KafkaProducer&lt;String, String&gt; producer, ProducerRecord&lt;String, String&gt; record) {
+            <span style="font-weight:bold">this</span>.producer = producer;
+            <span style="font-weight:bold">this</span>.record = record;
+        }
+
+        @Override
+        <span style="font-weight:bold">public</span> <span style="">void</span> run() {
+            producer.send(record, (metadata, exception) -&gt; {
+                <span style="font-weight:bold">if</span> (exception != <span style="font-weight:bold">null</span>) {
+                    log.error(<span style="font-style:italic">&#34;message send failed. {}&#34;</span>, exception.getStackTrace());
+                    <span style="font-weight:bold">return</span>;
+                }
+
+                <span style="font-weight:bold">if</span> (metadata != <span style="font-weight:bold">null</span>) {
+                    log.info(<span style="font-style:italic">&#34;message send successfully, {}&#34;</span>, metadata.toString());
+                }
+            });
+        }
+    }
+}
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GDAL ShapeFile实战笔记"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ 准备  源码及工具 动态链接库及Jar包  编译源码 集成   验证   预热  地理空间基本概念 模块简介 [](#)   REFERENCES  [TOC]
+准备 源码及工具  GDAL 2.4.0 swig Ant  windows平台可以直接使用由第三方提供的dll文件GISInternals，同时在项目中直接依赖Maven中的Gdal对应版本即可，由于没有找到可用的2.4.0的linux下的动态链接库，所以只能自己编译了，蛋疼
+动态链接库及Jar包  libgdal.so.20 libgdalalljni.so gdal.jar  编译源码 cd $GDAL_HOME ./configure --with-java=$JAVA_HOME --prefix=$PATH_YOU_WANT_TO_INSTALL make make install 编译结束后，继续编译Java接口和JNI支持库
+cd $GDAL_HOME/swig/java make 如果编译Java的过程报作用域的错误，直接找到对应Java文件，加个public，简单粗暴。实际上有用的就这俩：libgdalalljni.so和gdal.jar，如果不能确保maven中心库的编译工具和自己环境的编译工具一致，就不要引用maven中心库的jar包。
+由于项目里暂时没法自定义基础容器，所以需要将这GDAL手动集成到项目的包里，又一个蛋疼
+集成 源码编译完成后，将$PATH_YOU_WANT_TO_INSTALL/share 和$PATH_YOU_WANT_TO_INSTALL/lib复制出来放到项目的某个文件夹下比如$PROJECT_LIB/gdal，怎么打包可以百度，同时，由于容器化部署，GDAL的依赖库不一定都包含在了基础容器中，所以还要验证：
+查看libgdalalljni.so所有动态链接库依赖：
+# 懒得找linux环境了，Mac上的动态链接库依赖查看用otool # Linux环境用 ldd libgdalalljni.so otool -L libgdalalljni."/>
+
+    <meta property="og:title" content="GDAL ShapeFile实战笔记" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ 准备  源码及工具 动态链接库及Jar包  编译源码 集成   验证   预热  地理空间基本概念 模块简介 [](#)   REFERENCES  [TOC]
+准备 源码及工具  GDAL 2.4.0 swig Ant  windows平台可以直接使用由第三方提供的dll文件GISInternals，同时在项目中直接依赖Maven中的Gdal对应版本即可，由于没有找到可用的2.4.0的linux下的动态链接库，所以只能自己编译了，蛋疼
+动态链接库及Jar包  libgdal.so.20 libgdalalljni.so gdal.jar  编译源码 cd $GDAL_HOME ./configure --with-java=$JAVA_HOME --prefix=$PATH_YOU_WANT_TO_INSTALL make make install 编译结束后，继续编译Java接口和JNI支持库
+cd $GDAL_HOME/swig/java make 如果编译Java的过程报作用域的错误，直接找到对应Java文件，加个public，简单粗暴。实际上有用的就这俩：libgdalalljni.so和gdal.jar，如果不能确保maven中心库的编译工具和自己环境的编译工具一致，就不要引用maven中心库的jar包。
+由于项目里暂时没法自定义基础容器，所以需要将这GDAL手动集成到项目的包里，又一个蛋疼
+集成 源码编译完成后，将$PATH_YOU_WANT_TO_INSTALL/share 和$PATH_YOU_WANT_TO_INSTALL/lib复制出来放到项目的某个文件夹下比如$PROJECT_LIB/gdal，怎么打包可以百度，同时，由于容器化部署，GDAL的依赖库不一定都包含在了基础容器中，所以还要验证：
+查看libgdalalljni.so所有动态链接库依赖：
+# 懒得找linux环境了，Mac上的动态链接库依赖查看用otool # Linux环境用 ldd libgdalalljni.so otool -L libgdalalljni." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-05-15-gdal/" />
+<meta property="article:published_time" content="2019-05-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-05-15T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-05-15-gdal/">
+    
+    <title>
+  GDAL ShapeFile实战笔记 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-05-15-gdal/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">GDAL ShapeFile实战笔记</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-05-15T00:00:00Z'>
+                2019-05-15
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#%E5%87%86%E5%A4%87">准备</a>
+<ul>
+<li><a href="#%E6%BA%90%E7%A0%81%E5%8F%8A%E5%B7%A5%E5%85%B7">源码及工具</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E5%8F%8Ajar%E5%8C%85">动态链接库及Jar包</a>
+<ul>
+<li><a href="#%E7%BC%96%E8%AF%91%E6%BA%90%E7%A0%81">编译源码</a></li>
+<li><a href="#%E9%9B%86%E6%88%90">集成</a></li>
+</ul>
+</li>
+<li><a href="#%E9%AA%8C%E8%AF%81">验证</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A2%84%E7%83%AD">预热</a>
+<ul>
+<li><a href="#%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">地理空间基本概念</a></li>
+<li><a href="#%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B">模块简介</a></li>
+<li>[](#)</li>
+</ul>
+</li>
+<li><a href="#references">REFERENCES</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<p>[TOC]</p>
+<h2 id="准备">准备</h2>
+<h3 id="源码及工具">源码及工具</h3>
+<ul>
+<li>GDAL 2.4.0</li>
+<li>swig</li>
+<li>Ant</li>
+</ul>
+<p>windows平台可以直接使用由第三方提供的dll文件<a href="http://www.gisinternals.com/release.php">GISInternals</a>，同时在项目中直接依赖Maven中的Gdal对应版本即可，由于没有找到可用的2.4.0的linux下的动态链接库，所以只能自己编译了，蛋疼</p>
+<h3 id="动态链接库及jar包">动态链接库及Jar包</h3>
+<ul>
+<li>libgdal.so.20</li>
+<li>libgdalalljni.so</li>
+<li>gdal.jar</li>
+</ul>
+<h4 id="编译源码">编译源码</h4>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd $GDAL_HOME
+./configure --with-java=$JAVA_HOME --prefix=$PATH_YOU_WANT_TO_INSTALL
+make
+make install
+</code></pre></div><p>编译结束后，继续编译Java接口和JNI支持库</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd $GDAL_HOME/swig/java
+make
+</code></pre></div><p>如果编译Java的过程报作用域的错误，直接找到对应Java文件，加个<code>public</code>，简单粗暴。实际上有用的就这俩：<code>libgdalalljni.so</code>和<code>gdal.jar</code>，如果不能确保maven中心库的编译工具和自己环境的编译工具一致，就不要引用maven中心库的jar包。</p>
+<p>由于项目里暂时没法自定义基础容器，所以需要将这GDAL手动集成到项目的包里，又一个蛋疼</p>
+<h4 id="集成">集成</h4>
+<p>源码编译完成后，将<code>$PATH_YOU_WANT_TO_INSTALL/share </code>和<code>$PATH_YOU_WANT_TO_INSTALL/lib</code>复制出来放到项目的某个文件夹下比如<code>$PROJECT_LIB/gdal</code>，怎么打包可以百度，同时，由于容器化部署，GDAL的依赖库不一定都包含在了基础容器中，所以还要验证：</p>
+<p>查看<code>libgdalalljni.so</code>所有动态链接库依赖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># 懒得找linux环境了，Mac上的动态链接库依赖查看用otool</span>
+<span style="font-style:italic"># Linux环境用 ldd libgdalalljni.so</span> 
+otool -L libgdalalljni.20.dylib 
+	libgdalalljni.20.dylib:
+	/Users/xjd/tools/gdal-2.4.0/build/lib/libgdalalljni.20.dylib (compatibility version 26.0.0, current version 26.0.0)
+	/Users/xjd/tools/gdal-2.4.0/build/lib/libgdal.20.dylib (compatibility version 26.0.0, current version 26.0.0)
+	/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 400.9.4)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)
+</code></pre></div><p>查看基础容器中<code>/usr/lib</code>和<code>/usr/lib64</code>中是否都包含了上面的依赖，如果没有，还需要将这些添加到你的<code>$PROJECT_LIB/gdal/lib</code>中。</p>
+<p>容器化部署添加环境变量</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="font-weight:bold">ENV</span> GDAL_DATA /opt/local/.../gdal-2.4.0/share/gdal/<span style="">
+</span><span style=""></span><span style="font-weight:bold">ENV</span> LD_LIBRARY_PATH /opt/local/.../gdal-2.4.0/lib/<span style="">
+</span></code></pre></div><p>应用启动时，加载动态库：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="">void</span> loadJNILibDynamically() {
+    String libPath = <span style="font-style:italic">&#34;:/opt/local/.../gdal-2.4.0/lib/&#34;</span>
+    <span style="font-weight:bold">try</span> {
+        System.setProperty(<span style="font-style:italic">&#34;java.library.path&#34;</span>, System.getProperty(<span style="font-style:italic">&#34;java.library.path&#34;</span>) + libPath);
+        Field fieldSysPath = ClassLoader.class.getDeclaredField(<span style="font-style:italic">&#34;sys_paths&#34;</span>);
+        fieldSysPath.setAccessible(<span style="font-weight:bold">true</span>);
+        fieldSysPath.set(<span style="font-weight:bold">null</span>, <span style="font-weight:bold">null</span>);
+        System.loadLibrary(<span style="font-style:italic">&#34;libjdalalljni.so&#34;</span>);
+    } <span style="font-weight:bold">catch</span> (Exception e) {
+        <span style="font-style:italic">// do nothing for exception
+</span><span style="font-style:italic"></span>    }
+}
+</code></pre></div><h3 id="验证">验证</h3>
+<p>由于部署环境为linux，如果需要在Windows上面或者Mac上进行调试，Windows下好办，直接在<a href="http://www.gisinternals.com/release.php">GISInternals</a>下载对应版本，放到系统路径下，项目中直接引用Maven库中的GDAL就行了。Mac下虽然也有第三方编译好的库，但是，没有2.4.0版本的，所以还是得自己编译，编译方法同理，只是在mac下，动态链接库的后缀是<code>.dylib</code>。</p>
+<p>将Shapefile转换成Json的小Demo，程序参考自网络：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">static</span> <span style="">void</span> gdalTest() {
+		ogr.RegisterAll();
+    <span style="font-style:italic">//文件路径
+</span><span style="font-style:italic"></span>    String from = <span style="font-style:italic">&#34;service/src/main/resources/data/HRoad.shp&#34;</span>;
+    <span style="font-style:italic">//转换后的文件路径
+</span><span style="font-style:italic"></span>    String to = <span style="font-style:italic">&#34;service/src/main/resources/data/HRoad.json&#34;</span>;
+    <span style="font-style:italic">//打开数据
+</span><span style="font-style:italic"></span>    DataSource ds = ogr.Open(from,0);
+    <span style="font-weight:bold">if</span> (ds == <span style="font-weight:bold">null</span>) {
+      <span style="font-style:italic">// something is wrong.
+</span><span style="font-style:italic"></span>    }
+  
+    Driver dv = ogr.GetDriverByName(<span style="font-style:italic">&#34;GeoJSON&#34;</span>);
+    <span style="font-weight:bold">if</span> (dv == <span style="font-weight:bold">null</span>) {
+      <span style="font-style:italic">// something is wrong.
+</span><span style="font-style:italic"></span>    }
+  
+    dv.CopyDataSource(ds, to);
+    System.out.println(<span style="font-style:italic">&#34;转换成功！&#34;</span>);
+}
+</code></pre></div><h2 id="预热">预热</h2>
+<h3 id="地理空间基本概念">地理空间基本概念</h3>
+<ul>
+<li>
+<p>基准面</p>
+<p>用来拟合地球表面的椭球体，这个椭球体是一个数学上表达的规则椭球。常见的基准面：</p>
+<table>
+<thead>
+<tr>
+<th>基准面名称</th>
+<th>长半轴(m)</th>
+<th>短半轴(m)</th>
+<th>扁率的倒数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Krassovsky 1940</td>
+<td>6378245</td>
+<td>6356863.0188</td>
+<td>298.2997381</td>
+</tr>
+<tr>
+<td>IAG 75</td>
+<td>6378140</td>
+<td>6356755.2882</td>
+<td>298.257</td>
+</tr>
+<tr>
+<td>WGS 1984</td>
+<td>6378137</td>
+<td>6356752.3142</td>
+<td>298.257223563</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>地理坐标系 (GCS, Geographic Coordinate System)</p>
+<p>地理坐标系利用基准面定义的球面来定义地球上的位置，俗称真实世界坐标系。</p>
+</li>
+<li>
+<p>投影坐标系</p>
+<p>将由三维球面定义的地理坐标系，转换为二维坐标系，比如转换成平面地图。</p>
+</li>
+</ul>
+<h3 id="模块简介">模块简介</h3>
+<ul>
+<li>org.gdal.gdal 栅格数据处理，比如处理tiff格式文件</li>
+<li>org.gdal.ogr 矢量数据处理，比如处理shapefile</li>
+<li>org.gdal.gnm (Geographic Network Model) 地理空间网络模型</li>
+<li>org.gdal.osr (Projection &amp; Spatial Reference) 投影和空间索引</li>
+</ul>
+<h3 id="heading"></h3>
+<h2 id="references">REFERENCES</h2>
+<blockquote>
+<ul>
+<li>《GDAL 源码剖析及开发指南》</li>
+<li><a href="%5Bhttps://www.gdal.org%5D(https://www.gdal.org/)">GDAL 官网</a></li>
+</ul>
+</blockquote>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

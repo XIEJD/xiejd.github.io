@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="模板-Jinja2"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ What How  如何设计一个模板  变量 过滤器（Filters） 测试器（Tests） 控制非可见字符 （Whitespace Control） 转义   如何复用一个模板  模板继承 模板引用 导入宏（Macro）      What Jinja2是一个Python模板语言，类似于PHP将动态的编程语言嵌入到静态的文本文件中，达到动态的生成HTML的能力。实际上，按照个人理解，所谓模板语言类似于完形填空，一个固定的静态文本框架加上一些根据环境条件动态生成的内容，组成一个完整的html。
+根据官方文档，以及自己的理解，整理了以下的使用方法。
+PS. 因为我Liquid编译markdown时，把{和%识别成了特殊字符。
+本文所有代码块中的转义符\在实际使用时都不需要，都不需要，都不需要。
+How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官网。
+如何设计一个模板 如何设计一个HTML模板，最最最基本的模板实例：
+&lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;title&gt;My Webpage&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;ul id=&#34;navigation&#34;&gt; \{\% for item in navigation \%\} &lt;li&gt;&lt;a href=&#34;\{\{ item.href \}\}&#34;&gt;\{\{ item.caption \}\}&lt;/a&gt;&lt;/li&gt; \{\% endfor \%\} &lt;/ul&gt; &lt;h1&gt;My Webpage&lt;/h1&gt; \{\{ a_variable \}\} \{# a comment #\} &lt;/body&gt; &lt;/html&gt; 如上例子，第8~10行表示一个动态的代码逻辑，根据输入来决定生成什么。\{\{ \}\}表示一个动态的表达，他无法控制html标签的生成与否。但能输出一个特定的数据，比如要输出data中的username属性，可以使用\{\{ data."/>
+
+    <meta property="og:title" content="模板-Jinja2" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ What How  如何设计一个模板  变量 过滤器（Filters） 测试器（Tests） 控制非可见字符 （Whitespace Control） 转义   如何复用一个模板  模板继承 模板引用 导入宏（Macro）      What Jinja2是一个Python模板语言，类似于PHP将动态的编程语言嵌入到静态的文本文件中，达到动态的生成HTML的能力。实际上，按照个人理解，所谓模板语言类似于完形填空，一个固定的静态文本框架加上一些根据环境条件动态生成的内容，组成一个完整的html。
+根据官方文档，以及自己的理解，整理了以下的使用方法。
+PS. 因为我Liquid编译markdown时，把{和%识别成了特殊字符。
+本文所有代码块中的转义符\在实际使用时都不需要，都不需要，都不需要。
+How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官网。
+如何设计一个模板 如何设计一个HTML模板，最最最基本的模板实例：
+&lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;title&gt;My Webpage&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;ul id=&#34;navigation&#34;&gt; \{\% for item in navigation \%\} &lt;li&gt;&lt;a href=&#34;\{\{ item.href \}\}&#34;&gt;\{\{ item.caption \}\}&lt;/a&gt;&lt;/li&gt; \{\% endfor \%\} &lt;/ul&gt; &lt;h1&gt;My Webpage&lt;/h1&gt; \{\{ a_variable \}\} \{# a comment #\} &lt;/body&gt; &lt;/html&gt; 如上例子，第8~10行表示一个动态的代码逻辑，根据输入来决定生成什么。\{\{ \}\}表示一个动态的表达，他无法控制html标签的生成与否。但能输出一个特定的数据，比如要输出data中的username属性，可以使用\{\{ data." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-07-14-jinja2/" />
+<meta property="article:published_time" content="2019-07-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-07-14T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-07-14-jinja2/">
+    
+    <title>
+  模板-Jinja2 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-07-14-jinja2/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">模板-Jinja2</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-07-14T00:00:00Z'>
+                2019-07-14
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#what">What</a></li>
+<li><a href="#how">How</a>
+<ul>
+<li><a href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E6%A8%A1%E6%9D%BF">如何设计一个模板</a>
+<ul>
+<li><a href="#%E5%8F%98%E9%87%8F">变量</a></li>
+<li><a href="#%E8%BF%87%E6%BB%A4%E5%99%A8filters">过滤器（Filters）</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95%E5%99%A8tests">测试器（Tests）</a></li>
+<li><a href="#%E6%8E%A7%E5%88%B6%E9%9D%9E%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6-whitespace-control">控制非可见字符 （Whitespace Control）</a></li>
+<li><a href="#%E8%BD%AC%E4%B9%89">转义</a></li>
+</ul>
+</li>
+<li><a href="#%E5%A6%82%E4%BD%95%E5%A4%8D%E7%94%A8%E4%B8%80%E4%B8%AA%E6%A8%A1%E6%9D%BF">如何复用一个模板</a>
+<ul>
+<li><a href="#%E6%A8%A1%E6%9D%BF%E7%BB%A7%E6%89%BF">模板继承</a></li>
+<li><a href="#%E6%A8%A1%E6%9D%BF%E5%BC%95%E7%94%A8">模板引用</a></li>
+<li><a href="#%E5%AF%BC%E5%85%A5%E5%AE%8Fmacro">导入宏（Macro）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="what">What</h2>
+<p>Jinja2是一个Python模板语言，类似于PHP将动态的编程语言嵌入到静态的文本文件中，达到动态的生成HTML的能力。实际上，按照个人理解，所谓模板语言类似于完形填空，一个固定的静态文本框架加上一些根据环境条件动态生成的内容，组成一个完整的html。</p>
+<p><strong>根据官方文档，以及自己的理解，整理了以下的使用方法</strong>。</p>
+<p>PS. 因为我Liquid编译markdown时，把{和%识别成了特殊字符。</p>
+<p>本文所有代码块中的转义符<code>\</code>在实际使用时<em><strong>都不需要，都不需要，都不需要</strong></em>。</p>
+<h2 id="how">How</h2>
+<p>Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官网。</p>
+<h3 id="如何设计一个模板">如何设计一个模板</h3>
+<p>如何设计一个HTML模板，最最最基本的模板实例：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="font-weight:bold">html</span> lang=<span style="font-style:italic">&#34;en&#34;</span>&gt;
+&lt;<span style="font-weight:bold">head</span>&gt;
+    &lt;<span style="font-weight:bold">title</span>&gt;My Webpage&lt;/<span style="font-weight:bold">title</span>&gt;
+&lt;/<span style="font-weight:bold">head</span>&gt;
+&lt;<span style="font-weight:bold">body</span>&gt;
+    &lt;<span style="font-weight:bold">ul</span> id=<span style="font-style:italic">&#34;navigation&#34;</span>&gt;
+    \{\% for item in navigation \%\}
+        &lt;<span style="font-weight:bold">li</span>&gt;&lt;<span style="font-weight:bold">a</span> href=<span style="font-style:italic">&#34;\{\{ item.href \}\}&#34;</span>&gt;\{\{ item.caption \}\}&lt;/<span style="font-weight:bold">a</span>&gt;&lt;/<span style="font-weight:bold">li</span>&gt;
+    \{\% endfor \%\}
+    &lt;/<span style="font-weight:bold">ul</span>&gt;
+
+    &lt;<span style="font-weight:bold">h1</span>&gt;My Webpage&lt;/<span style="font-weight:bold">h1</span>&gt;
+    \{\{ a_variable \}\}
+
+    \{# a comment #\}
+&lt;/<span style="font-weight:bold">body</span>&gt;
+&lt;/<span style="font-weight:bold">html</span>&gt;
+</code></pre></div><p>如上例子，第8~10行表示一个动态的代码逻辑，根据输入来决定生成什么。<code>\{\{ \}\}</code>表示一个动态的表达，他无法控制html标签的生成与否。但能输出一个特定的数据，比如要输出data中的username属性，可以使用<code>\{\{ data.username \}\}</code>。<code>\{# #\}</code> 表示其中的为注释，可以跨行，不会对最终输出产生什么影响。行内注释可以直接使用<code>#</code> 和python一样。<code>##</code> 比<code>#</code>更强大，也是注释，而且在最后渲染时，<code>##</code>注释后的东西全部会被忽略，即不会输出到最后的结果中。</p>
+<h4 id="变量">变量</h4>
+<p><code>\{\{ data.username \}\}</code> 和<code>\{\{ data['username'] \}\}</code>还是有区别的，在python中，直接用dot是对属性的引用，而中括号引用是对dict中的键值对的引用。Jinja2对此作了一点“美化”，Jinja2中这两个语法互为补充，不管是用点还是中括号，既可以对属性进行引用，也可以对键值对进行引用，唯一不同是，点会先获取属性，如果没有对应属性，再获取键值对。中括号的方式反之。</p>
+<h4 id="过滤器filters">过滤器（Filters）</h4>
+<p>与其叫过滤器，我更愿意叫它为一个pipeline。</p>
+<p><code>\{\{ username|striptags|capitalize \}\}</code>，这条语句表示将<code>username</code>的值传递给<code>striptags</code>，它会过滤掉html标签，其输出再传递给<code>capitalize</code>方法，它会将输入的首字母大写，其后小写，整个表达式的输出即最后一步<code>capitalize</code>的输出。</p>
+<p><code>username</code>为数据源，其后的每一个stage都用<code>|</code>分隔。</p>
+<p>更多内建的stage方法参考官网：<a href="http://jinja.pocoo.org/docs/2.10/templates/#builtin-filters">Built-in Filters</a></p>
+<h4 id="测试器tests">测试器（Tests）</h4>
+<p>测试器其实就是一个判断语句。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% if loop.index is divisibleby(3) \%\}
+</code></pre></div><p>其中<code>divisibleby()</code>就是一个测试器函数，更多测试器函数参考：<a href="http://jinja.pocoo.org/docs/2.10/templates/#builtin-tests">Built-in Tests</a></p>
+<h4 id="控制非可见字符-whitespace-control">控制非可见字符 （Whitespace Control）</h4>
+<p>默认情况下（<code>trim_blocks</code>，<code>lstrip_blocks</code>都开启），一个Jinja2的模板语句会在其后面带上一个换行符。所以，Jinja2在渲染模板的时候，会帮我们去掉这个单独的多余的换行符以及多余的空格。比如：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">div</span>&gt;\n
+    \{\% if True \%\}\n
+        yay\n
+    \{\% endif \%\}\n
+&lt;/<span style="font-weight:bold">div</span>&gt;\n
+</code></pre></div><p>实际上：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">div</span>&gt;\n
+    \n
+        yay\n
+    \n
+&lt;/<span style="font-weight:bold">div</span>&gt;\n
+</code></pre></div><p>显然，这里多了两个换行符和其前面的空格，在最终渲染完成后，Jinja2会将其删除掉：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">div</span>&gt;\n
+        yay\n
+&lt;/<span style="font-weight:bold">div</span>&gt;\n
+</code></pre></div><p>而其他的换行符会保持不变。</p>
+<p>Jinja2同时提供了一个语法糖：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\%- -\%\} 
+\{\%+ +\%\}
+</code></pre></div><p>前者表示在渲染时，把此Block前面和后面的不可见字符都删除掉，而后者表示保留此Block前后的不可见字符。</p>
+<p>比如：如果<code>seq=[1,2,3,4,5,6]</code></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% for item in seq -\%\}
+    \{\{ item \}\}
+\{\%- endfor \%\}
+</code></pre></div><p>则渲染完成后其输出为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">123456
+</code></pre></div><h4 id="转义">转义</h4>
+<p>Jinja2提供了两种形式来输出原始的字符，而不会被识别成模板语法：</p>
+<ol>
+<li>
+<p><code>\{\{ '\{\{' \}\}</code></p>
+</li>
+<li>
+<p>块转义：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% raw \%\}
+asdfasdfasdfasdfasdf\{\}\{\}\{\}\{\}\{\}\{\}
+\{\% endraw \%\}
+</code></pre></div><p>这两个表达式中间的所有字符都会不会被Jinja2解析，而是按原样输出。</p>
+</li>
+</ol>
+<h3 id="如何复用一个模板">如何复用一个模板</h3>
+<h4 id="模板继承">模板继承</h4>
+<p>定义一个父模板：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="font-weight:bold">html</span> lang=<span style="font-style:italic">&#34;en&#34;</span>&gt;
+&lt;<span style="font-weight:bold">head</span>&gt;
+    \{\% block head \%\}
+    &lt;<span style="font-weight:bold">link</span> rel=<span style="font-style:italic">&#34;stylesheet&#34;</span> href=<span style="font-style:italic">&#34;style.css&#34;</span> /&gt;
+    &lt;<span style="font-weight:bold">title</span>&gt;\{\% block title \%\}\{\% endblock \%\} - My Webpage&lt;/<span style="font-weight:bold">title</span>&gt;
+    \{\% endblock \%\}
+&lt;/<span style="font-weight:bold">head</span>&gt;
+&lt;<span style="font-weight:bold">body</span>&gt;
+    &lt;<span style="font-weight:bold">div</span> id=<span style="font-style:italic">&#34;content&#34;</span>&gt;\{\% block content \%\}\{\% endblock \%\}&lt;/<span style="font-weight:bold">div</span>&gt;
+    &lt;<span style="font-weight:bold">div</span> id=<span style="font-style:italic">&#34;footer&#34;</span>&gt;
+        \{\% block footer \%\}
+        <span style="font-weight:bold">&amp;copy;</span> Copyright 2008 by &lt;<span style="font-weight:bold">a</span> href=<span style="font-style:italic">&#34;http://domain.invalid/&#34;</span>&gt;you&lt;/<span style="font-weight:bold">a</span>&gt;.
+        \{\% endblock \%\}
+    &lt;/<span style="font-weight:bold">div</span>&gt;
+&lt;/<span style="font-weight:bold">body</span>&gt;
+&lt;/<span style="font-weight:bold">html</span>&gt;
+</code></pre></div><p>继承父模板：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% extends &#34;base.html&#34; \%\} 
+\{\% block title \%\}Index\{\% endblock \%\}
+\{\% block head \%\}
+    \{\{ super() \}\}
+    &lt;<span style="font-weight:bold">style</span> type=<span style="font-style:italic">&#34;text/css&#34;</span>&gt;
+        .<span style="font-weight:bold">important</span> <span style="">\</span>{ <span style="font-weight:bold">color</span>: #336699; <span style="">\</span>}
+    &lt;/<span style="font-weight:bold">style</span>&gt;
+\{\% endblock \%\}
+\{\% block content \%\}
+    &lt;<span style="font-weight:bold">h1</span>&gt;Index&lt;/<span style="font-weight:bold">h1</span>&gt;
+    &lt;<span style="font-weight:bold">p</span> class=<span style="font-style:italic">&#34;important&#34;</span>&gt;
+      Welcome to my awesome homepage.
+    &lt;/<span style="font-weight:bold">p</span>&gt;
+\{\% endblock \%\}
+</code></pre></div><p>第一行声明继承自父模板 base.html，第二行表示名为title的Block会在父模板中被值<code>Index</code>填充。第3~8行，首先会保留父模块的在名为head的Block中的内容，同时还会将css属性加入到此模块的最后。第9~14行，将会把子模板content block中定义的内容，填充到父模板同名的block中</p>
+<h4 id="模板引用">模板引用</h4>
+<p>模板引用相较于模板继承更加直观，且容易理解。</p>
+<p>比如在<code>head.html</code>中定义了一个block：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">head</span>&gt;
+  &lt;<span style="font-weight:bold">title</span>&gt;this is header&lt;/<span style="font-weight:bold">title</span>&gt;
+&lt;/<span style="font-weight:bold">head</span>&gt;
+</code></pre></div><p>当设计一个博客页面的时候，就可以直接引用这个header.html：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% include &#39;header.html&#39; \%\}
+&lt;<span style="font-weight:bold">body</span>&gt;
+...
+&lt;/<span style="font-weight:bold">body</span>&gt;
+</code></pre></div><h4 id="导入宏macro">导入宏（Macro）</h4>
+<p>所谓宏，其实是一个抽象出来的模板方法，比如有一个form表单，这个表单可以单独用一个Block来定义，但是表单里的属性名对于不同页面可能不太一样，此时用Block来定义就不太方便了。可以用Macro来定义：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% macro input(name, value=&#39;&#39;, type=&#39;text&#39;) -\%\}
+    &lt;<span style="font-weight:bold">input</span> type=<span style="font-style:italic">&#34;\{\{ type \}\}&#34;</span> value=<span style="font-style:italic">&#34;\{\{ value|e \}\}&#34;</span> name=<span style="font-style:italic">&#34;\{\{ name \}\}&#34;</span>&gt;
+\{\%- endmacro \%\}
+</code></pre></div><p>假设这个定义在components.macro中（用macro而不用html后缀，是想把它和普通的html模板区分开，没有其他作用）。可以这样引用这个宏：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% from &#39;components.macro&#39; import input as input_field \%\}
+&lt;<span style="font-weight:bold">dl</span>&gt;
+    &lt;<span style="font-weight:bold">dt</span>&gt;Username&lt;/<span style="font-weight:bold">dt</span>&gt;
+    &lt;<span style="font-weight:bold">dd</span>&gt;\{\{ input_field(&#39;username&#39;) \}\}&lt;/<span style="font-weight:bold">dd</span>&gt;
+    &lt;<span style="font-weight:bold">dt</span>&gt;Password&lt;/<span style="font-weight:bold">dt</span>&gt;
+    &lt;<span style="font-weight:bold">dd</span>&gt;\{\{ input_field(&#39;password&#39;, type=&#39;password&#39;) \}\}&lt;/<span style="font-weight:bold">dd</span>&gt;
+&lt;/<span style="font-weight:bold">dl</span>&gt;
+</code></pre></div><p>very easy.</p>
+<blockquote>
+<p>REFERENCES</p>
+<ul>
+<li><a href="http://jinja.pocoo.org/docs/2.10/">Jinja2 Documents</a></li>
+</ul>
+</blockquote>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

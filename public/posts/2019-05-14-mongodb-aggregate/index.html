@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SpringData MongoDB 聚合笔记"/>
+<meta name="twitter:description" content="Table of Contents generated with DocToc
+ 简介 MongoDB聚合框架  Map-Reduce   利用SpringData进行聚合操作  基本抽象 Aggregation AggregationOperations  概览     Example REFERENCES  简介 之前一直用Java Stream来处理数据聚合操作，统计一些前端需要的信息，虽然一直没什么大问题，但是总觉的这事饶了一大圈，苦于不熟悉SpringData和MongoDB，对于MongoDB的聚合框架更是一无所知，索性和SpringData MongoDB一起，趁这个机会给自己扫个盲。
+要理解SpringData mongo中的聚合框架，首先需要了解一下Mongodb中的聚合框架是如何定义，如何使用的，因为说到底，SpringData提供的聚合框架支持，最后都会转化为数据库本身的聚合框架所能理解的形式，并交由数据库本身执行。
+MongoDB聚合框架 MongoDB自身提供三种形式的聚合操作：管道聚合、Map-Reduce模式和单目标聚合操作，其中管道聚合和Map-Reduce拥有比较高的灵活性，单目标聚合操作限于一些特定目标的聚合，无法满足其他定制化需求。
+根据官方文档的说法，Map-Reduce模式是通过JavaScript函数来定义行为的，这就意味着，虽然给行为的定义增加了极大的灵活性，但是也同时意味着性能损耗。（还要学JavaScript，混在后端代码里总觉得怪怪的）
+ Starting in MongoDB 2.4, certain mongo shell functions and properties are inaccessible in map-reduce operations. MongoDB 2.4 also provides support for multiple JavaScript operations to run at the same time. Before MongoDB 2.4, JavaScript code executed in a single thread, raising concurrency issues for map-reduce."/>
+
+    <meta property="og:title" content="SpringData MongoDB 聚合笔记" />
+<meta property="og:description" content="Table of Contents generated with DocToc
+ 简介 MongoDB聚合框架  Map-Reduce   利用SpringData进行聚合操作  基本抽象 Aggregation AggregationOperations  概览     Example REFERENCES  简介 之前一直用Java Stream来处理数据聚合操作，统计一些前端需要的信息，虽然一直没什么大问题，但是总觉的这事饶了一大圈，苦于不熟悉SpringData和MongoDB，对于MongoDB的聚合框架更是一无所知，索性和SpringData MongoDB一起，趁这个机会给自己扫个盲。
+要理解SpringData mongo中的聚合框架，首先需要了解一下Mongodb中的聚合框架是如何定义，如何使用的，因为说到底，SpringData提供的聚合框架支持，最后都会转化为数据库本身的聚合框架所能理解的形式，并交由数据库本身执行。
+MongoDB聚合框架 MongoDB自身提供三种形式的聚合操作：管道聚合、Map-Reduce模式和单目标聚合操作，其中管道聚合和Map-Reduce拥有比较高的灵活性，单目标聚合操作限于一些特定目标的聚合，无法满足其他定制化需求。
+根据官方文档的说法，Map-Reduce模式是通过JavaScript函数来定义行为的，这就意味着，虽然给行为的定义增加了极大的灵活性，但是也同时意味着性能损耗。（还要学JavaScript，混在后端代码里总觉得怪怪的）
+ Starting in MongoDB 2.4, certain mongo shell functions and properties are inaccessible in map-reduce operations. MongoDB 2.4 also provides support for multiple JavaScript operations to run at the same time. Before MongoDB 2.4, JavaScript code executed in a single thread, raising concurrency issues for map-reduce." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2019-05-14-mongodb-aggregate/" />
+<meta property="article:published_time" content="2019-05-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-05-14T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/2019-05-14-mongodb-aggregate/">
+    
+    <title>
+  SpringData MongoDB 聚合笔记 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2019-05-14-mongodb-aggregate/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.shareif.cn/css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css" integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://www.shareif.cn/css/custom.css" />
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">SpringData MongoDB 聚合笔记</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-05-14T00:00:00Z'>
+                2019-05-14
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#mongodb%E8%81%9A%E5%90%88%E6%A1%86%E6%9E%B6">MongoDB聚合框架</a>
+<ul>
+<li><a href="#map-reduce">Map-Reduce</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%A9%E7%94%A8springdata%E8%BF%9B%E8%A1%8C%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C">利用SpringData进行聚合操作</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%8A%BD%E8%B1%A1">基本抽象</a></li>
+<li><a href="#aggregation">Aggregation</a></li>
+<li><a href="#aggregationoperations">AggregationOperations</a>
+<ul>
+<li><a href="#%E6%A6%82%E8%A7%88">概览</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#example">Example</a></li>
+<li><a href="#references">REFERENCES</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="简介">简介</h2>
+<p>之前一直用Java Stream来处理数据聚合操作，统计一些前端需要的信息，虽然一直没什么大问题，但是总觉的这事饶了一大圈，苦于不熟悉SpringData和MongoDB，对于MongoDB的聚合框架更是一无所知，索性和SpringData MongoDB一起，趁这个机会给自己扫个盲。</p>
+<p>要理解SpringData mongo中的聚合框架，首先需要了解一下Mongodb中的聚合框架是如何定义，如何使用的，因为说到底，SpringData提供的聚合框架支持，最后都会转化为数据库本身的聚合框架所能理解的形式，并交由数据库本身执行。</p>
+<h2 id="mongodb聚合框架">MongoDB聚合框架</h2>
+<p>MongoDB自身提供三种形式的聚合操作：管道聚合、Map-Reduce模式和单目标聚合操作，其中管道聚合和Map-Reduce拥有比较高的灵活性，单目标聚合操作限于一些特定目标的聚合，无法满足其他定制化需求。</p>
+<p>根据官方文档的说法，Map-Reduce模式是通过JavaScript函数来定义行为的，这就意味着，虽然给行为的定义增加了极大的灵活性，但是也同时意味着性能损耗。（还要学JavaScript，混在后端代码里总觉得怪怪的）</p>
+<blockquote>
+<p>Starting in MongoDB 2.4, certain <a href="https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo"><code>mongo</code></a> shell functions and properties are inaccessible in map-reduce operations. MongoDB 2.4 also provides support for multiple JavaScript operations to run at the same time. Before MongoDB 2.4, JavaScript code executed in a single thread, raising concurrency issues for map-reduce.</p>
+</blockquote>
+<h3 id="map-reduce">Map-Reduce</h3>
+<p>Map-Reduce模式相信接触过Hadoop都很容易理解。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">graph LR
+A[Data Source] --&gt;|Document|B(Map Part1)
+   	A --&gt;|Document| C[Map Part2]
+    A --&gt;|Document| D[Map Part3]
+    B --&gt;|Result| E(&#34;key:value&#34;)
+    C --&gt;|Result| F(&#34;key:value&#34;)
+    D --&gt;|Result| G(&#34;key:value&#34;)
+    E --&gt; L(Reduce: merge values with same key)
+    F --&gt; L
+    G --&gt; L
+    L --&gt;|Optional| M(Finalize)
+    M --&gt; N(Results)
+</code></pre></div><blockquote>
+<p>For most aggregation operations, the <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">Aggregation Pipeline</a> provides better performance and more coherent interface. However, map-reduce operations provide some flexibility that is not presently available in the aggregation pipeline.</p>
+</blockquote>
+<p><a href="https://docs.mongodb.com/manual/reference/command/mapReduce/#dbcmd.mapReduce">参考Doc</a></p>
+<h2 id="利用springdata进行聚合操作">利用SpringData进行聚合操作</h2>
+<h3 id="基本抽象">基本抽象</h3>
+<p>Spring Data MongoDB提供了几个非常关键的基本抽象：</p>
+<ul>
+<li><code>Aggregation</code></li>
+<li><code>AggregationOperation</code></li>
+<li><code>AggregationExpression</code></li>
+<li><code>AggregationResults</code></li>
+</ul>
+<p>这四个抽象中，<code>Aggregation</code>是最上层的抽象，它由一系列的<code>AggregationOperation</code>来定义，说的具体一点，<code>Aggregation</code>定义了一个管道，而管道中的各种操作由<code>AggregationOperation</code>来定义。<code>AggregationOperation</code>一般会对输出的文档结构产生变化。<code>AggregationExpression</code>是更加基础微小的操作，一般作用于文档的某个字段，比如类型转换，类似于Java Stream中的各种匿名函数（方法参数）。而<code>AggregationResult</code>实际上是将MongoDB返回的操作结果映射成Java定义的数据对象结构。</p>
+<p>一个官方提供的伪代码示例：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">import static</span> <span style="font-weight:bold">org.springframework.data.mongodb.core.aggregation.Aggregation.*</span>;
+
+Aggregation agg = newAggregation(
+    pipelineOP1(), <span style="font-style:italic">//AggregationOperation
+</span><span style="font-style:italic"></span>    pipelineOP2(),
+    pipelineOPn()
+);
+
+AggregationResults&lt;OutputType&gt; results = mongoTemplate.aggregate(agg, <span style="font-style:italic">&#34;INPUT_COLLECTION_NAME&#34;</span>, OutputType.class);
+List&lt;OutputType&gt; mappedResult = results.getMappedResults();
+</code></pre></div><p>上述代码中，由一组<code>AggregationOperation</code>操作定义的<code>Aggregation</code>对象，通过<code>MongoTemplate</code>交由MongoDB执行，其结果通过<code>AggregationResults</code>转换成需要的对象结构<code>OutputType</code>。由此完成一个完成的聚合过程。</p>
+<p>所以，可以根据业务自定义组合的<code>AggregationOperation</code>是应该被重点关注的。</p>
+<h3 id="aggregation">Aggregation</h3>
+<p><code>Aggregation</code>对象只能通过其定义的静态方法来构造。首先看一看<code>Aggregation</code>有几种构造方法：</p>
+<blockquote>
+<p>所有源码取自 SpringData MongoDB 2.1.5.RELEASE (Current GA版本)</p>
+</blockquote>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/*
+</span><span style="font-style:italic"> * 数组初始化方法
+</span><span style="font-style:italic"> */</span>
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Aggregation newAggregation(AggregationOperation... operations) {
+		<span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> Aggregation(operations);
+}
+
+<span style="font-style:italic">/*
+</span><span style="font-style:italic"> * 列表初始化方法，实际上还是转换成数组，调用的数组初始化方法
+</span><span style="font-style:italic"> */</span>
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Aggregation newAggregation(List&lt;? <span style="font-weight:bold">extends</span> AggregationOperation&gt; operations) {
+    <span style="font-weight:bold">return</span> newAggregation((AggregationOperation[])operations.toArray(<span style="font-weight:bold">new</span> AggregationOperation[operations.size()]));
+}
+
+<span style="font-style:italic">/*
+</span><span style="font-style:italic"> * 比第一个初始化方法多一个 type 参数，返回一个TypedAggregation，是Aggregation的子类。
+</span><span style="font-style:italic"> */</span>
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; TypedAggregation&lt;T&gt; newAggregation(Class&lt;T&gt; type, AggregationOperation... operations) {
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> TypedAggregation(type, operations);
+}
+
+<span style="font-style:italic">/*
+</span><span style="font-style:italic"> * 列表初始化方法
+</span><span style="font-style:italic"> */</span>
+<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; TypedAggregation&lt;T&gt; newAggregation(Class&lt;T&gt; type, List&lt;? <span style="font-weight:bold">extends</span> AggregationOperation&gt; operations) {
+    <span style="font-weight:bold">return</span> newAggregation(type, (AggregationOperation[])operations.toArray(<span style="font-weight:bold">new</span> AggregationOperation[operations.size()]));
+}
+</code></pre></div><p>静态构造函数提供了两套方法，分别返回<code>Aggregation</code>和<code>TypedAggregation</code>对象，子类<code>TypedAggregation</code>相比于其父类<code>Aggregation</code>差异非常小，主要不同在于子类多了一个私有变量<code>private final Class&lt;I&gt; inputType;</code> 以及配套的构造方法。(<code>Aggregation</code>的构造方法是从List最终转化成数组进行初始化，而<code>TypedAggregation</code>恰好相反，最终转化成List进行初始化&hellip;)。</p>
+<h3 id="aggregationoperations">AggregationOperations</h3>
+<h4 id="概览">概览</h4>
+<p>SpringData MongoDB 2.1.5.RELEASE提供了对如下聚合管道操作的支持：MongoDB 版本4.0</p>
+<table>
+<thead>
+<tr>
+<th>Stages in MongoDB</th>
+<th>Operations in SpringData MongoDB</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$addFields</code></td>
+<td></td>
+<td>为每个Document增加一个字段，最后输出包括Document中本身的字段以及新增的字段。</td>
+</tr>
+<tr>
+<td><code>$bucket</code></td>
+<td><code>BucketOperation</code></td>
+<td><em>New in version 3.4.</em> 分桶存放，将Documents按照groupBy得到的值分类到特定的桶中，超过桶范围的Document会被计入一个特殊的<code>default</code>桶里。</td>
+</tr>
+<tr>
+<td><code>$bucketAuto</code></td>
+<td><code>BucketAutoOperation</code></td>
+<td><em>New in version 3.4.</em> 自动分桶存放，均匀分配到指定数量的桶里</td>
+</tr>
+<tr>
+<td><code>$collStats</code></td>
+<td></td>
+<td><em>New in version 3.4.</em> 获取Collction的统计信息，请求延时、存储延时等。</td>
+</tr>
+<tr>
+<td><code>$count</code></td>
+<td><code>CountOperation</code></td>
+<td><em>New in version 3.4.</em> 对输入到这一步的文档计数，结果存到指定的Document字段中。</td>
+</tr>
+<tr>
+<td><code>$facet</code></td>
+<td><code>FacetOperation</code></td>
+<td><em>New in version 3.4.</em> 同时进行多个管道操作，比如对一个表需要统计其多个统计量，最大最小计数求和等，可以在<code>$facet</code>中同时进行，输出到Document的不同字段。</td>
+</tr>
+<tr>
+<td><code>$geoNear</code></td>
+<td><code>GeoNearOperation</code></td>
+<td>找到某个点在2d或者3d范围内圆形或者球形范围内的Documents，这个Stage必须在所有Stage之前。</td>
+</tr>
+<tr>
+<td><code>$graphLookup</code></td>
+<td><code>GraphLookupOperation</code></td>
+<td>传递查找，遍历所有文档，找到一组有传递关系的文档，放入一个新的字段中。</td>
+</tr>
+<tr>
+<td><code>$group</code></td>
+<td><code>GroupOperation</code></td>
+<td>分组聚合，将相同条件的文档按需求聚合成一个文档</td>
+</tr>
+<tr>
+<td><code>$indexStats</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>$limit</code></td>
+<td><code>LimitOperation</code></td>
+<td>限制此Stage的输出文档数</td>
+</tr>
+<tr>
+<td><code>$listSessions</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>$lookUp</code></td>
+<td><code>LookUpOperation</code></td>
+<td>左外连接</td>
+</tr>
+<tr>
+<td><code>$match</code></td>
+<td><code>MatchOperation</code></td>
+<td>过滤</td>
+</tr>
+<tr>
+<td><code>$out</code></td>
+<td><code>OutOperation</code></td>
+<td>将上一阶段产生的结果放入新的Collection中</td>
+</tr>
+<tr>
+<td><code>$project</code></td>
+<td><code>ProjectionOperation</code></td>
+<td>字段映射，可以限制输出字段，或映射为新的字段</td>
+</tr>
+<tr>
+<td><code>$redact</code></td>
+<td></td>
+<td><code>$project</code>,<code>$match</code>的合并版</td>
+</tr>
+<tr>
+<td><code>$sample</code></td>
+<td></td>
+<td>随机选取一定数量的文档</td>
+</tr>
+<tr>
+<td><code>$skip</code></td>
+<td><code>SkipOperation</code></td>
+<td>跳过一定数量的文档</td>
+</tr>
+<tr>
+<td><code>$sort</code></td>
+<td><code>SortOperation</code></td>
+<td>排序</td>
+</tr>
+<tr>
+<td><code>$sortByCount</code></td>
+<td></td>
+<td>按groupBy后的每组包含的文档数作为依据排序</td>
+</tr>
+<tr>
+<td><code>$unwind</code></td>
+<td><code>UnwindOperation</code></td>
+<td>类似flatmap，将一个文档展开成多个文档</td>
+</tr>
+</tbody>
+</table>
+<p>很好奇为什么SpringData对MongoDB聚合框架的支持为什么不抽象成类似Stream的那种声明式方法进行链式调用？</p>
+<blockquote>
+<p>Tips</p>
+<ul>
+<li>Using the group operations does have some limitations, for example it is not supported in a shared environment and it returns the full result set in a single BSON object, so the result should be small, less than 10,000 keys. （用group操作的局限在于其不支持共享的环境，并且其返回结果存在于一个单独的BSON对象中，小于10000个keys。）</li>
+</ul>
+</blockquote>
+<h2 id="example">Example</h2>
+<h2 id="references">REFERENCES</h2>
+<blockquote>
+<ul>
+<li><a href="https://docs.spring.io/spring-data/mongodb/docs/2.1.5.RELEASE/reference/html">Spring-data-mongodb官方文档</a></li>
+<li><a href="https://docs.mongodb.com/manual/meta/aggregation-quick-reference/">Mongodb 官方文档</a></li>
+</ul>
+</blockquote>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shareif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓与利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

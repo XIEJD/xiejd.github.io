@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Shareif</title>
+    <link>https://www.shareif.cn/posts/</link>
+    <description>Recent content in Posts on Shareif</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.shareif.cn/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>mosquitto confs</title>
+      <link>https://www.shareif.cn/posts/2019-12-28-mosquitto-conf-list/</link>
+      <pubDate>Sat, 28 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-12-28-mosquitto-conf-list/</guid>
+      <description>Global Options Listener Specified Options SSL/TLS Options  Global Options #通常在精确匹配后，又匹配上通配符会收到重复消息 allow_duplicate_messages true #禁止特殊字符&amp;#39;+&amp;#39; or &amp;#39;#&amp;#39;，此过程在acl鉴权之前 auth_plugin_deny_special_chars true #订阅变化、保留消息、收到的消息、队列中的消息自动保存到磁盘间隔时间(秒) #0表示仅当mosquitto退出或者收到SIGUSR1信号时保存 autosave_interval 1800 #当true，将把autosave_interval当成数量，当订阅变化、消息等超过这个数量时，保存到磁盘 #当false，将吧autosave_interval当成时间 autosave_on_changes false # check_retain_source #clientId前缀校验，非&amp;#39;secure-&amp;#39;前缀的clientId将被判定为非法ID clientid_prefixes secure- #是否输出连接信息日志 connection_messages true #额外的配置文件加载路径，可配置多个 include_dir dir1 #日志输出目的地 #如果值为topic，将输出到系统主题中$SYS/broker/log/[D|E|W|N|I|M] #如果值为file，输出到文件，比如：log_dest file /path/to/your/log log_dest [stderr|syslog|topic|stdout|file] #日志相关参数 log_facility log_timestamp log_timestamp_format log_type #消息相关参数 max_inflight_bytes max_inflight_messages max_packet_size max_queued_bytes max_queued_messages message_size_limit queue_qos0_messages false retain_available true #链路相关参数 max_keepalive set_tcp_nodelay false #内存限制 memory_limit #持久化 persistence false retained_persistence persistence_file persistence_location persistent_client_expiration #进程 pid_file user #系统主题，每10秒刷新一侧订阅层次结构 sys_interval 10 #非主流参数 upgrade_outgoing_qos false Listener Specified Options #监听端口相关参数 per_listener_settings true #安全相关参数 password_file #细粒度鉴权 acl_file /your/aclfile/path #Pre Shared Key file psk_file #是否允许匿名模式，如果允许，客户端可以不用带username和password allow_anonymous true #允许Broker自动生成clientId allow_zero_length_clientid true #当Broker生成clientId时，自动生成的ID的前缀 auto_id_prefix auto- #鉴权相关参数 auth_opt_* #定义鉴权插件 auth_plugin /your/path/to/plugin.</description>
+    </item>
+    
+    <item>
+      <title>try mqtt</title>
+      <link>https://www.shareif.cn/posts/2019-11-23-try-mqtt/</link>
+      <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-11-23-try-mqtt/</guid>
+      <description>MQTT Startup MQTT &amp;amp; Kafka [To-do]  MQTT Startup   A brief intro on MQTT：MQTT
+Broker：
+   Server QoS 0 QoS 1 QoS 2 auth bridge $SYS SSL dynamic topics cluster websockets plugin system     2lemetry ✔ ✔ ✔ ✔ ✔ § ✔ ✔ ✔ ✔ ✘   Jmqtt ✔ ✔ ✔ ✔ ✔ § § ✔ § ✔ ✔   Apache ActiveMQ ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Apache ActiveMQ Artemis ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Bevywise IoT Platform ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ rm   emitter ✔ § ✘ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   emqttd ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   flespi ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   GnatMQ ✔ ✔ ✔ ✔ ✘ ✘ ✘ ✔ ✘ ✘ ✘   HBMQTT ✔ ✔ ✔ ✔ ✘ ✔ ✔ ✔ ✘ ✔ ✔   HiveMQ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   IBM WIoTP Message Gateway ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   moquette ✔ ✔ ✔ ✔ ?</description>
+    </item>
+    
+    <item>
+      <title>spring 漫游</title>
+      <link>https://www.shareif.cn/posts/2019-10-20-spring-in-action/</link>
+      <pubDate>Sun, 20 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-10-20-spring-in-action/</guid>
+      <description>Table of Contents generated with DocToc
+ spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+   注解 解释     @ConditionalOnBean 当BeanFactory中存在某个bean时满足条件，可以匹配多个   @ConditionalOnClass 当ClassPath下存在某个类时满足条件，可以匹配多个   @ConditionalOnCloudPlatform 巴拉巴拉   @ConditionalOnExpression 可以定义SpEL语句进行匹配   @ConditinalOnJava 匹配当前运行JVM版本   @ConditionalOnJndi    @ConditionalOnMissingBean    @ConditionalOnMissingClass    @ConditinalOnNotWebApplication    @ConditionalOnProperty 当满足某个属性时满足条件   @ConditionalOnResource 当classpath下存在某个资源文件时满足条件，可以匹配多个   @ConditinalOnSingleCandidate    @ConditinalOnWebApplication     举几个🌰：</description>
+    </item>
+    
+    <item>
+      <title>Java牌定时器</title>
+      <link>https://www.shareif.cn/posts/2019-09-01-java-timer/</link>
+      <pubDate>Sun, 01 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-09-01-java-timer/</guid>
+      <description>Table of Contents generated with DocToc
+ ScheduledExecutorService  ScheduledExecutorService JUC包中提供的任务线程池类，可以完成定时器任务，但是使用范围比较狭窄，无法提供像Cron那种强大的定时器语义。
+@Test public void queueTaskInMultiTread() throws Exception { // 核心线程池大小设置为1，则所有任务变成串行。且只有当上一个任务完成后，才会进行下一次任务。  ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2); Runnable printA = new ThreadTask(&amp;#34;A&amp;#34;); Runnable printB = new ThreadTask(&amp;#34;B&amp;#34;); ScheduledFuture futureA = scheduler.scheduleAtFixedRate(printA, 0, 5, TimeUnit.SECONDS); ScheduledFuture futureB = scheduler.scheduleAtFixedRate(printB, 0, 5, TimeUnit.SECONDS); Thread.sleep(10000); //删除futureA  futureA.cancel(true); System.out.println(&amp;#34;================&amp;#34;); Thread.sleep(10000); //添加任务C  Runnable printC = new ThreadTask(&amp;#34;C&amp;#34;); System.out.println(&amp;#34;================&amp;#34;); ScheduledFuture futureC = scheduler.scheduleAtFixedRate(printC, 0, 5, TimeUnit.SECONDS); Thread.</description>
+    </item>
+    
+    <item>
+      <title>PEP8 代码风格指南（翻译）</title>
+      <link>https://www.shareif.cn/posts/2019-08-11-pep8/</link>
+      <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-08-11-pep8/</guid>
+      <description>Table of Contents generated with DocToc
+ 前言 简介 避免教条主义 代码的布局  缩进 制表符还是空格？ 最大行长度 应该在二元运算符之前断行还是之后断行？ 空行 源文件编码 导入库 模块层次的魔法名字   字符串引号 表达式和语句中的空格  难念的经 其他建议   什么时候尾随一个逗号 注释  块注释 内联注释(行尾注释) 文档注释   命名约定  最重要的原则 命名样式分类 Prescriptive: 命名约定  禁忌 ASCII兼容性 包和模块命名 类名 类型变量名 异常名 全局变量名 函数名 函数和方法的参数 方法名和实例变量 常量 继承的设计   公共接口和内部接口   编程建议  函数注释   参考文献  前言 由于英语水平的限制以及对Python语言的理解程度可能不足，在翻译时，可能会有词不达意甚至错译的情况，有些我自己无法理解的语句会将原文贴出，如果有更好的翻译，Github传送门。译文仅供参考。</description>
+    </item>
+    
+    <item>
+      <title>记录小把戏</title>
+      <link>https://www.shareif.cn/posts/2019-08-11-things/</link>
+      <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-08-11-things/</guid>
+      <description>Table of Contents generated with DocToc
+ 下载类 应用类  macOS     主要用来记录解决某个问题(非编程)时所用到的解决方法，比如在用某个包管理时，要切换镜像加速
+ 下载类  sourceforge.net 的访问非常不稳定（无法访问），如果需要下载上面的某个开源项目，可以使用其镜像网站 http://sourceforge.mirrorservice.org  应用类 macOS 1. Chrome for mac , QQ browser for mac 2. Office for mac 3. MPV、IINA (本地视频播放) or App Store中各类在线视频客户端 4. 网易云、QQ音乐 for mac 5. Mac 自带照片能简单P图，用于女性P图软件（泼辣修图、Photoshop CC） 6. (App Store)微信/QQ for mac 7. 迅雷 for mac 8. keka 10. VS code （CRLF模式） 11. Flash for mac 12.</description>
+    </item>
+    
+    <item>
+      <title>OAuth2</title>
+      <link>https://www.shareif.cn/posts/2019-08-05-oauth2/</link>
+      <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-08-05-oauth2/</guid>
+      <description>Table of Contents generated with DocToc
+ OAuth2 Intro 关键角色 关键阶段  1. 授权  1.1 授权码授权 (Authorization Code Grant) 1.2 隐式授权 (Implicit Grant) 1.3 密码模式 (Resource Owner Password Credentials Grant) 1.4 客户端凭据模式 (Client Credentials Grant)        【RFC6749中文版】https://github.com/jeansfish/RFC6749.zh-cn 【RFC6749原版】https://tools.ietf.org/html/rfc6749   OAuth2 Intro  在传统的客户端-服务器身份验证模式中，客户端请求服务器上访问受限的资源（受保护的资源）时，需要使用资源所有者的凭据在服务器上进行身份验证。 资源所有者为了给第三方应用提供受限资源的访问权限，需要与第三方共享它的凭据。这就导致一些问题和局限：
+ 第三方应用需要存储资源所有者的凭据以供将来使用。该凭据通常是明文密码。 服务器需要支持密码身份认证，尽管密码认证有固有的安全缺陷。 第三方应用获得了对资源所有者的受保护资源的过于宽泛的访问权限，从而导致资源所有者不能限制对资源的有限子集的访问时限或权限。(不利于权限控制) 资源所有者不能撤销某个第三方的访问权限而不影响其它第三方，并且必须更改他们的密码才能做到。（不利于权限撤销） 与任何第三方应用的妥协导致对终端用户的密码及该密码所保护的所有数据的妥协。  OAuth通过引入授权服务器以及从资源所有者角色分离出客户端角色来解决这些问题。在OAuth中，客户端需要使用由资源所有者授权，且由授权服务器生成的凭证（access_token）来获取受保护的资源。
+ 关键角色  资源所有者 - 对资源拥有完全权限的人 资源服务器 - 存放资源的地方 客户端 - 需要访问受限资源的地方 授权服务器 - 控制权限和资源关系的中间人  关键阶段 +--------+ +---------------+ | |--(A)- Authorization Request -&amp;gt;| Resource | | | | Owner | | |&amp;lt;-(B)-- Authorization Grant ---| | | | +---------------+ | | | | +---------------+ | |--(C)-- Authorization Grant --&amp;gt;| Authorization | | Client | | Server | | |&amp;lt;-(D)----- Access Token -------| | | | +---------------+ | | | | +---------------+ | |--(E)----- Access Token ------&amp;gt;| Resource | | | | Server | | |&amp;lt;-(F)--- Protected Resource ---| | +--------+ +---------------+ Figure 1: 抽象的协议流程图 AB阶段为用户授权阶段，CD阶段为获取访问凭证(access_token)阶段，EF为获取受限资源阶段。</description>
+    </item>
+    
+    <item>
+      <title>模板-Jinja2</title>
+      <link>https://www.shareif.cn/posts/2019-07-14-jinja2/</link>
+      <pubDate>Sun, 14 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-07-14-jinja2/</guid>
+      <description>Table of Contents generated with DocToc
+ What How  如何设计一个模板  变量 过滤器（Filters） 测试器（Tests） 控制非可见字符 （Whitespace Control） 转义   如何复用一个模板  模板继承 模板引用 导入宏（Macro）      What Jinja2是一个Python模板语言，类似于PHP将动态的编程语言嵌入到静态的文本文件中，达到动态的生成HTML的能力。实际上，按照个人理解，所谓模板语言类似于完形填空，一个固定的静态文本框架加上一些根据环境条件动态生成的内容，组成一个完整的html。
+根据官方文档，以及自己的理解，整理了以下的使用方法。
+PS. 因为我Liquid编译markdown时，把{和%识别成了特殊字符。
+本文所有代码块中的转义符\在实际使用时都不需要，都不需要，都不需要。
+How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官网。
+如何设计一个模板 如何设计一个HTML模板，最最最基本的模板实例：
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html lang=&amp;#34;en&amp;#34;&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;My Webpage&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;ul id=&amp;#34;navigation&amp;#34;&amp;gt; \{\% for item in navigation \%\} &amp;lt;li&amp;gt;&amp;lt;a href=&amp;#34;\{\{ item.href \}\}&amp;#34;&amp;gt;\{\{ item.caption \}\}&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; \{\% endfor \%\} &amp;lt;/ul&amp;gt; &amp;lt;h1&amp;gt;My Webpage&amp;lt;/h1&amp;gt; \{\{ a_variable \}\} \{# a comment #\} &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 如上例子，第8~10行表示一个动态的代码逻辑，根据输入来决定生成什么。\{\{ \}\}表示一个动态的表达，他无法控制html标签的生成与否。但能输出一个特定的数据，比如要输出data中的username属性，可以使用\{\{ data.</description>
+    </item>
+    
+    <item>
+      <title>Java JDK8时间API</title>
+      <link>https://www.shareif.cn/posts/2019-06-22-java-date/</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-06-22-java-date/</guid>
+      <description>Table of Contents generated with DocToc
+ JDK8 时间API  Class Summary   时间戳 &amp;amp; 时区 Java 8 时间工具  无时区时间类 时区时间类  时区ID对应关系   PS. Joda Time 时间段 &amp;amp; 时间点   总结  JDK8 时间API Class Summary  Clock Instant LocalDate LocalTime LocalDateTime OffsetTime OffsetDateTime Duration Period MonthDay YearMonth Year ZoneId ZoneOffset ZonedDateTime  时间戳 &amp;amp; 时区 时间戳，指格林威治时间1970年01月01日00时00分00秒起至现在的总毫秒数，时间戳没有时区概念，不同时区下，同一时间拥有相同时间戳。比如0时区在1970年1月1日00时00分01秒的时间戳为1000，而在东八区（1970年1月1日08时00分01秒）的时间戳也为1000。
+时区，时区的划分能方便世界各地本地使用时间，全球总共分为24个时区，东1区~东11区，西1区~西11区，0区和12区。0区中心经度0，东西辐射7.5度。
+Java 8 时间工具 无时区时间类  LocalDate LocalTime LocalDateTime  public void testLocal() { long timeStamp = System.</description>
+    </item>
+    
+    <item>
+      <title>Apache Kafka 笔记</title>
+      <link>https://www.shareif.cn/posts/2019-06-03-apache-kafka/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-06-03-apache-kafka/</guid>
+      <description>Table of Contents generated with DocToc
+ 概念 Kafka版本 Kafka部署平台 Kafka集群参数  Broker参数  存储 ZooKeeper（分布式协调框架） 通信 Topic管理 数据留存   Topic 参数  在创建Topic时指定Topic级别参数 修改Topic级别参数（推荐）   JVM 参数 操作系统参数   Kafka生产者  分区  分区策略  自定义分区策略 轮询策略（默认） 随机策略 消息键保序策略（Key-ordering）     压缩  消息格式 压缩方式 幂等Producer 事务Producer     Kafka 消费者  消费者组   无消息丢失配置  最佳实践   客户端拦截器 Kafka如何管理TCP连接 Demo  概念   Producer - Topic - Consumer</description>
+    </item>
+    
+    <item>
+      <title>Springboot Websocket</title>
+      <link>https://www.shareif.cn/posts/2019-06-02-springboot-websocket/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-06-02-springboot-websocket/</guid>
+      <description>Table of Contents generated with DocToc
+ What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
+How 如何利用Spring Boot 快速开发
+自动配置 核心：classpath
+通过classpath上出现的配置类，自动进行配置
+SpringFactoriesLoader加载配置类
+所谓自动配置，其实是各种逻辑分支
+起步依赖 应用 WebSocket   客户端测试脚本(Python)
+import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&amp;#39;ws://localhost:8080/ws&amp;#39;) as websocket: req = {&amp;#34;protocol&amp;#34;:&amp;#34;history_req&amp;#34;,&amp;#39;code&amp;#39;:&amp;#39;XAGODS&amp;#39;,&amp;#39;type&amp;#39;:&amp;#39;MINUTE&amp;#39;,&amp;#39;start_pos&amp;#39;:&amp;#39;0&amp;#39;,&amp;#39;pos_num&amp;#39;:&amp;#39;10&amp;#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类</description>
+    </item>
+    
+    <item>
+      <title>Spring Redis</title>
+      <link>https://www.shareif.cn/posts/2019-05-28-spring-redis/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-05-28-spring-redis/</guid>
+      <description>Table of Contents generated with DocToc
+ Basic  Maven依赖 Redis Docker    Basic Maven依赖   对于SpringBoot Starter项目
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-data-redis&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt;   SpringData
+&amp;lt;!--https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis --&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.data&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-data-redis&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.1.8.RELEASE&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;   Redis Docker # 拉取镜像 docker pull redis # 运行容器 docker run --name redis -d -p 6379:6379 redis </description>
+    </item>
+    
+    <item>
+      <title>SpringData MongoDb Again</title>
+      <link>https://www.shareif.cn/posts/2019-05-26-springdata-mongodb-again/</link>
+      <pubDate>Sun, 26 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-05-26-springdata-mongodb-again/</guid>
+      <description>Table of Contents generated with DocToc
+ Basic  Basic   MongoDb Docker
+docker run -d -p 27017:27017 -v 本地db文件夹路径:/data/db mongo:latest 其中-p 27017:27017表示将本地端口27017映射到容器端口27017，-v后的参数表示将本地的数据文件映射到容器中，以便数据库数据复用。
+  Configuration
+@Configuration public class MongoDbConfig extends AbstractMongoConfiguration { @Override protected String getDatabaseName() { return &amp;#34;v2xdb&amp;#34;; } @Override public Mongo mongo() throws Exception { return new MongoClient(&amp;#34;localhost&amp;#34;, 27017); } } 一个常规的Java配置。
+  Compass
+MongoDb的可视化管理界面，方便分析语句，同时自带聚合操作界面，并且是同类GUI中最好看的。。。
+  </description>
+    </item>
+    
+    <item>
+      <title>GDAL ShapeFile实战笔记</title>
+      <link>https://www.shareif.cn/posts/2019-05-15-gdal/</link>
+      <pubDate>Wed, 15 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-05-15-gdal/</guid>
+      <description>Table of Contents generated with DocToc
+ 准备  源码及工具 动态链接库及Jar包  编译源码 集成   验证   预热  地理空间基本概念 模块简介 [](#)   REFERENCES  [TOC]
+准备 源码及工具  GDAL 2.4.0 swig Ant  windows平台可以直接使用由第三方提供的dll文件GISInternals，同时在项目中直接依赖Maven中的Gdal对应版本即可，由于没有找到可用的2.4.0的linux下的动态链接库，所以只能自己编译了，蛋疼
+动态链接库及Jar包  libgdal.so.20 libgdalalljni.so gdal.jar  编译源码 cd $GDAL_HOME ./configure --with-java=$JAVA_HOME --prefix=$PATH_YOU_WANT_TO_INSTALL make make install 编译结束后，继续编译Java接口和JNI支持库
+cd $GDAL_HOME/swig/java make 如果编译Java的过程报作用域的错误，直接找到对应Java文件，加个public，简单粗暴。实际上有用的就这俩：libgdalalljni.so和gdal.jar，如果不能确保maven中心库的编译工具和自己环境的编译工具一致，就不要引用maven中心库的jar包。
+由于项目里暂时没法自定义基础容器，所以需要将这GDAL手动集成到项目的包里，又一个蛋疼
+集成 源码编译完成后，将$PATH_YOU_WANT_TO_INSTALL/share 和$PATH_YOU_WANT_TO_INSTALL/lib复制出来放到项目的某个文件夹下比如$PROJECT_LIB/gdal，怎么打包可以百度，同时，由于容器化部署，GDAL的依赖库不一定都包含在了基础容器中，所以还要验证：
+查看libgdalalljni.so所有动态链接库依赖：
+# 懒得找linux环境了，Mac上的动态链接库依赖查看用otool # Linux环境用 ldd libgdalalljni.so otool -L libgdalalljni.</description>
+    </item>
+    
+    <item>
+      <title>SpringData MongoDB 聚合笔记</title>
+      <link>https://www.shareif.cn/posts/2019-05-14-mongodb-aggregate/</link>
+      <pubDate>Tue, 14 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-05-14-mongodb-aggregate/</guid>
+      <description>Table of Contents generated with DocToc
+ 简介 MongoDB聚合框架  Map-Reduce   利用SpringData进行聚合操作  基本抽象 Aggregation AggregationOperations  概览     Example REFERENCES  简介 之前一直用Java Stream来处理数据聚合操作，统计一些前端需要的信息，虽然一直没什么大问题，但是总觉的这事饶了一大圈，苦于不熟悉SpringData和MongoDB，对于MongoDB的聚合框架更是一无所知，索性和SpringData MongoDB一起，趁这个机会给自己扫个盲。
+要理解SpringData mongo中的聚合框架，首先需要了解一下Mongodb中的聚合框架是如何定义，如何使用的，因为说到底，SpringData提供的聚合框架支持，最后都会转化为数据库本身的聚合框架所能理解的形式，并交由数据库本身执行。
+MongoDB聚合框架 MongoDB自身提供三种形式的聚合操作：管道聚合、Map-Reduce模式和单目标聚合操作，其中管道聚合和Map-Reduce拥有比较高的灵活性，单目标聚合操作限于一些特定目标的聚合，无法满足其他定制化需求。
+根据官方文档的说法，Map-Reduce模式是通过JavaScript函数来定义行为的，这就意味着，虽然给行为的定义增加了极大的灵活性，但是也同时意味着性能损耗。（还要学JavaScript，混在后端代码里总觉得怪怪的）
+ Starting in MongoDB 2.4, certain mongo shell functions and properties are inaccessible in map-reduce operations. MongoDB 2.4 also provides support for multiple JavaScript operations to run at the same time. Before MongoDB 2.4, JavaScript code executed in a single thread, raising concurrency issues for map-reduce.</description>
+    </item>
+    
+    <item>
+      <title>啃一啃Java中的Stream</title>
+      <link>https://www.shareif.cn/posts/2019-05-14-java-stream/</link>
+      <pubDate>Tue, 14 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2019-05-14-java-stream/</guid>
+      <description>Table of Contents generated with DocToc
+ 什么是流 Stream API概览 流操作  中间操作与终端操作（intermediate &amp;amp; terminal） 有状态与无状态 (stateful &amp;amp; stateless) 短路操作 （short-circuiting）   重要方法  函数式接口 映射（Map） 规约（Reduce） 可变规约（Collect）   REFERENCES  什么是流 比较偏颇的理解，流指代的就是集合类下的stream() api，它的作用就是将集合类型转化为Stream&amp;lt;E&amp;gt;接口实现的类， 官方一点说，&amp;ldquo;从支持数据处理操作的源生成的元素序列&amp;rdquo;。这个序列，实际上就是Stream实现类，可以调用由Stream定义的抽象方法来对数据进行批量操作，而不用像以往那样对数据集手动遍历才能进行各种操作。对于流的定义和描述，更具体的可以参考Stream Doc，或者已经尽力翻译的博客
+Stream API概览    Method Description Type     filter() 很常用的方法，将传入的方法对流中的每个数据都执行一遍 intermediate   distinct() 去重，根据Object.equals(Object)来判断两个元素是否相同，并行化代价高 stateful intermediate   skip() 跳过前n个元素，并行化代价高，但是如果允许跳过任意n个元素，可以改善并行化的性能 stateful intermediate   limit() 截断流前n个元素，并行化代价高 short-circuiting stateful intermediate   map() 将传入的匿名函数应用到每一个流中的元素中 intermediate   flatMap() 将流扁平化，可以将一个元素展开成多个元素，并将这种展开操作应用到所有元素，生成新的流。 intermediate   sorted() 排序，根据传入的Comparator stateful intermediate   anyMatch() 传入一个谓词Predicate，如果任意一个元素匹配成功，则会返回true short-circuiting terminal   noneMatch() 传入一个谓词Predicate，如果所有元素都不匹配，则会返回true short-circuiting terminal   allMatch() 传入一个谓词Predicate，如果所有元素都匹配，则会返回true short-circuiting terminal   findAny() 返回一个Optional对象来描述流是否空 short-circuiting terminal   findFirst() 返回一个Optional来描述流的第一个元素 short-circuiting terminal   forEach() 类似map，会对每个元素执行传入Consumer方法，不会生成新流 terminal   collect() 收集元素，按传入的匿名函数判断流中的元素是否应该放入到最后结果容器中（非流） terminal   reduce() 规约，将流按照传入匿名函数定义将流规约成一个值或对象 terminal   count() 特殊规约操作，将流中的元素个数返回 terminal    流操作 中间操作与终端操作（intermediate &amp;amp; terminal） Java8的流操作分成了两类，一类是中间操作，一类是终端操作，这两种操作最大的区别是中间操作会产生一个新的流，而终端操作会产生其他对象或值，而非流，所以顾名思义，一个终端操作往往在调用链的末尾，而调用链的中间步骤往往都是中间操作类型的函数。</description>
+    </item>
+    
+  </channel>
+</rss>
