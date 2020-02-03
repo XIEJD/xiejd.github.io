@@ -6,10 +6,19 @@
     <description>Recent content on Shareif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://www.shareif.cn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>2020 Check List</title>
+      <link>https://www.shareif.cn/posts/2020-12-31-2020-checklist/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2020-12-31-2020-checklist/</guid>
+      <description> SOURCE CODE Book List Monthly summary BLOG  SOURCE CODE  netty okhttp3 Redisson quartz scheduler mqtt broker - mosquitto Flyway  Book List  《持续交付2.0》 《持续演进的Cloud Native》 《Java 性能优化权威指南》 《Go Web编程》  Basic Programming Language Spec https://golang.google.cn/ref/spec，then The book   【Optional】《算法笔记》  Monthly summary BLOG  一月 二月 三月 四月 五月 六月 七月 八月 九月 十月 十一月 十二月  </description>
+    </item>
     
     <item>
       <title>mosquitto confs</title>
@@ -26,9 +35,15 @@
       <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.shareif.cn/posts/2019-11-23-try-mqtt/</guid>
-      <description>MQTT Startup MQTT &amp;amp; Kafka [To-do]  MQTT Startup   A brief intro on MQTT：MQTT
-Broker：
-   Server QoS 0 QoS 1 QoS 2 auth bridge $SYS SSL dynamic topics cluster websockets plugin system     2lemetry ✔ ✔ ✔ ✔ ✔ § ✔ ✔ ✔ ✔ ✘   Jmqtt ✔ ✔ ✔ ✔ ✔ § § ✔ § ✔ ✔   Apache ActiveMQ ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Apache ActiveMQ Artemis ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Bevywise IoT Platform ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ rm   emitter ✔ § ✘ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   emqttd ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   flespi ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   GnatMQ ✔ ✔ ✔ ✔ ✘ ✘ ✘ ✔ ✘ ✘ ✘   HBMQTT ✔ ✔ ✔ ✔ ✘ ✔ ✔ ✔ ✘ ✔ ✔   HiveMQ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   IBM WIoTP Message Gateway ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   moquette ✔ ✔ ✔ ✔ ?</description>
+      <description>ABOUT MQTT TRY MQTT  ABOUT MQTT  A brief intro on MQTT：MQTT Awesome MQTT MQTT Broker 选型 EMQ 开源版本和企业版本以及平台版本详细对比  TRY MQTT 纠结了一会，选择EMQX作为MQTT Broker 来搞一个demo。EMQX MQTT协议支持完善，支持集群，Apache License 2.0，文档全，开源社区相对活跃。美中不足用的是erlang开发（懒的学）
+EMQX 官网文档：https://docs.emqx.io/broker/v3/cn/
+EMQX Github：https://github.com/emqx/emqx
+EMQX Docker Hub：https://hub.docker.com/r/emqx/emqx
+EMQX文档相当完善，中文，建议完全阅读。
+Targets:
+  运行EMQX作为MQTT Broker
+容器部署：
+docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx    1883 MQTT 协议端口     8883 MQTT/SSL 端口   8083 MQTT/WebSocket 端口   8080 HTTP API 端口   18083 Dashboard 管理控制台端口      客户端使用spring-integration-mqtt作为mqtt客户端，</description>
     </item>
     
     <item>

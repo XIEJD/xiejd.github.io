@@ -11,14 +11,26 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="try mqtt"/>
-<meta name="twitter:description" content="MQTT Startup MQTT &amp; Kafka [To-do]  MQTT Startup   A brief intro on MQTT：MQTT
-Broker：
-   Server QoS 0 QoS 1 QoS 2 auth bridge $SYS SSL dynamic topics cluster websockets plugin system     2lemetry ✔ ✔ ✔ ✔ ✔ § ✔ ✔ ✔ ✔ ✘   Jmqtt ✔ ✔ ✔ ✔ ✔ § § ✔ § ✔ ✔   Apache ActiveMQ ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Apache ActiveMQ Artemis ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Bevywise IoT Platform ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ rm   emitter ✔ § ✘ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   emqttd ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   flespi ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   GnatMQ ✔ ✔ ✔ ✔ ✘ ✘ ✘ ✔ ✘ ✘ ✘   HBMQTT ✔ ✔ ✔ ✔ ✘ ✔ ✔ ✔ ✘ ✔ ✔   HiveMQ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   IBM WIoTP Message Gateway ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   moquette ✔ ✔ ✔ ✔ ?"/>
+<meta name="twitter:description" content="ABOUT MQTT TRY MQTT  ABOUT MQTT  A brief intro on MQTT：MQTT Awesome MQTT MQTT Broker 选型 EMQ 开源版本和企业版本以及平台版本详细对比  TRY MQTT 纠结了一会，选择EMQX作为MQTT Broker 来搞一个demo。EMQX MQTT协议支持完善，支持集群，Apache License 2.0，文档全，开源社区相对活跃。美中不足用的是erlang开发（懒的学）
+EMQX 官网文档：https://docs.emqx.io/broker/v3/cn/
+EMQX Github：https://github.com/emqx/emqx
+EMQX Docker Hub：https://hub.docker.com/r/emqx/emqx
+EMQX文档相当完善，中文，建议完全阅读。
+Targets:
+  运行EMQX作为MQTT Broker
+容器部署：
+docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx    1883 MQTT 协议端口     8883 MQTT/SSL 端口   8083 MQTT/WebSocket 端口   8080 HTTP API 端口   18083 Dashboard 管理控制台端口      客户端使用spring-integration-mqtt作为mqtt客户端，"/>
 
     <meta property="og:title" content="try mqtt" />
-<meta property="og:description" content="MQTT Startup MQTT &amp; Kafka [To-do]  MQTT Startup   A brief intro on MQTT：MQTT
-Broker：
-   Server QoS 0 QoS 1 QoS 2 auth bridge $SYS SSL dynamic topics cluster websockets plugin system     2lemetry ✔ ✔ ✔ ✔ ✔ § ✔ ✔ ✔ ✔ ✘   Jmqtt ✔ ✔ ✔ ✔ ✔ § § ✔ § ✔ ✔   Apache ActiveMQ ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Apache ActiveMQ Artemis ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✔   Bevywise IoT Platform ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ rm   emitter ✔ § ✘ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   emqttd ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   flespi ✔ ✔ ✔ ✔ ✘ ✘ ✔ ✔ ✔ ✔ ✘   GnatMQ ✔ ✔ ✔ ✔ ✘ ✘ ✘ ✔ ✘ ✘ ✘   HBMQTT ✔ ✔ ✔ ✔ ✘ ✔ ✔ ✔ ✘ ✔ ✔   HiveMQ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   IBM WIoTP Message Gateway ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔   moquette ✔ ✔ ✔ ✔ ?" />
+<meta property="og:description" content="ABOUT MQTT TRY MQTT  ABOUT MQTT  A brief intro on MQTT：MQTT Awesome MQTT MQTT Broker 选型 EMQ 开源版本和企业版本以及平台版本详细对比  TRY MQTT 纠结了一会，选择EMQX作为MQTT Broker 来搞一个demo。EMQX MQTT协议支持完善，支持集群，Apache License 2.0，文档全，开源社区相对活跃。美中不足用的是erlang开发（懒的学）
+EMQX 官网文档：https://docs.emqx.io/broker/v3/cn/
+EMQX Github：https://github.com/emqx/emqx
+EMQX Docker Hub：https://hub.docker.com/r/emqx/emqx
+EMQX文档相当完善，中文，建议完全阅读。
+Targets:
+  运行EMQX作为MQTT Broker
+容器部署：
+docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx    1883 MQTT 协议端口     8883 MQTT/SSL 端口   8083 MQTT/WebSocket 端口   8080 HTTP API 端口   18083 Dashboard 管理控制台端口      客户端使用spring-integration-mqtt作为mqtt客户端，" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.shareif.cn/posts/2019-11-23-try-mqtt/" />
 <meta property="article:published_time" content="2019-11-23T00:00:00+00:00" />
@@ -113,7 +125,7 @@ Broker：
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              3-minute read
+              2-minute read
             </span>
           </div>
           
@@ -126,422 +138,19 @@ Broker：
         <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <ul>
-<li><a href="#mqtt-startup">MQTT Startup</a></li>
-<li><a href="#mqtt--kafka-to-do">MQTT &amp; Kafka [To-do]</a></li>
+<li><a href="#about-mqtt">ABOUT MQTT</a></li>
+<li><a href="#try-mqtt">TRY MQTT</a></li>
 </ul>
 <!-- raw HTML omitted -->
-<h2 id="mqtt-startup">MQTT Startup</h2>
+<h2 id="about-mqtt">ABOUT MQTT</h2>
 <ol>
-<li>
-<p>A brief intro on MQTT：<a href="https://github.com/mqtt/mqtt.github.io/wiki">MQTT</a></p>
-<p>Broker：</p>
-<table>
-<thead>
-<tr>
-<th>Server</th>
-<th>QoS 0</th>
-<th>QoS 1</th>
-<th>QoS 2</th>
-<th>auth</th>
-<th><a href="https://github.com/mqtt/mqtt.github.io/wiki/bridge_protocol">bridge</a></th>
-<th><a href="https://github.com/mqtt/mqtt.github.io/wiki/conventions#%24sys">$SYS</a></th>
-<th>SSL</th>
-<th><a href="https://github.com/mqtt/mqtt.github.io/wiki/are_topics_dynamic">dynamic topics</a></th>
-<th>cluster</th>
-<th>websockets</th>
-<th>plugin system</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="http://2lemetry.com/platform/">2lemetry</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>§</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="https://github.com/Cicizz/jmqtt">Jmqtt</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>§</td>
-<td>§</td>
-<td>✔</td>
-<td>§</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="http://activemq.apache.org/">Apache ActiveMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="http://activemq.apache.org/artemis">Apache ActiveMQ Artemis</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://www.bevywise.com/iot-platform/">Bevywise IoT Platform</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td><strong>rm</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/emitter-io/emitter">emitter</a></td>
-<td>✔</td>
-<td>§</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="http://emqtt.io/">emqttd</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://flespi.com/mqtt-broker">flespi</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="https://github.com/ppatierno/gnatmq">GnatMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="https://github.com/beerfactory/hbmqtt">HBMQTT</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="http://www.hivemq.com/">HiveMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://developer.ibm.com/iotplatform/messagegateway/">IBM WIoTP Message Gateway</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://github.com/andsel/moquette">moquette</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>?</td>
-<td>?</td>
-<td>✔</td>
-<td>?</td>
-<td><strong>rm</strong></td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="http://mqtt.jorammq.com/">JoramMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://github.com/cesanta/mongoose">Mongoose</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr>
-<td><a href="https://github.com/mqtt/mqtt.github.io/wiki/mosca">mosca</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="https://github.com/mqtt/mqtt.github.io/wiki/mosquitto_message_broker">mosquitto</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>§</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://github.com/mqttjs/MQTT.js">MQTT.js</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>§</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="https://github.com/Wizzercn/MqttWk">MqttWk</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>?</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="http://www.rabbitmq.com/blog/2012/09/12/mqtt-adapter/">RabbitMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr>
-<td><a href="https://github.com/mqtt/mqtt.github.io/wiki/Really-Small-Message-Broker">RSMB</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>?</td>
-</tr>
-<tr>
-<td><a href="http://um.terracotta.org/#page/%2Fum.terracotta.org%2Funiversal-messaging-webhelp%2Fto-mqttoverview.html%23">Software AG Universal Messaging</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>rm</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="http://dev.solacesystems.com/tech">Solace</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>§</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="http://www.swiftmq.com/landing/router/index.html">SwiftMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="https://github.com/trafero/tstack">Trafero Tstack</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✘</td>
-<td>✘</td>
-</tr>
-<tr>
-<td><a href="https://verne.mq/">VerneMQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td><a href="http://www-03.ibm.com/software/products/en/wmq/">WebSphere MQ</a></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>
-<p><a href="https://www.jianshu.com/p/cf91f4bea071">MQTT Broker 选型</a></p>
-</li>
-<li>
-<p><a href="https://www.emqx.io/static/files/EMQ_X_product_compare_cn.pdf">EMQ 开源版本和企业版本以及平台版本详细对比</a></p>
-</li>
+<li>A brief intro on MQTT：<a href="https://github.com/mqtt/mqtt.github.io/wiki">MQTT</a></li>
+<li><a href="https://github.com/hobbyquaker/awesome-mqtt#broker">Awesome MQTT</a></li>
+<li><a href="https://www.jianshu.com/p/cf91f4bea071">MQTT Broker 选型</a></li>
+<li><a href="https://www.emqx.io/static/files/EMQ_X_product_compare_cn.pdf">EMQ 开源版本和企业版本以及平台版本详细对比</a></li>
 </ol>
-<p>纠结了一会，选择EMQX作为MQTT Broker 来搞一个demo。EMQX MQTT协议支持完善，支持集群，Apache License 2.0，文档全，开源社区相对活跃。</p>
+<h2 id="try-mqtt">TRY MQTT</h2>
+<p>纠结了一会，选择EMQX作为MQTT Broker 来搞一个demo。EMQX MQTT协议支持完善，支持集群，Apache License 2.0，文档全，开源社区相对活跃。美中不足用的是erlang开发（懒的学）</p>
 <p>EMQX 官网文档：https://docs.emqx.io/broker/v3/cn/</p>
 <p>EMQX Github：https://github.com/emqx/emqx</p>
 <p>EMQX Docker Hub：https://hub.docker.com/r/emqx/emqx</p>
@@ -670,7 +279,6 @@ Broker：
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">收到来自mqtt-test的消息：this is a mqtt message from test
 </code></pre></div></li>
 </ol>
-<h2 id="mqtt--kafka-to-do">MQTT &amp; Kafka [To-do]</h2>
 
       </div>
 
