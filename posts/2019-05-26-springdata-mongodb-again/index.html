@@ -185,7 +185,7 @@ MongoDb的可视化管理界面，方便分析语句，同时自带聚合操作�
       render: h => h('Vssue', {
         props: {
           
-          title: 'Vssue Dev',
+          title: options => `${options.prefix}:${document.url}`
 
           
           options: {

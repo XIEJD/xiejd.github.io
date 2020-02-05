@@ -608,7 +608,7 @@ Headset</p>
       render: h => h('Vssue', {
         props: {
           
-          title: 'Vssue Dev',
+          title: options => `${options.prefix}:${document.url}`
 
           
           options: {

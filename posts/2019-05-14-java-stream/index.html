@@ -702,7 +702,7 @@ System.out.println(maxBy.apply(1,2));
       render: h => h('Vssue', {
         props: {
           
-          title: 'Vssue Dev',
+          title: options => `${options.prefix}:${document.url}`
 
           
           options: {
