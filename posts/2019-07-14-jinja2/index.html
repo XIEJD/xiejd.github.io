@@ -325,10 +325,11 @@ asdfasdfasdfasdfasdf\{\}\{\}\{\}\{\}\{\}\{\}
       render: h => h('Vssue', {
         props: {
           
-          title: options => options.prefix + document.url,
+          title: options => `${options.prefix}:${document.url}`,
 
           
           options: {
+            autoCreateIssue: true,
             owner: 'XIEJD',
             repo: 'xiejd.github.io',
             clientId: 'd49c970afdb5dc4631f9',
