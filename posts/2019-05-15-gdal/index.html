@@ -315,7 +315,7 @@ otool -L libgdalalljni.20.dylib
       render: h => h('Vssue', {
         props: {
           
-          title: options => `${options.prefix}:${document.URL}`,
+          title: options => `${options.prefix}comments on ${document.location.pathname}`,
 
           
           options: {

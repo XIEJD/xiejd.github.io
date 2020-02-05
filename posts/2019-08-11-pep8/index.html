@@ -953,7 +953,7 @@ Worse: <span style="font-weight:bold">if</span> greeting <span style="font-weigh
       render: h => h('Vssue', {
         props: {
           
-          title: options => `${options.prefix}:${document.URL}`,
+          title: options => `${options.prefix}comments on ${document.location.pathname}`,
 
           
           options: {
