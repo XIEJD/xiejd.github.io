@@ -393,7 +393,7 @@ List&lt;OutputType&gt; mappedResult = results.getMappedResults();
       render: h => h('Vssue', {
         props: {
           
-          title: options => `${options.prefix}:${document.url}`
+          title: options => options.prefix + document.url,
 
           
           options: {

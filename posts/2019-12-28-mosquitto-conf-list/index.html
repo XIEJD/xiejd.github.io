@@ -270,7 +270,7 @@ tls_engine
       render: h => h('Vssue', {
         props: {
           
-          title: options => `${options.prefix}:${document.url}`
+          title: options => options.prefix + document.url,
 
           
           options: {
