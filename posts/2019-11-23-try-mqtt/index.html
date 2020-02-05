@@ -296,7 +296,7 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
       render: h => h('Vssue', {
         props: {
           
-          title: options => `${options.prefix}:${document.url}`,
+          title: options => `${options.prefix}:${document.URL}`,
 
           
           options: {
