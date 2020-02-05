@@ -357,26 +357,22 @@
         
 
 
-        <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "shareif" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+      <script>
+const gitment = new Gitment({
+    id: 'Your page ID', 
+    owner: 'XIEJD',
+    repo: 'xiejd.github.io',
+    oauth: {
+        client_id: '52f29c90724284db105e',
+        client_secret: 'c340f37ff485b77ec71b664b585295ac22dd6f9a',
+    },
+ });
+
+gitment.render('comments');
+     </script>
+
         
         
       </footer>
