@@ -77,7 +77,7 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
       <guid>https://www.shareif.cn/posts/2019-08-11-things/</guid>
       <description>Table of Contents generated with DocToc
  下载类 应用类  macOS     主要用来记录解决某个问题(非编程)时所用到的解决方法，比如在用某个包管理时，要切换镜像加速
- 下载类  sourceforge.net 的访问非常不稳定（无法访问），如果需要下载上面的某个开源项目，可以使用其镜像网站 http://sourceforge.mirrorservice.org  应用类 macOS MPV、IINA (本地视频播放) 迅雷 for mac keka （压缩软件） VS code （CRLF模式） 中西历转换 (http://sinocal.sinica.edu.tw) 搜狗输入法 for mac 壁纸软件(http://paper.meiyuan.in/?utm_source=zh) Cheatsheet (快捷键提示) Steam (游戏) Mumu模拟器 (网易出品，手机游戏电脑玩)  </description>
+ 下载类  sourceforge.net 的访问非常不稳定（无法访问），如果需要下载上面的某个开源项目，可以使用其镜像网站 http://sourceforge.mirrorservice.org  应用类 macOS MPV、IINA (本地视频播放) 迅雷 for mac keka （压缩软件） VS code （CRLF模式） 中西历转换 (http://sinocal.sinica.edu.tw) 壁纸软件(http://paper.meiyuan.in/?utm_source=zh) Cheatsheet (快捷键提示) Steam (游戏) Mumu模拟器 (网易出品，手机游戏电脑玩)  </description>
     </item>
     
     <item>
