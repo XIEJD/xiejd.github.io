@@ -43,7 +43,7 @@ Stream API概览    Method Description Type     filter() 很常用的方法，�
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -244,13 +244,13 @@ Stream API概览    Method Description Type     filter() 很常用的方法，�
 <h3 id="中间操作与终端操作intermediate--terminal">中间操作与终端操作（intermediate &amp; terminal）</h3>
 <p>Java8的流操作分成了两类，一类是中间操作，一类是终端操作，这两种操作最大的区别是中间操作会产生一个新的流，而终端操作会产生其他对象或值，而非流，所以顾名思义，一个终端操作往往在调用链的末尾，而调用链的中间步骤往往都是中间操作类型的函数。</p>
 <p>流的操作都是采用声明式的方法，大部分流的操作函数都会接受匿名函数让用户去定义各种行为。比如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List&lt;Integer&gt; list = Arrays.asList(1,2,3,4,5);
-List&lt;Integer&gt; mappedList = list.stream().map(
-    x -&gt; {<span style="font-weight:bold">return</span> x+1;}).collect(Collectors.toList());
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">,</span>3<span style="color:#f92672">,</span>4<span style="color:#f92672">,</span>5<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> mappedList <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>
+    x <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">return</span> x<span style="color:#f92672">+</span>1<span style="color:#f92672">;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<span style="font-style:italic">//换一种写法
-</span><span style="font-style:italic"></span>List&lt;Integer&gt; mappedList = list.stream().map(
-    x -&gt; {<span style="font-weight:bold">return</span> x+1;}).collect(ArrayList::<span style="font-weight:bold">new</span>, List::add, List::addAll);
+<span style="color:#75715e">//换一种写法
+</span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> mappedList <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>
+    x <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">return</span> x<span style="color:#f92672">+</span>1<span style="color:#f92672">;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>ArrayList<span style="color:#f92672">:</span><span style="color:#f92672">:</span><span style="color:#66d9ef">new</span><span style="color:#f92672">,</span> List<span style="color:#f92672">:</span><span style="color:#f92672">:</span>add<span style="color:#f92672">,</span> List<span style="color:#f92672">:</span><span style="color:#f92672">:</span>addAll<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>匿名函数<code>x -&gt; {return x+1;}</code>定义了一个行为：为输入元素加1返回，匿名函数传入流中<code>map</code>函数后，会被应用到每一个流中元素，并且产生一个新流（流中元素仅能被访问一次），这个新流调用<code>collect</code>函数，这个函数是个终端操作，意味着它产生的结果不能继续调用流的方法，从例子中可知，<code>collect</code>函数传入的匿名函数将流转换成了列表。</p>
 <p>上面例子中第二种写法对<code>collect</code>的入参描述的更加清楚，一个<code>Supplier</code>提供结果存放的对象，一个往结果对象中添加元素的方法，以及一个连接（合并）两个结果存放对象的方法。<code>collect</code>还有其他更强大的用法，具体的用法将在下文描述。</p>
 <h3 id="有状态与无状态-stateful--stateless">有状态与无状态 (stateful &amp; stateless)</h3>
@@ -263,106 +263,106 @@ List&lt;Integer&gt; mappedList = list.stream().map(
 <ul>
 <li>
 <p><code>Function</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
-</span><span style="font-style:italic"> * 表示一个函数接收一个参数返回一个结果
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * @param &lt;T&gt; 输入参数类型
-</span><span style="font-style:italic"> * @param &lt;R&gt; 输出类型
-</span><span style="font-style:italic"> */</span>
-@FunctionalInterface
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">Function</span>&lt;T, R&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 表示一个函数接收一个参数返回一个结果
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @param &lt;T&gt; 输入参数类型
+</span><span style="color:#75715e"> * @param &lt;R&gt; 输出类型
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@FunctionalInterface</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Function</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 将定义的操作应用到入参上.
-</span><span style="font-style:italic">     */</span>
-    R apply(T t);
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 将定义的操作应用到入参上.
+</span><span style="color:#75715e">     */</span>
+    R <span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>T t<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 该方法返回一个函数，这个函数的作用是先执行入参方法，入参方法执行的结果作为入参传递给
-</span><span style="font-style:italic">     * 此实现类定义的方法，最后返回结果。注意这个方法返回的是函数。
-</span><span style="font-style:italic">     */</span>
-    <span style="font-weight:bold">default</span> &lt;V&gt; Function&lt;V, R&gt; compose(Function&lt;? <span style="font-weight:bold">super</span> V, ? <span style="font-weight:bold">extends</span> T&gt; before) {
-        Objects.requireNonNull(before);
-        <span style="font-weight:bold">return</span> (V v) -&gt; apply(before.apply(v));
-    }
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 该方法返回一个函数，这个函数的作用是先执行入参方法，入参方法执行的结果作为入参传递给
+</span><span style="color:#75715e">     * 此实现类定义的方法，最后返回结果。注意这个方法返回的是函数。
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> Function<span style="color:#f92672">&lt;</span>V<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">compose</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> T<span style="color:#f92672">&gt;</span> before<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>before<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>V v<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> apply<span style="color:#f92672">(</span>before<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>v<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 此方法返回一个函数，这个函数的作用是先执行此实现类定义的方法，结果作为入参传递给此方
-</span><span style="font-style:italic">     * 法的入参方法，然后返回结果，注意该方法返回的是函数.
-</span><span style="font-style:italic">     */</span>
-    <span style="font-weight:bold">default</span> &lt;V&gt; Function&lt;T, V&gt; andThen(Function&lt;? <span style="font-weight:bold">super</span> R, ? <span style="font-weight:bold">extends</span> V&gt; after) {
-        Objects.requireNonNull(after);
-        <span style="font-weight:bold">return</span> (T t) -&gt; after.apply(apply(t));
-    }
-}
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 此方法返回一个函数，这个函数的作用是先执行此实现类定义的方法，结果作为入参传递给此方
+</span><span style="color:#75715e">     * 法的入参方法，然后返回结果，注意该方法返回的是函数.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> Function<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">andThen</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> R<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> after<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>after<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>T t<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> after<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>apply<span style="color:#f92672">(</span>t<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p><code>Function</code>接口定义的<code>apply</code>方法接受一个参数，由定义的lambda实现逻辑，另外两个默认方法<code>compose</code>和<code>andThen</code>分别返回一个lambda。这两个方法用于组合其他lambda使用，区别在于执行顺序不同。举个例子：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Function&lt;Integer, Integer&gt; plus = x -&gt; x + 2;
-Function&lt;Integer, Integer&gt; times = y -&gt; y * 2;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Function<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> plus <span style="color:#f92672">=</span> x <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> x <span style="color:#f92672">+</span> 2<span style="color:#f92672">;</span>
+Function<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> times <span style="color:#f92672">=</span> y <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> y <span style="color:#f92672">*</span> 2<span style="color:#f92672">;</span>
 </code></pre></div><p>定义了两个Function类，其中plus和times等号右边都实现了<code>apply</code>接口（注意实际上plus和times都是一个类实例），调用<code>plus.apply(1)</code> or <code>times.apply(1)</code>即可得到结果。调用组合函数<code>plus.compose(times)</code>，这条语句的意思实际上是先执行乘法，再执行加法，其返回的函数式实际上就是<code>y*2+2</code>。调用组合函数plus.andThen(times)，其意思实际上是先执行加法，再执行乘法，其返回的函数式实际上就是<code>(x+2)*2</code>。</p>
 </li>
 <li>
 <p>BiFunction</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
-</span><span style="font-style:italic"> * 表示一个函数接收两个参数，产生一个结果，这实际上是Function的两元形式。
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * &lt;p&gt;This is a &lt;a href=&#34;package-summary.html&#34;&gt;functional interface&lt;/a&gt;
-</span><span style="font-style:italic"> * whose functional method is {@link #apply(Object, Object)}.
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * @param &lt;T&gt; 第一个入参的类型
-</span><span style="font-style:italic"> * @param &lt;U&gt; 第二个入参的类型
-</span><span style="font-style:italic"> * @param &lt;R&gt; 返回类型
-</span><span style="font-style:italic"> */</span>
-@FunctionalInterface
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">BiFunction</span>&lt;T, U, R&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 表示一个函数接收两个参数，产生一个结果，这实际上是Function的两元形式。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * &lt;p&gt;This is a &lt;a href=&#34;package-summary.html&#34;&gt;functional interface&lt;/a&gt;
+</span><span style="color:#75715e"> * whose functional method is {@link #apply(Object, Object)}.
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @param &lt;T&gt; 第一个入参的类型
+</span><span style="color:#75715e"> * @param &lt;U&gt; 第二个入参的类型
+</span><span style="color:#75715e"> * @param &lt;R&gt; 返回类型
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@FunctionalInterface</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BiFunction</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> U<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 将定义的操作应用到入参上.
-</span><span style="font-style:italic">     */</span>
-    R apply(T t, U u);
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 将定义的操作应用到入参上.
+</span><span style="color:#75715e">     */</span>
+    R <span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>T t<span style="color:#f92672">,</span> U u<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 此方法返回一个函数，这个函数的作用是先执行此实现类定义的方法，结果作为入参传递给此方
-</span><span style="font-style:italic">     * 法的入参方法，然后返回结果，注意该方法返回的是函数.
-</span><span style="font-style:italic">     */</span>
-    <span style="font-weight:bold">default</span> &lt;V&gt; BiFunction&lt;T, U, V&gt; andThen(Function&lt;? <span style="font-weight:bold">super</span> R, ? <span style="font-weight:bold">extends</span> V&gt; after) {
-        Objects.requireNonNull(after);
-        <span style="font-weight:bold">return</span> (T t, U u) -&gt; after.apply(apply(t, u));
-    }
-}
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 此方法返回一个函数，这个函数的作用是先执行此实现类定义的方法，结果作为入参传递给此方
+</span><span style="color:#75715e">     * 法的入参方法，然后返回结果，注意该方法返回的是函数.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> BiFunction<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> U<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">andThen</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> R<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> after<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>after<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>T t<span style="color:#f92672">,</span> U u<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> after<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>apply<span style="color:#f92672">(</span>t<span style="color:#f92672">,</span> u<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>注释其实讲得很清楚，Function的两元形式，没其他特殊的。举个栗子：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BiFunction&lt;Integer, Double, Double&gt; plus = (x, y) -&gt; x + y; System.out.println(plus.apply(1,2.0));
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BiFunction<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span> Double<span style="color:#f92672">,</span> Double<span style="color:#f92672">&gt;</span> plus <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> x <span style="color:#f92672">+</span> y<span style="color:#f92672">;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>plus<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>可以想一想，为什么BiFunction没有<code>compose</code>接口？</p>
 <p>一个函数可以同时返回两个对象吗？</p>
 </li>
 <li>
 <p>BinaryOperator</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
-</span><span style="font-style:italic"> * 表示一个基于两个相同类型的操作，产生一个相同类型的结果，BiFunction的特殊情况(操作数和结果都
-</span><span style="font-style:italic"> * 为相同类型)
-</span><span style="font-style:italic"> */</span>
-@FunctionalInterface
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">BinaryOperator</span>&lt;T&gt; <span style="font-weight:bold">extends</span> BiFunction&lt;T,T,T&gt; {
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 返回一个选择由comparator定义大小的，最小元素选择方法。
-</span><span style="font-style:italic">     */</span>
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; BinaryOperator&lt;T&gt; minBy(Comparator&lt;? <span style="font-weight:bold">super</span> T&gt; comparator) {
-        Objects.requireNonNull(comparator);
-        <span style="font-weight:bold">return</span> (a, b) -&gt; comparator.compare(a, b) &lt;= 0 ? a : b;
-    }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 表示一个基于两个相同类型的操作，产生一个相同类型的结果，BiFunction的特殊情况(操作数和结果都
+</span><span style="color:#75715e"> * 为相同类型)
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@FunctionalInterface</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BinaryOperator</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">extends</span> BiFunction<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span>T<span style="color:#f92672">,</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 返回一个选择由comparator定义大小的，最小元素选择方法。
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> BinaryOperator<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">minBy</span><span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>comparator<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> b<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">.</span><span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> b<span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> 0 <span style="color:#f92672">?</span> a <span style="color:#f92672">:</span> b<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 返回一个选择由comparator定义大小的，最大元素选择方法。
-</span><span style="font-style:italic">     */</span>
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; BinaryOperator&lt;T&gt; maxBy(Comparator&lt;? <span style="font-weight:bold">super</span> T&gt; comparator) {
-        Objects.requireNonNull(comparator);
-        <span style="font-weight:bold">return</span> (a, b) -&gt; comparator.compare(a, b) &gt;= 0 ? a : b;
-    }
-}
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 返回一个选择由comparator定义大小的，最大元素选择方法。
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> BinaryOperator<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">maxBy</span><span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>comparator<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> b<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">.</span><span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> b<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> 0 <span style="color:#f92672">?</span> a <span style="color:#f92672">:</span> b<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>BinaryOperator扩展了BiFunction接口，定义了两个静态方法，这两个静态方法分别返回选择最大元素的BinaryOperator和选择最小元素的BinaryOperator。举个栗子：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BinaryOperator&lt;Integer&gt; operator = (x, y) -&gt; x + y; <span style="font-style:italic">//匿名函数定义了apply
-</span><span style="font-style:italic"></span>BinaryOperator&lt;Integer&gt; maxBy = BinaryOperator.maxBy((x, y) -&gt; y - x); <span style="font-style:italic">// 匿名函数定义了comparator
-</span><span style="font-style:italic"></span>System.out.println(operator.apply(1,2));
-System.out.println(maxBy.apply(1,2));
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BinaryOperator<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> operator <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> x <span style="color:#f92672">+</span> y<span style="color:#f92672">;</span> <span style="color:#75715e">//匿名函数定义了apply
+</span><span style="color:#75715e"></span>BinaryOperator<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> maxBy <span style="color:#f92672">=</span> BinaryOperator<span style="color:#f92672">.</span><span style="color:#a6e22e">maxBy</span><span style="color:#f92672">(</span><span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> y <span style="color:#f92672">-</span> x<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 匿名函数定义了comparator
+</span><span style="color:#75715e"></span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>operator<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>maxBy<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>上面例子中operator和maxBy没啥关系，operator定义的是对两个入参进行加法运算，而maxBy定义的是对两个元素求较大的那个元素，而大小的比较方法，由入参Comparator定义。</p>
 </li>
 </ul>
@@ -370,50 +370,50 @@ System.out.println(maxBy.apply(1,2));
 <ul>
 <li>
 <p>map()</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
-</span><span style="font-style:italic">   * Returns a stream consisting of the results of applying the given
-</span><span style="font-style:italic">   * function to the elements of this stream.
-</span><span style="font-style:italic">   *
-</span><span style="font-style:italic">   * 返回一个包含映射函数对每个元素执行后结果的流
-</span><span style="font-style:italic">   *
-</span><span style="font-style:italic">   * &lt;p&gt;This is an &lt;a href=&#34;package-summary.html#StreamOps&#34;&gt;intermediate
-</span><span style="font-style:italic">   * operation&lt;/a&gt;.
-</span><span style="font-style:italic">   *
-</span><span style="font-style:italic">   * @param &lt;R&gt; The element type of the new stream
-</span><span style="font-style:italic">   * @param mapper a &lt;a href=&#34;package-summary.html#NonInterference&#34;&gt;non-interfering&lt;/a&gt;,
-</span><span style="font-style:italic">   *               &lt;a href=&#34;package-summary.html#Statelessness&#34;&gt;stateless&lt;/a&gt;
-</span><span style="font-style:italic">   *               function to apply to each element
-</span><span style="font-style:italic">   * @return the new stream
-</span><span style="font-style:italic">   */</span>
-  &lt;R&gt; Stream&lt;R&gt; map(Function&lt;? <span style="font-weight:bold">super</span> T, ? <span style="font-weight:bold">extends</span> R&gt; mapper);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e">   * Returns a stream consisting of the results of applying the given
+</span><span style="color:#75715e">   * function to the elements of this stream.
+</span><span style="color:#75715e">   *
+</span><span style="color:#75715e">   * 返回一个包含映射函数对每个元素执行后结果的流
+</span><span style="color:#75715e">   *
+</span><span style="color:#75715e">   * &lt;p&gt;This is an &lt;a href=&#34;package-summary.html#StreamOps&#34;&gt;intermediate
+</span><span style="color:#75715e">   * operation&lt;/a&gt;.
+</span><span style="color:#75715e">   *
+</span><span style="color:#75715e">   * @param &lt;R&gt; The element type of the new stream
+</span><span style="color:#75715e">   * @param mapper a &lt;a href=&#34;package-summary.html#NonInterference&#34;&gt;non-interfering&lt;/a&gt;,
+</span><span style="color:#75715e">   *               &lt;a href=&#34;package-summary.html#Statelessness&#34;&gt;stateless&lt;/a&gt;
+</span><span style="color:#75715e">   *               function to apply to each element
+</span><span style="color:#75715e">   * @return the new stream
+</span><span style="color:#75715e">   */</span>
+  <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> Stream<span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> R<span style="color:#f92672">&gt;</span> mapper<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>从接口定义看出，<code>map</code>函数接收一个<code>Function</code>，即接受一个入参为T或者T的父类的类型，输出为R或者R的子类型的lambda。其中R的类型即为输出流中元素的类型，T的类型为输入流中元素的类型。如本文第一个例子中lambda<code>x -&gt; x+1</code>，输入输出类型均为<code>Integer</code>，因为输入流为<code>Stream&lt;Integer&gt;</code>所以lambda的输入x必须为<code>Integer</code>或者他的父类，输出流<code>Stream&lt;R&gt;</code>中R可以为其他任意类型。</p>
 <p>注释中标明入参mapper为<code>non-interfering</code>以及<code>stateless</code>的，即非干涉以及无状态的，其概念已经介绍过，可参考<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html">Stream Doc</a>，或蹩脚译文<a href="#">Java.util.stream文档翻译</a>。简言之，就是匿名方法中不要依赖外部状态，不要对数据源进行修改或导致修改的操作。</p>
 <p>举个栗子：对流中数值加1</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  List&lt;Integer&gt; list = Arrays.asList(1,2,3,4,5); <span style="font-style:italic">//延用第一个栗子
-</span><span style="font-style:italic"></span>  List&lt;Integer&gt; mappedList = list.stream().map(x -&gt; x+1) <span style="font-style:italic">//这个lamdba返回的结果不会修改输入流，而是会用来生成新的输出流。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">,</span>3<span style="color:#f92672">,</span>4<span style="color:#f92672">,</span>5<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//延用第一个栗子
+</span><span style="color:#75715e"></span>  List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> mappedList <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>x <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> x<span style="color:#f92672">+</span>1<span style="color:#f92672">)</span> <span style="color:#75715e">//这个lamdba返回的结果不会修改输入流，而是会用来生成新的输出流。
 </span></code></pre></div></li>
 <li>
 <p>mapToDouble()</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="font-style:italic">/**
-</span><span style="font-style:italic">   * Returns a {@code DoubleStream} consisting of the results of applying the
-</span><span style="font-style:italic">   * given function to the elements of this stream.
-</span><span style="font-style:italic">   *
-</span><span style="font-style:italic">   * &lt;p&gt;This is an &lt;a href=&#34;package-summary.html#StreamOps&#34;&gt;intermediate
-</span><span style="font-style:italic">   * operation&lt;/a&gt;.
-</span><span style="font-style:italic">   *
-</span><span style="font-style:italic">   * @param mapper a &lt;a href=&#34;package-summary.html#NonInterference&#34;&gt;non-interfering&lt;/a&gt;,
-</span><span style="font-style:italic">   *               &lt;a href=&#34;package-summary.html#Statelessness&#34;&gt;stateless&lt;/a&gt;
-</span><span style="font-style:italic">   *               function to apply to each element
-</span><span style="font-style:italic">   * @return the new stream
-</span><span style="font-style:italic">   */</span>
-  DoubleStream mapToDouble(ToDoubleFunction&lt;? <span style="font-weight:bold">super</span> T&gt; mapper);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#75715e">/**
+</span><span style="color:#75715e">   * Returns a {@code DoubleStream} consisting of the results of applying the
+</span><span style="color:#75715e">   * given function to the elements of this stream.
+</span><span style="color:#75715e">   *
+</span><span style="color:#75715e">   * &lt;p&gt;This is an &lt;a href=&#34;package-summary.html#StreamOps&#34;&gt;intermediate
+</span><span style="color:#75715e">   * operation&lt;/a&gt;.
+</span><span style="color:#75715e">   *
+</span><span style="color:#75715e">   * @param mapper a &lt;a href=&#34;package-summary.html#NonInterference&#34;&gt;non-interfering&lt;/a&gt;,
+</span><span style="color:#75715e">   *               &lt;a href=&#34;package-summary.html#Statelessness&#34;&gt;stateless&lt;/a&gt;
+</span><span style="color:#75715e">   *               function to apply to each element
+</span><span style="color:#75715e">   * @return the new stream
+</span><span style="color:#75715e">   */</span>
+  DoubleStream <span style="color:#a6e22e">mapToDouble</span><span style="color:#f92672">(</span>ToDoubleFunction<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> mapper<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>为什么单独为double类型定义一个方法？其实不止double，三种基本类型<code>double,int,long</code>都有单独的声明式方法和单独的函数式接口。</p>
 <p>原因很简单，因为泛型无法表示基本类型，所以<code>map</code>的泛型接口无法使用，只能单独为这三种基本类型定义新的接口，包括函数式接口，他们与普通的泛型接口不同的地方是其返回类型，泛型接口返回的是对象，而<code>ToDoubleFunction</code>返回的是基本类型<code>double</code>，<code>mapToDouble</code>返回的不是<code>Stream&lt;Double&gt;</code>，而是一个<code>DoubleStream</code>，这个<code>DoubleStream</code>其实和<code>Stream</code>一样继承<code>BaseStream</code>。其用法也和<code>Stream</code>几乎一样。</p>
 <p>举个栗子：对流中数值加1</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  List&lt;Double&gt; list = Arrays.asList(Double.valueOf(1), 			 	 	   Double.valueOf(2), Double.valueOf(3),
-            Double.valueOf(4), Double.valueOf(5)); 
-  DoubleStream doubleStream = list.stream().mapToDouble(x -&gt; x+1); <span style="font-style:italic">//这个流中的元素都是基本类型double
-</span><span style="font-style:italic"></span>  doubleStream.forEach(System.out::println); <span style="font-style:italic">//用法和Stream一样
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  List<span style="color:#f92672">&lt;</span>Double<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>Double<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>1<span style="color:#f92672">)</span><span style="color:#f92672">,</span> 			 	 	   Double<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>2<span style="color:#f92672">)</span><span style="color:#f92672">,</span> Double<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>3<span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+            Double<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>4<span style="color:#f92672">)</span><span style="color:#f92672">,</span> Double<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>5<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
+  DoubleStream doubleStream <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mapToDouble</span><span style="color:#f92672">(</span>x <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> x<span style="color:#f92672">+</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//这个流中的元素都是基本类型double
+</span><span style="color:#75715e"></span>  doubleStream<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">:</span><span style="color:#f92672">:</span>println<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//用法和Stream一样
 </span></code></pre></div></li>
 </ul>
 <h3 id="规约reduce">规约（Reduce）</h3>
@@ -421,82 +421,82 @@ System.out.println(maxBy.apply(1,2));
 <ul>
 <li>
 <p>第一个方法</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="font-style:italic">/**
-</span><span style="font-style:italic">   * This is equivalent to:
-</span><span style="font-style:italic">   * &lt;pre&gt;{@code
-</span><span style="font-style:italic">   *     boolean foundAny = false;
-</span><span style="font-style:italic">   *     T result = null;
-</span><span style="font-style:italic">   *     for (T element : this stream) {
-</span><span style="font-style:italic">   *         if (!foundAny) {
-</span><span style="font-style:italic">   *             foundAny = true;
-</span><span style="font-style:italic">   *             result = element;
-</span><span style="font-style:italic">   *         }
-</span><span style="font-style:italic">   *         else
-</span><span style="font-style:italic">   *             result = accumulator.apply(result, element);
-</span><span style="font-style:italic">   *     }
-</span><span style="font-style:italic">   *     return foundAny ? Optional.of(result) : Optional.empty();
-</span><span style="font-style:italic">   * }&lt;/pre&gt;
-</span><span style="font-style:italic">   *  
-</span><span style="font-style:italic">   * but is not constrained to execute sequentially.
-</span><span style="font-style:italic">   */</span>
-  Optional&lt;T&gt; reduce(BinaryOperator&lt;T&gt; accumulator);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#75715e">/**
+</span><span style="color:#75715e">   * This is equivalent to:
+</span><span style="color:#75715e">   * &lt;pre&gt;{@code
+</span><span style="color:#75715e">   *     boolean foundAny = false;
+</span><span style="color:#75715e">   *     T result = null;
+</span><span style="color:#75715e">   *     for (T element : this stream) {
+</span><span style="color:#75715e">   *         if (!foundAny) {
+</span><span style="color:#75715e">   *             foundAny = true;
+</span><span style="color:#75715e">   *             result = element;
+</span><span style="color:#75715e">   *         }
+</span><span style="color:#75715e">   *         else
+</span><span style="color:#75715e">   *             result = accumulator.apply(result, element);
+</span><span style="color:#75715e">   *     }
+</span><span style="color:#75715e">   *     return foundAny ? Optional.of(result) : Optional.empty();
+</span><span style="color:#75715e">   * }&lt;/pre&gt;
+</span><span style="color:#75715e">   *  
+</span><span style="color:#75715e">   * but is not constrained to execute sequentially.
+</span><span style="color:#75715e">   */</span>
+  Optional<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>BinaryOperator<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> accumulator<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>理解了<code>reduce</code>方法的函数式接口入参<code>BinaryOperator</code>后，直接看官方文档的注释中的示例，就非常能明白<code>reduce</code>是怎么运作的了。解释一下接口文档中伪代码的描述：如果流为空，则返回一个Opional空对象（不是null），如果流非空，则不断的进行两元素<code>fold</code>折叠操作，第一次进行折叠时，直接将第一个元素作为上一步折叠操作的结果。以后每一次折叠操作，第一个参数为上一步的结果，第二个元素为接下来的元素。不断循环，直至得到一个单一的元素作为结果返回（由Optional包装）。</p>
 </li>
 <li>
 <p>第二个方法</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * This is equivalent
-</span><span style="font-style:italic">     * to:
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     T result = identity;
-</span><span style="font-style:italic">     *     for (T element : this stream)
-</span><span style="font-style:italic">     *         result = accumulator.apply(result, element)
-</span><span style="font-style:italic">     *     return result;
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * but is not constrained to execute sequentially.
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * @apiNote Sum, min, max, average, and string连接 都是特殊的规约操作
-</span><span style="font-style:italic">     * 比如求和可以用如下方式定义：
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     Integer sum = integers.reduce(0, (a, b) -&gt; a+b);
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * 或者:
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     Integer sum = integers.reduce(0, Integer::sum);
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">   *
-</span><span style="font-style:italic">     * 用这种声明式的方法进行这种聚合，相比于直接用外循环来累加求和可能会有一点绕，但这是
-</span><span style="font-style:italic">     * 值得的，用声明式的方法来进行规约操作可以非常优雅的并行化，而无需额外的同步，同时极大
-</span><span style="font-style:italic">     * 的降低了数据竞争的风险。
-</span><span style="font-style:italic">     */</span>
-    T reduce(T identity, BinaryOperator&lt;T&gt; accumulator);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * This is equivalent
+</span><span style="color:#75715e">     * to:
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     T result = identity;
+</span><span style="color:#75715e">     *     for (T element : this stream)
+</span><span style="color:#75715e">     *         result = accumulator.apply(result, element)
+</span><span style="color:#75715e">     *     return result;
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * but is not constrained to execute sequentially.
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * @apiNote Sum, min, max, average, and string连接 都是特殊的规约操作
+</span><span style="color:#75715e">     * 比如求和可以用如下方式定义：
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     Integer sum = integers.reduce(0, (a, b) -&gt; a+b);
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * 或者:
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     Integer sum = integers.reduce(0, Integer::sum);
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">   *
+</span><span style="color:#75715e">     * 用这种声明式的方法进行这种聚合，相比于直接用外循环来累加求和可能会有一点绕，但这是
+</span><span style="color:#75715e">     * 值得的，用声明式的方法来进行规约操作可以非常优雅的并行化，而无需额外的同步，同时极大
+</span><span style="color:#75715e">     * 的降低了数据竞争的风险。
+</span><span style="color:#75715e">     */</span>
+    T <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>T identity<span style="color:#f92672">,</span> BinaryOperator<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> accumulator<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>和第一个重载方法不一样的地方在于，这个借口多了一个入参，来定义“第一次折叠操作的结果”，所以，如伪代码所示，当进行循环折叠时，因为已经有了初始值，所以不用再每次都来判断是否是第一次折叠操作了。</p>
 <p>栗子在注释中有，就不重复举了。需要注意的是，该接口中的泛型都是同一种，这意味着输入流中元素是什么类型，则输出的结果就是元素的类型。</p>
 </li>
 <li>
 <p>第三个方法</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">      <span style="font-style:italic">/**
-</span><span style="font-style:italic">   * This is equivalent to:
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     U result = identity;
-</span><span style="font-style:italic">     *     for (T element : this stream)
-</span><span style="font-style:italic">     *         result = accumulator.apply(result, element)
-</span><span style="font-style:italic">     *     return result;
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * but is not constrained to execute sequentially.
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * 许多调用此方法的规约操作都可以简单地用另一种形式来表达：map + reduce（另外两个重载方法）。
-</span><span style="font-style:italic">     * 此接口中，accumulator 函数就像一个混合的累加和映射函数。预置第一次折叠操纵的结果identity
-</span><span style="font-style:italic">     * 有助于减少一些计算损耗。
-</span><span style="font-style:italic">     */</span>
-    &lt;U&gt; U reduce(U identity,
-                 BiFunction&lt;U, ? <span style="font-weight:bold">super</span> T, U&gt; accumulator,
-                 BinaryOperator&lt;U&gt; combiner);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">      <span style="color:#75715e">/**
+</span><span style="color:#75715e">   * This is equivalent to:
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     U result = identity;
+</span><span style="color:#75715e">     *     for (T element : this stream)
+</span><span style="color:#75715e">     *         result = accumulator.apply(result, element)
+</span><span style="color:#75715e">     *     return result;
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * but is not constrained to execute sequentially.
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * 许多调用此方法的规约操作都可以简单地用另一种形式来表达：map + reduce（另外两个重载方法）。
+</span><span style="color:#75715e">     * 此接口中，accumulator 函数就像一个混合的累加和映射函数。预置第一次折叠操纵的结果identity
+</span><span style="color:#75715e">     * 有助于减少一些计算损耗。
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;</span> U <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>U identity<span style="color:#f92672">,</span>
+                 BiFunction<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">,</span> U<span style="color:#f92672">&gt;</span> accumulator<span style="color:#f92672">,</span>
+                 BinaryOperator<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;</span> combiner<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>这个接口和前两个接口的不同之处在于，其输入流的元素类型和输出的元素类型已经不一样了，输入流的元素类型是T，而输出的元素类型已经变成了U，所以它的accumulator采用的是BiFunction函数式接口，accumulator的第一个入参是上一次折叠操作的结果，初始化时第一次折叠操作的结果被设置为identity，第二个入参便是后续输入流中的元素了，然后折叠操作的结果会被当做下一次折叠操作的第一个入参，循环往复。</p>
 <p>至于combiner，为什么需要combiner？为什么之前两个接口没有combiner？</p>
 <p>其实将这三个接口放在并行化的情况下就不难理解，前两个接口并行化后，多个线程都会产生一个类型为T的结果，因为其输入元素类型和输出类型均为T，所以完全可以复用accumulator来进行合并。但是第三个接口不能复用，因为输入输出的类型并不一样，输出的是一种新的类型U，所以对于新类型U，需要定义一个如何合并的方法。特别注意的是三个接口文档中都有一句注释<code>but is not constrained to execute sequentially.</code>，表示所有操作都没有对执行顺序的要求。否则，老老实实用串行流。</p>
@@ -508,101 +508,101 @@ System.out.println(maxBy.apply(1,2));
 <ul>
 <li>
 <p><code>Collector</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
-</span><span style="font-style:italic"> * Collector接口定义了四个方法来协同计算所有数据，最终将结果放入一个可变容器中。
-</span><span style="font-style:italic"> * 		supplier(): 提供结果容器
-</span><span style="font-style:italic"> * 		accumulator(): 将一个新元素放入结果容器中
-</span><span style="font-style:italic"> * 		combiner(): 合并两个结果容器
-</span><span style="font-style:italic"> * 		finisher(): 可选操作，最后将结果容器进行某种形式的转换
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * Collector同时定义了一个Set来表达一些特性，比如 Characteristics.CONCURRENT，
-</span><span style="font-style:italic"> * 它表示的是这一组方法可以并发执行，在实现规约操作的时候可以通过Set中定义的特性来优化
-</span><span style="font-style:italic"> * 性能。
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * 串行实现的规约操作会利用 supplier 产生一个结果容器，然后调用 accumulator 来一个一个
-</span><span style="font-style:italic"> * 将流元素放入结果容器中。并行实现的规约操作会将流切分，然后为每一段流创建一个结果容器，每段流
-</span><span style="font-style:italic"> * 中的每个元素将会用 accumulator 放入各自的结果容器中，然后最终用 combiner 将所有结果
-</span><span style="font-style:italic"> * 容器合并成一个。
-</span><span style="font-style:italic"> * 
-</span><span style="font-style:italic"> * 为了确保并行和串行产生相同的结果，这一组在Collector中定义的函数必须满足以下两个特性：
-</span><span style="font-style:italic"> * 
-</span><span style="font-style:italic"> * (1) Identity: 对于任何子流产生的结果，将其与一个空结果容器合并时恒等于子流产生的结果。
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * (2) Associativity: 结合性，对于流中的任意元素，满足以下计算方式：
-</span><span style="font-style:italic"> * {
-</span><span style="font-style:italic"> *     A a1 = supplier.get();
-</span><span style="font-style:italic"> *     accumulator.accept(a1, t1);
-</span><span style="font-style:italic"> *     accumulator.accept(a1, t2);
-</span><span style="font-style:italic"> *     R r1 = finisher.apply(a1);  // 没有将结果分开
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> *     A a2 = supplier.get();
-</span><span style="font-style:italic"> *     accumulator.accept(a2, t1);
-</span><span style="font-style:italic"> *     A a3 = supplier.get();
-</span><span style="font-style:italic"> *     accumulator.accept(a3, t2);
-</span><span style="font-style:italic"> *     R r2 = finisher.apply(combiner.apply(a2, a3));  // 由子结果合并
-</span><span style="font-style:italic"> * } 
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * 所有实现Collector的库必须满足以下约束：
-</span><span style="font-style:italic"> * 	   (1) accumulator传入的第一个参数，combiner中传入的二个参数，finisher中传入的参
-</span><span style="font-style:italic"> * 	   数(只有一个)，必须是上一步得到的由 supplier产生的结果容器或accumulator修改后的
-</span><span style="font-style:italic"> *     结果容器或combiner返回的结果容器。
-</span><span style="font-style:italic"> * 	   (2) 在实现时，不能对中间结果进行任何其他形式的修改，除非将其作为参数交给 accumulator,
-</span><span style="font-style:italic"> * 	   combiner, 或者 finisher 函数，或者将其返回给调用者。
-</span><span style="font-style:italic"> *     (3) 一旦中间结果或者结果交给了 combier函数或者 finisher函数，并且没有返回相同的对象，
-</span><span style="font-style:italic"> *     则这个中间结果或者结果并应该再被使用。
-</span><span style="font-style:italic"> *     (4) 一旦中间结果或者结果交给了 combier函数或者 finisher函数，这个结果不能再传递给
-</span><span style="font-style:italic"> *     accumulator函数。
-</span><span style="font-style:italic"> *     (5) 对于非并发的 collectors，由其supplier, accumulator, 或者combiner产生的结果
-</span><span style="font-style:italic"> *     都应该是串行的线程约束的。这样在进行并发时可以不用任何额外的同步操作。在实现规约操作时
-</span><span style="font-style:italic"> *     必须合理的将输入进行划分，每一部分独立处理，然后当accumulator完全结束时，将所有结果
-</span><span style="font-style:italic"> *     合并在一起。
-</span><span style="font-style:italic"> *     (6) 对于并发的 collectors，可以自由实现(不要求)规约的并发操纵，并发规约会同时从多个
-</span><span style="font-style:italic"> *     线程调用 accumulator来进行计算，用同一个线程安全的容器来存放结果，而不是各个线程维护
-</span><span style="font-style:italic"> *     一个独立的经过容器。并发规约应该在定义了 Characteristics.UNORDERED的情况下应用，或
-</span><span style="font-style:italic"> *     者原数据就是无序的。
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * @param &lt;T&gt; 流元素类型
-</span><span style="font-style:italic"> * @param &lt;A&gt; 容器类型
-</span><span style="font-style:italic"> * @param &lt;R&gt; 最终规约操作结果的类型
-</span><span style="font-style:italic"> * 
-</span><span style="font-style:italic"> */</span>
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">Collector</span>&lt;T, A, R&gt; {
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">       * 调用这个函数能生产一个新的可变容器
-</span><span style="font-style:italic">     */</span>
-    Supplier&lt;A&gt; supplier();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Collector接口定义了四个方法来协同计算所有数据，最终将结果放入一个可变容器中。
+</span><span style="color:#75715e"> * 		supplier(): 提供结果容器
+</span><span style="color:#75715e"> * 		accumulator(): 将一个新元素放入结果容器中
+</span><span style="color:#75715e"> * 		combiner(): 合并两个结果容器
+</span><span style="color:#75715e"> * 		finisher(): 可选操作，最后将结果容器进行某种形式的转换
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * Collector同时定义了一个Set来表达一些特性，比如 Characteristics.CONCURRENT，
+</span><span style="color:#75715e"> * 它表示的是这一组方法可以并发执行，在实现规约操作的时候可以通过Set中定义的特性来优化
+</span><span style="color:#75715e"> * 性能。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 串行实现的规约操作会利用 supplier 产生一个结果容器，然后调用 accumulator 来一个一个
+</span><span style="color:#75715e"> * 将流元素放入结果容器中。并行实现的规约操作会将流切分，然后为每一段流创建一个结果容器，每段流
+</span><span style="color:#75715e"> * 中的每个元素将会用 accumulator 放入各自的结果容器中，然后最终用 combiner 将所有结果
+</span><span style="color:#75715e"> * 容器合并成一个。
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 为了确保并行和串行产生相同的结果，这一组在Collector中定义的函数必须满足以下两个特性：
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * (1) Identity: 对于任何子流产生的结果，将其与一个空结果容器合并时恒等于子流产生的结果。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * (2) Associativity: 结合性，对于流中的任意元素，满足以下计算方式：
+</span><span style="color:#75715e"> * {
+</span><span style="color:#75715e"> *     A a1 = supplier.get();
+</span><span style="color:#75715e"> *     accumulator.accept(a1, t1);
+</span><span style="color:#75715e"> *     accumulator.accept(a1, t2);
+</span><span style="color:#75715e"> *     R r1 = finisher.apply(a1);  // 没有将结果分开
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> *     A a2 = supplier.get();
+</span><span style="color:#75715e"> *     accumulator.accept(a2, t1);
+</span><span style="color:#75715e"> *     A a3 = supplier.get();
+</span><span style="color:#75715e"> *     accumulator.accept(a3, t2);
+</span><span style="color:#75715e"> *     R r2 = finisher.apply(combiner.apply(a2, a3));  // 由子结果合并
+</span><span style="color:#75715e"> * } 
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 所有实现Collector的库必须满足以下约束：
+</span><span style="color:#75715e"> * 	   (1) accumulator传入的第一个参数，combiner中传入的二个参数，finisher中传入的参
+</span><span style="color:#75715e"> * 	   数(只有一个)，必须是上一步得到的由 supplier产生的结果容器或accumulator修改后的
+</span><span style="color:#75715e"> *     结果容器或combiner返回的结果容器。
+</span><span style="color:#75715e"> * 	   (2) 在实现时，不能对中间结果进行任何其他形式的修改，除非将其作为参数交给 accumulator,
+</span><span style="color:#75715e"> * 	   combiner, 或者 finisher 函数，或者将其返回给调用者。
+</span><span style="color:#75715e"> *     (3) 一旦中间结果或者结果交给了 combier函数或者 finisher函数，并且没有返回相同的对象，
+</span><span style="color:#75715e"> *     则这个中间结果或者结果并应该再被使用。
+</span><span style="color:#75715e"> *     (4) 一旦中间结果或者结果交给了 combier函数或者 finisher函数，这个结果不能再传递给
+</span><span style="color:#75715e"> *     accumulator函数。
+</span><span style="color:#75715e"> *     (5) 对于非并发的 collectors，由其supplier, accumulator, 或者combiner产生的结果
+</span><span style="color:#75715e"> *     都应该是串行的线程约束的。这样在进行并发时可以不用任何额外的同步操作。在实现规约操作时
+</span><span style="color:#75715e"> *     必须合理的将输入进行划分，每一部分独立处理，然后当accumulator完全结束时，将所有结果
+</span><span style="color:#75715e"> *     合并在一起。
+</span><span style="color:#75715e"> *     (6) 对于并发的 collectors，可以自由实现(不要求)规约的并发操纵，并发规约会同时从多个
+</span><span style="color:#75715e"> *     线程调用 accumulator来进行计算，用同一个线程安全的容器来存放结果，而不是各个线程维护
+</span><span style="color:#75715e"> *     一个独立的经过容器。并发规约应该在定义了 Characteristics.UNORDERED的情况下应用，或
+</span><span style="color:#75715e"> *     者原数据就是无序的。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @param &lt;T&gt; 流元素类型
+</span><span style="color:#75715e"> * @param &lt;A&gt; 容器类型
+</span><span style="color:#75715e"> * @param &lt;R&gt; 最终规约操作结果的类型
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Collector</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> A<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">       * 调用这个函数能生产一个新的可变容器
+</span><span style="color:#75715e">     */</span>
+    Supplier<span style="color:#f92672">&lt;</span>A<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">supplier</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 调用这个函数能将一个流元素折叠进结果容器
-</span><span style="font-style:italic">     */</span>
-    BiConsumer&lt;A, T&gt; accumulator();
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 调用这个函数能将一个流元素折叠进结果容器
+</span><span style="color:#75715e">     */</span>
+    BiConsumer<span style="color:#f92672">&lt;</span>A<span style="color:#f92672">,</span> T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">accumulator</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 合并两个中间结果
-</span><span style="font-style:italic">     */</span>
-    BinaryOperator&lt;A&gt; combiner();
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 合并两个中间结果
+</span><span style="color:#75715e">     */</span>
+    BinaryOperator<span style="color:#f92672">&lt;</span>A<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">combiner</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 将容器结果转换为最终需要的结果
-</span><span style="font-style:italic">     */</span>
-    Function&lt;A, R&gt; finisher();
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 将容器结果转换为最终需要的结果
+</span><span style="color:#75715e">     */</span>
+    Function<span style="color:#f92672">&lt;</span>A<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">finisher</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * 返回一个包含特性的Set集合
-</span><span style="font-style:italic">     */</span>
-    Set&lt;Characteristics&gt; characteristics();
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 返回一个包含特性的Set集合
+</span><span style="color:#75715e">     */</span>
+    Set<span style="color:#f92672">&lt;</span>Characteristics<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">characteristics</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
   
-    <span style="font-weight:bold">enum</span> Characteristics {
-        <span style="font-style:italic">//并发性
-</span><span style="font-style:italic"></span>        CONCURRENT,
+    <span style="color:#66d9ef">enum</span> Characteristics <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//并发性
+</span><span style="color:#75715e"></span>        CONCURRENT<span style="color:#f92672">,</span>
   
-        <span style="font-style:italic">//无序性
-</span><span style="font-style:italic"></span>        UNORDERED,
+        <span style="color:#75715e">//无序性
+</span><span style="color:#75715e"></span>        UNORDERED<span style="color:#f92672">,</span>
   
-        <span style="font-style:italic">//最终结果的转换可以省略，A类型转换成R类型肯定成功
-</span><span style="font-style:italic"></span>        IDENTITY_FINISH
-    }
-}
+        <span style="color:#75715e">//最终结果的转换可以省略，A类型转换成R类型肯定成功
+</span><span style="color:#75715e"></span>        IDENTITY_FINISH
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p><code>Collector</code>的接口文档已经很好的描述了实际上其可以由一组功能各异的匿名函数来定义一个组合行为，其中包括一个<code>Supplier</code>提供结果容器，一个<code>BiConsumer</code>来将流元素经过处理后放入结果容器中，一个<code>BinaryOperator</code>来合并中间结果，一个<code>finisher</code>来进行最后结果转换。可以通过<code>Collector.of()</code>方法来获取一个Collector实例。</p>
 <p><code>Collectors</code>是一个静态方法工厂，其中实现了许多通用的<code>Collector</code>，比如<code>maxBy, groupingBy,summingInt</code>等等。</p>
 </li>
@@ -611,67 +611,67 @@ System.out.println(maxBy.apply(1,2));
 <ul>
 <li>
 <p>第一个方法</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * The following will accumulate strings into an ArrayList:
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     List&lt;String&gt; asList = stringStream.collect(Collectors.toList());
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * &lt;p&gt;The following will classify {@code Person} objects by city:
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     Map&lt;String, List&lt;Person&gt;&gt; peopleByCity
-</span><span style="font-style:italic">     *         = personStream.collect(Collectors.groupingBy(Person::getCity));
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * &lt;p&gt;The following will classify {@code Person} objects by state and city,
-</span><span style="font-style:italic">     * cascading two {@code Collector}s together:
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     Map&lt;String, Map&lt;String, List&lt;Person&gt;&gt;&gt; peopleByStateAndCity
-</span><span style="font-style:italic">     *         = personStream.collect(Collectors.groupingBy(Person::getState,
-</span><span style="font-style:italic">     *                                Collectors.groupingBy(Person::getCity)));
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     *
-</span><span style="font-style:italic">     * @param &lt;R&gt; 结果类型
-</span><span style="font-style:italic">     * @param &lt;A&gt; 中间结果计算类型
-</span><span style="font-style:italic">     */</span>
-    &lt;R, A&gt; R collect(Collector&lt;? <span style="font-weight:bold">super</span> T, A, R&gt; collector);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * The following will accumulate strings into an ArrayList:
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     List&lt;String&gt; asList = stringStream.collect(Collectors.toList());
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * &lt;p&gt;The following will classify {@code Person} objects by city:
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     Map&lt;String, List&lt;Person&gt;&gt; peopleByCity
+</span><span style="color:#75715e">     *         = personStream.collect(Collectors.groupingBy(Person::getCity));
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * &lt;p&gt;The following will classify {@code Person} objects by state and city,
+</span><span style="color:#75715e">     * cascading two {@code Collector}s together:
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     Map&lt;String, Map&lt;String, List&lt;Person&gt;&gt;&gt; peopleByStateAndCity
+</span><span style="color:#75715e">     *         = personStream.collect(Collectors.groupingBy(Person::getState,
+</span><span style="color:#75715e">     *                                Collectors.groupingBy(Person::getCity)));
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * @param &lt;R&gt; 结果类型
+</span><span style="color:#75715e">     * @param &lt;A&gt; 中间结果计算类型
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">,</span> A<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collector<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">,</span> A<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> collector<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>将文档中的栗子单独拉出来看（自己举的栗子没文档好）：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List&lt;String&gt; asList = stringStream.collect(Collectors.toList()); <span style="font-style:italic">//栗子1
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> asList <span style="color:#f92672">=</span> stringStream<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//栗子1
 </span></code></pre></div><p>栗子1是<code>collect</code>方法的简单实用，将一个<code>Stream&lt;String&gt;</code>流转换成了一个<code>List&lt;String&gt;</code>，实际上<code>Collectors.toList</code>的定义如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt;
-    Collector&lt;T, ?, List&lt;T&gt;&gt; toList() {
-        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> CollectorImpl&lt;&gt;((Supplier&lt;List&lt;T&gt;&gt;) ArrayList::<span style="font-weight:bold">new</span>, List::add,
-                                   (left, right) -&gt; { left.addAll(right); <span style="font-weight:bold">return</span> left; },
-                                   CH_ID);
-    }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>
+    Collector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> <span style="color:#f92672">?</span><span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">toList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> CollectorImpl<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">(</span>Supplier<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">)</span> ArrayList<span style="color:#f92672">:</span><span style="color:#f92672">:</span><span style="color:#66d9ef">new</span><span style="color:#f92672">,</span> List<span style="color:#f92672">:</span><span style="color:#f92672">:</span>add<span style="color:#f92672">,</span>
+                                   <span style="color:#f92672">(</span>left<span style="color:#f92672">,</span> right<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span> left<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>right<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#66d9ef">return</span> left<span style="color:#f92672">;</span> <span style="color:#f92672">}</span><span style="color:#f92672">,</span>
+                                   CH_ID<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 </code></pre></div><p>可以非常清楚的看到，supplier = <code>ArrayList::new</code>，accumulator = <code>List::add</code>，combiner = <code>(x, y)-&gt;{x.addAll(y); return x;}</code>。</p>
 <p>文档中另一个分类的栗子：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map&lt;String, List&lt;Person&gt;&gt; peopleByCity
-    = personStream.collect(Collectors.groupingBy(Person::getCity)); <span style="font-style:italic">//栗子2
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Person<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> peopleByCity
+    <span style="color:#f92672">=</span> personStream<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">groupingBy</span><span style="color:#f92672">(</span>Person<span style="color:#f92672">:</span><span style="color:#f92672">:</span>getCity<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//栗子2
 </span></code></pre></div><p>栗子2使用了<code>Collecotrs.groupingBy</code>静态工厂来生成<code>Collector</code>，这个方法将会根据<code>Person::getCity</code>方法产生的值最为键来聚合拥有相同键的元素为一个List。看一个更复杂一点的分组栗子：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map&lt;String, Map&lt;String, List&lt;Person&gt;&gt;&gt; peopleByStateAndCity
-      = personStream.collect(Collectors.groupingBy(Person::getState,
-                             Collectors.groupingBy(Person::getCity))); <span style="font-style:italic">//栗子3
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Person<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> peopleByStateAndCity
+      <span style="color:#f92672">=</span> personStream<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">groupingBy</span><span style="color:#f92672">(</span>Person<span style="color:#f92672">:</span><span style="color:#f92672">:</span>getState<span style="color:#f92672">,</span>
+                             Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">groupingBy</span><span style="color:#f92672">(</span>Person<span style="color:#f92672">:</span><span style="color:#f92672">:</span>getCity<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//栗子3
 </span></code></pre></div><p>这个方法能实现二级分组，即在用<code>Person::getState</code>聚合同类元素后，在同类元素中继续用<code>Person::getCity</code>进行聚合。所以，当大家看到这种用法的时候，是不是会想：**！这个理论上可以无限级分组啊！太**厉害了！，而且不仅仅是分组，还能对分完组的同类元素继续规约，比如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map&lt;String, Map&lt;String, List&lt;Person&gt;&gt;&gt; peopleByStateAndCity
-      = personStream.collect(Collectors.groupingBy(Person::getState,
-                             Collectors.summingInt(Person::getAge)); <span style="font-style:italic">//栗子3改
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Person<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> peopleByStateAndCity
+      <span style="color:#f92672">=</span> personStream<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">groupingBy</span><span style="color:#f92672">(</span>Person<span style="color:#f92672">:</span><span style="color:#f92672">:</span>getState<span style="color:#f92672">,</span>
+                             Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">summingInt</span><span style="color:#f92672">(</span>Person<span style="color:#f92672">:</span><span style="color:#f92672">:</span>getAge<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//栗子3改
 </span></code></pre></div><p>Awesome！</p>
 </li>
 <li>
 <p>第二个方法</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="font-style:italic">/**
-</span><span style="font-style:italic">     * This produces a result equivalent to:
-</span><span style="font-style:italic">     * &lt;pre&gt;{@code
-</span><span style="font-style:italic">     *     R result = supplier.get();
-</span><span style="font-style:italic">     *     for (T element : this stream)
-</span><span style="font-style:italic">     *         accumulator.accept(result, element);
-</span><span style="font-style:italic">     *     return result;
-</span><span style="font-style:italic">     * }&lt;/pre&gt;
-</span><span style="font-style:italic">     */</span>
-    &lt;R&gt; R collect(Supplier&lt;R&gt; supplier,
-                  BiConsumer&lt;R, ? <span style="font-weight:bold">super</span> T&gt; accumulator,
-                  BiConsumer&lt;R, R&gt; combiner);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * This produces a result equivalent to:
+</span><span style="color:#75715e">     * &lt;pre&gt;{@code
+</span><span style="color:#75715e">     *     R result = supplier.get();
+</span><span style="color:#75715e">     *     for (T element : this stream)
+</span><span style="color:#75715e">     *         accumulator.accept(result, element);
+</span><span style="color:#75715e">     *     return result;
+</span><span style="color:#75715e">     * }&lt;/pre&gt;
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Supplier<span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> supplier<span style="color:#f92672">,</span>
+                  BiConsumer<span style="color:#f92672">&lt;</span>R<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> accumulator<span style="color:#f92672">,</span>
+                  BiConsumer<span style="color:#f92672">&lt;</span>R<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> combiner<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>了解了<code>Collecotr</code>的作用后，其实看这个方法的入参就非常简单了，只是最后一个combiner使用的是<code>BiConsumer&lt;R, R&gt;</code>接口而不是<code>BinaryOperator&lt;R&gt;</code>其实这俩接口的不同之处就在于一个无返回值，一个有返回值，其实作用是一样的。</p>
 </li>
 </ul>
@@ -691,30 +691,28 @@ System.out.println(maxBy.apply(1,2));
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

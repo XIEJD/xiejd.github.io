@@ -41,7 +41,7 @@
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -259,7 +259,7 @@
 </table>
 <p>Kafka使用顺序读写磁盘，基本规避了机械磁盘的劣势：随机读写慢，所以可以使用机械磁盘，同时Kafka在软件层面提供了高可靠高可用，也没有必要使用RAID。当然土豪请随意。</p>
 <p>kafka producer速率可以监控这个JMX指标：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kafka.producer:type=[consumer|producer|connect]-node-metrics,client-id=([-.<span style="font-weight:bold;font-style:italic">\w</span>]+),node-id=([0-9]+)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kafka.producer:type<span style="color:#f92672">=</span><span style="color:#f92672">[</span>consumer|producer|connect<span style="color:#f92672">]</span>-node-metrics,client-id<span style="color:#f92672">=</span><span style="color:#f92672">(</span><span style="color:#f92672">[</span>-.<span style="color:#ae81ff">\w</span><span style="color:#f92672">]</span>+<span style="color:#f92672">)</span>,node-id<span style="color:#f92672">=</span><span style="color:#f92672">(</span><span style="color:#f92672">[</span>0-9<span style="color:#f92672">]</span>+<span style="color:#f92672">)</span>
 </code></pre></div><h2 id="kafka集群参数">Kafka集群参数</h2>
 <h3 id="broker参数">Broker参数</h3>
 <p>官方详细文档 -&gt; <a href="http://kafka.apache.org/0110/documentation.html#brokerconfigs">Broker Config</a></p>
@@ -304,17 +304,17 @@
 <li>max.message.bytes：该Topic能够接受最大消息大小</li>
 </ul>
 <h4 id="在创建topic时指定topic级别参数">在创建Topic时指定Topic级别参数</h4>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/kafka-topics.sh --bootstrap-server localhost:9092 <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>    --create --topic transaction <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>    --partitions 1 <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>    --replication-factor 1 <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>    --config retention.ms=15552000000 <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>    --config max.message.bytes=5242880
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/kafka-topics.sh --bootstrap-server localhost:9092 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --create --topic transaction <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --partitions <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --replication-factor <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --config retention.ms<span style="color:#f92672">=</span><span style="color:#ae81ff">15552000000</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --config max.message.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">5242880</span>
 </code></pre></div><h4 id="修改topic级别参数推荐">修改Topic级别参数（推荐）</h4>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/kafka-configs.sh --zookeeper localhost:2181 <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>     --entity-type topics <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>     --entity-name transaction <span style="font-weight:bold;font-style:italic">\
-</span><span style="font-weight:bold;font-style:italic"></span>     --alter --add-config max.message.bytes=10485760
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/kafka-configs.sh --zookeeper localhost:2181 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>     --entity-type topics <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>     --entity-name transaction <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>     --alter --add-config max.message.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">10485760</span>
 </code></pre></div><h3 id="jvm-参数">JVM 参数</h3>
 <p>在启动kafka之前设置两个环境变量：</p>
 <ul>
@@ -322,8 +322,8 @@
 <li>KAFKA_JVM_PERFORMANCE_OPTS：指定GC，推荐G1，Java8需显示指定G1</li>
 </ul>
 <p>比如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export KAFKA_HEAP_OPTS=--Xms6g  --Xmx6g
-export  KAFKA_JVM_PERFORMANCE_OPTS= -server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export KAFKA_HEAP_OPTS<span style="color:#f92672">=</span>--Xms6g  --Xmx6g
+export  KAFKA_JVM_PERFORMANCE_OPTS<span style="color:#f92672">=</span> -server -XX:+UseG1GC -XX:MaxGCPauseMillis<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span> -XX:InitiatingHeapOccupancyPercent<span style="color:#f92672">=</span><span style="color:#ae81ff">35</span> -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless<span style="color:#f92672">=</span>true
 bin/kafka-server-start.sh config/server.properties
 </code></pre></div><h3 id="操作系统参数">操作系统参数</h3>
 <ul>
@@ -337,7 +337,7 @@ bin/kafka-server-start.sh config/server.properties
 <h4 id="分区策略">分区策略</h4>
 <h5 id="自定义分区策略">自定义分区策略</h5>
 <p>需要实现<code>org.apache.kafka.clients.producer.Partitioner</code>接口：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="">int</span> partition(String topic, Object key, <span style="">byte</span>[] keyBytes, Object value, <span style="">byte</span>[] valueBytes, Cluster cluster);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">partition</span><span style="color:#f92672">(</span>String topic<span style="color:#f92672">,</span> Object key<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> keyBytes<span style="color:#f92672">,</span> Object value<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> valueBytes<span style="color:#f92672">,</span> Cluster cluster<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>其中，前4个参数属于消息数据，最后一个参数给出了集群的信息，比如集群的topic数，broker数等。实现完成这个接口之后，显示的指定<code>partitioner.class</code>参数为类的全量名称。</p>
 <p>自定义分区策略，可以根据业务不同灵活的选择合适的分区策略，比如按照地理位置进行分区，从消息中获取到key值，或者将地理位置标记封装进key中，再根据key值保序，那相同key值的消息必然进入同一个分区。或者更极端的，一个地理位置的消息占用一个分区，比如中国每个省或者直辖市占用一个分区，只要实现Partitioner接口，就可以轻松完成这种独占分区的策略。</p>
 <h5 id="轮询策略默认">轮询策略（默认）</h5>
@@ -346,10 +346,10 @@ bin/kafka-server-start.sh config/server.properties
 <p>随机的将消息发布到不同的分区中，（还不如轮询</p>
 <h5 id="消息键保序策略key-ordering">消息键保序策略（Key-ordering）</h5>
 <p>实现接口</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="">int</span> partition(String topic, Object key, <span style="">byte</span>[] keyBytes, Object value, <span style="">byte</span>[] valueBytes, Cluster cluster){
-  List&lt;PartitionInfo&gt; partitions = cluster.partitionsForTopic(topic);
-    <span style="font-weight:bold">return</span> Math.abs(key.hashCode()) % partitions.size();
-}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">partition</span><span style="color:#f92672">(</span>String topic<span style="color:#f92672">,</span> Object key<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> keyBytes<span style="color:#f92672">,</span> Object value<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> valueBytes<span style="color:#f92672">,</span> Cluster cluster<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+  List<span style="color:#f92672">&lt;</span>PartitionInfo<span style="color:#f92672">&gt;</span> partitions <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">partitionsForTopic</span><span style="color:#f92672">(</span>topic<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">abs</span><span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">%</span> partitions<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>统一个key的所有消息都能进入到同一个分区中。</p>
 <h3 id="压缩">压缩</h3>
 <h4 id="消息格式">消息格式</h4>
@@ -396,24 +396,24 @@ bin/kafka-server-start.sh config/server.properties
 </table>
 <h4 id="幂等producer">幂等Producer</h4>
 <p>幂等，在Kafka中，指的是多次操作产生同一个结果，更具体一点讲，就是确保消息精确提交一次，Broker能对幂等Producer发送的消息进行去重，保证同一个消息只成功提交了一次。设置幂等Producer的方法很简单：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG<span style="">，</span> <span style="font-weight:bold">true</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">ENABLE_IDEMPOTENCE_CONFIG</span><span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
 </code></pre></div><p>幂等Producer的局限在于：它只能保证单会话、单Topic、单分区上的幂等。如果跨会话了，或跨Topic、分区了，仍然无法保证幂等，即还是有可能产生重复的消息。</p>
 <h4 id="事务producer">事务Producer</h4>
 <p>事务保证能将多个消息原子性的写入到多个分区中，即这一批消息中，如果其中有一个消息没有写入到其对应的分区，那这个操作就是失败的，其他已经成功写入的消息也会被“回滚”。换句话说，这一批消息的写入，要么全部成功，要么全部失败。设置事务Producer的方法：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG<span style="">，</span> <span style="font-weight:bold">true</span>);
-props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, <span style="font-style:italic">&#34;test.producer&#34;</span>);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">ENABLE_IDEMPOTENCE_CONFIG</span><span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">TRANSACTIONAL_ID_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;test.producer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>在提交原子消息时：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">producer.initTransactions();
-<span style="font-weight:bold">try</span> {
-            producer.beginTransaction();
-            producer.send(record1);
-            producer.send(record2);
-            producer.commitTransaction();
-} <span style="font-weight:bold">catch</span> (KafkaException e) {
-            producer.abortTransaction();
-}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">producer<span style="color:#f92672">.</span><span style="color:#a6e22e">initTransactions</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">beginTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>record1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>record2<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">commitTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>KafkaException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">abortTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>同时，要保证消费者无法看到提交失败的消息，也要做如下设置：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, <span style="font-style:italic">&#34;read_committed&#34;</span>);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ConsumerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">ISOLATION_LEVEL_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;read_committed&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><h2 id="kafka-消费者">Kafka 消费者</h2>
 <h3 id="消费者组">消费者组</h3>
 <p>Kafka的消费者组绝对是kafka中最为重要的概念之一，借助Kafka的消费者组，kafka非常优雅的实现了点对点发布模型和订阅发布模型，偏颇一点讲，借助Kafka消费者组，kafka既能实现一个消息只被一个消费者消费，又能实现一个消息被多个消费者消费。</p>
@@ -466,129 +466,129 @@ Headset</p>
 <li>如果设置 Producer 端 connections.max.idle.ms 参数大于 0，则步骤 1 中创建的 TCP 连接会被自动关闭；如果设置该参数 =-1，那么步骤 1 中创建的 TCP 连接将无法被关闭，从而成为“僵尸”连接。</li>
 </ul>
 <h2 id="demo">Demo</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">import</span> <span style="font-weight:bold">lombok.extern.slf4j.Slf4j</span>;
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.apache.kafka.clients.producer.KafkaProducer</span>;
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.apache.kafka.clients.producer.ProducerConfig</span>;
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.apache.kafka.clients.producer.ProducerRecord</span>;
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">org.springframework.stereotype.Service</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> lombok.extern.slf4j.Slf4j<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.KafkaProducer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.ProducerConfig<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.ProducerRecord<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.stereotype.Service<span style="color:#f92672">;</span>
 
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">java.util.Properties</span>;
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">java.util.concurrent.*</span>;
+<span style="color:#f92672">import</span> java.util.Properties<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.concurrent.*<span style="color:#f92672">;</span>
 
-@Slf4j
-@Service
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">KafkaProducerService</span> <span style="font-weight:bold">extends</span> ThreadPoolExecutor {
-    <span style="font-weight:bold">static</span> Properties props = <span style="font-weight:bold">new</span> Properties();
+<span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Service</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KafkaProducerService</span> <span style="color:#66d9ef">extends</span> ThreadPoolExecutor <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">static</span> Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-    <span style="font-weight:bold">static</span> KafkaProducer&lt;String, String&gt; producer = <span style="font-weight:bold">null</span>;
+    <span style="color:#66d9ef">static</span> KafkaProducer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 核心池大小
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> <span style="">int</span> corePoolSize = 5;
+    <span style="color:#75715e">// 核心池大小
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> corePoolSize <span style="color:#f92672">=</span> 5<span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 最大值
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> <span style="">int</span> maximumPoolSize = 20;
+    <span style="color:#75715e">// 最大值
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> maximumPoolSize <span style="color:#f92672">=</span> 20<span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 无任务时存活时间
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> <span style="">long</span> keepAliveTime = 60;
+    <span style="color:#75715e">// 无任务时存活时间
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> keepAliveTime <span style="color:#f92672">=</span> 60<span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 时间单位
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> TimeUnit timeUnit = TimeUnit.SECONDS;
+    <span style="color:#75715e">// 时间单位
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> TimeUnit timeUnit <span style="color:#f92672">=</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 阻塞队列
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> BlockingQueue blockingQueue = <span style="font-weight:bold">new</span> LinkedBlockingQueue();
+    <span style="color:#75715e">// 阻塞队列
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> BlockingQueue blockingQueue <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedBlockingQueue<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 线程池
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> ExecutorService service = <span style="font-weight:bold">null</span>;
+    <span style="color:#75715e">// 线程池
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> ExecutorService service <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
 
-    <span style="font-style:italic">// 配置项
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">static</span> {
-        <span style="font-style:italic">// 自定义分区类
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, <span style="font-style:italic">&#34;class qualifed name.&#34;</span>);
-        <span style="font-style:italic">// Kafka服务端的主机名和端口号
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span style="font-style:italic">&#34;node22:9092,node22:9092,node23:9092&#34;</span>);
-        <span style="font-style:italic">// 等待所有副本节点的应答
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.ACKS_CONFIG, <span style="font-style:italic">&#34;all&#34;</span>);
-        <span style="font-style:italic">// 消息发送最大尝试次数
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.RETRIES_CONFIG, 5);
-        <span style="font-style:italic">// 一批消息处理大小
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-        <span style="font-style:italic">// 增加服务端请求延时
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-        <span style="font-style:italic">// 发送缓存区内存大小
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-        <span style="font-style:italic">// key序列化
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, <span style="font-style:italic">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span>);
-        <span style="font-style:italic">// value序列化
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, <span style="font-style:italic">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span>);
-        <span style="font-style:italic">// 增加拦截器
-</span><span style="font-style:italic"></span>        props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, <span style="font-style:italic">&#34;com.example.websocketdemo.kafka.interceptor.CustomProducerInterceptor&#34;</span>);
-    }
+    <span style="color:#75715e">// 配置项
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 自定义分区类
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">PARTITIONER_CLASS_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;class qualifed name.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// Kafka服务端的主机名和端口号
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">BOOTSTRAP_SERVERS_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;node22:9092,node22:9092,node23:9092&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 等待所有副本节点的应答
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">ACKS_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;all&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 消息发送最大尝试次数
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">RETRIES_CONFIG</span><span style="color:#f92672">,</span> 5<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 一批消息处理大小
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">BATCH_SIZE_CONFIG</span><span style="color:#f92672">,</span> 16384<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 增加服务端请求延时
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">LINGER_MS_CONFIG</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 发送缓存区内存大小
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">BUFFER_MEMORY_CONFIG</span><span style="color:#f92672">,</span> 33554432<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// key序列化
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">KEY_SERIALIZER_CLASS_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// value序列化
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">VALUE_SERIALIZER_CLASS_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 增加拦截器
+</span><span style="color:#75715e"></span>        props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">INTERCEPTOR_CLASSES_CONFIG</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;com.example.websocketdemo.kafka.interceptor.CustomProducerInterceptor&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue) {
-        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KafkaProducerService</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> corePoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maximumPoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> keepAliveTime<span style="color:#f92672">,</span> TimeUnit unit<span style="color:#f92672">,</span> BlockingQueue<span style="color:#f92672">&lt;</span>Runnable<span style="color:#f92672">&gt;</span> workQueue<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>corePoolSize<span style="color:#f92672">,</span> maximumPoolSize<span style="color:#f92672">,</span> keepAliveTime<span style="color:#f92672">,</span> unit<span style="color:#f92672">,</span> workQueue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory) {
-        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KafkaProducerService</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> corePoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maximumPoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> keepAliveTime<span style="color:#f92672">,</span> TimeUnit unit<span style="color:#f92672">,</span> BlockingQueue<span style="color:#f92672">&lt;</span>Runnable<span style="color:#f92672">&gt;</span> workQueue<span style="color:#f92672">,</span> ThreadFactory threadFactory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>corePoolSize<span style="color:#f92672">,</span> maximumPoolSize<span style="color:#f92672">,</span> keepAliveTime<span style="color:#f92672">,</span> unit<span style="color:#f92672">,</span> workQueue<span style="color:#f92672">,</span> threadFactory<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, RejectedExecutionHandler handler) {
-        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KafkaProducerService</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> corePoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maximumPoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> keepAliveTime<span style="color:#f92672">,</span> TimeUnit unit<span style="color:#f92672">,</span> BlockingQueue<span style="color:#f92672">&lt;</span>Runnable<span style="color:#f92672">&gt;</span> workQueue<span style="color:#f92672">,</span> RejectedExecutionHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>corePoolSize<span style="color:#f92672">,</span> maximumPoolSize<span style="color:#f92672">,</span> keepAliveTime<span style="color:#f92672">,</span> unit<span style="color:#f92672">,</span> workQueue<span style="color:#f92672">,</span> handler<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> KafkaProducerService(<span style="">int</span> corePoolSize, <span style="">int</span> maximumPoolSize, <span style="">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
-        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KafkaProducerService</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> corePoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maximumPoolSize<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> keepAliveTime<span style="color:#f92672">,</span> TimeUnit unit<span style="color:#f92672">,</span> BlockingQueue<span style="color:#f92672">&lt;</span>Runnable<span style="color:#f92672">&gt;</span> workQueue<span style="color:#f92672">,</span> ThreadFactory threadFactory<span style="color:#f92672">,</span> RejectedExecutionHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>corePoolSize<span style="color:#f92672">,</span> maximumPoolSize<span style="color:#f92672">,</span> keepAliveTime<span style="color:#f92672">,</span> unit<span style="color:#f92672">,</span> workQueue<span style="color:#f92672">,</span> threadFactory<span style="color:#f92672">,</span> handler<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> KafkaProducerService() {
-        <span style="font-weight:bold">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, timeUnit, blockingQueue);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">KafkaProducerService</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>corePoolSize<span style="color:#f92672">,</span> maximumPoolSize<span style="color:#f92672">,</span> keepAliveTime<span style="color:#f92672">,</span> timeUnit<span style="color:#f92672">,</span> blockingQueue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> <span style="">boolean</span> sendRecord(ProducerRecord record) {
-        Future result = <span style="font-weight:bold">this</span>.submit(<span style="font-weight:bold">new</span> ProducerRunnable(<span style="font-weight:bold">new</span> KafkaProducer&lt;String, String&gt;(props), record));
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">sendRecord</span><span style="color:#f92672">(</span>ProducerRecord record<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Future result <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">submit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ProducerRunnable<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> KafkaProducer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-weight:bold">try</span> {
-            <span style="font-weight:bold">return</span> (Boolean) result.get(10, timeUnit);
-        } <span style="font-weight:bold">catch</span> (TimeoutException te) {
-            log.error(<span style="font-style:italic">&#34;sending record to kafka timeout.&#34;</span>, te.getStackTrace());
-            result.cancel(<span style="font-weight:bold">true</span>);
-        } <span style="font-weight:bold">catch</span> (InterruptedException ie) {
-            log.error(<span style="font-style:italic">&#34;sending record to kafka interrupted. {}&#34;</span>, ie.getStackTrace());
-        } <span style="font-weight:bold">catch</span> (ExecutionException ee) {
-            log.error(<span style="font-style:italic">&#34;sending record to kafka execution failed. {}&#34;</span>, ee.getStackTrace());
-        }
-        <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
-    }
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Boolean<span style="color:#f92672">)</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>10<span style="color:#f92672">,</span> timeUnit<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>TimeoutException te<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sending record to kafka timeout.&#34;</span><span style="color:#f92672">,</span> te<span style="color:#f92672">.</span><span style="color:#a6e22e">getStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            result<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>InterruptedException ie<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sending record to kafka interrupted. {}&#34;</span><span style="color:#f92672">,</span> ie<span style="color:#f92672">.</span><span style="color:#a6e22e">getStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ExecutionException ee<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sending record to kafka execution failed. {}&#34;</span><span style="color:#f92672">,</span> ee<span style="color:#f92672">.</span><span style="color:#a6e22e">getStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> <span style="">boolean</span> sendRecord(String value, String topic) {
-        ProducerRecord&lt;String, String&gt; record = <span style="font-weight:bold">new</span> ProducerRecord&lt;&gt;(topic, value);
-        <span style="font-weight:bold">return</span> sendRecord(record);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">sendRecord</span><span style="color:#f92672">(</span>String value<span style="color:#f92672">,</span> String topic<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        ProducerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ProducerRecord<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>topic<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> sendRecord<span style="color:#f92672">(</span>record<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">class</span> <span style="font-weight:bold">ProducerRunnable</span> <span style="font-weight:bold">implements</span> Runnable {
-        <span style="font-weight:bold">private</span> KafkaProducer&lt;String, String&gt; producer;
-        <span style="font-weight:bold">private</span> ProducerRecord&lt;String, String&gt; record;
+    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProducerRunnable</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> KafkaProducer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> ProducerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record<span style="color:#f92672">;</span>
 
-        <span style="font-weight:bold">public</span> ProducerRunnable(KafkaProducer&lt;String, String&gt; producer, ProducerRecord&lt;String, String&gt; record) {
-            <span style="font-weight:bold">this</span>.producer = producer;
-            <span style="font-weight:bold">this</span>.record = record;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ProducerRunnable</span><span style="color:#f92672">(</span>KafkaProducer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer<span style="color:#f92672">,</span> ProducerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">producer</span> <span style="color:#f92672">=</span> producer<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">record</span> <span style="color:#f92672">=</span> record<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        <span style="font-weight:bold">public</span> <span style="">void</span> run() {
-            producer.send(record, (metadata, exception) -&gt; {
-                <span style="font-weight:bold">if</span> (exception != <span style="font-weight:bold">null</span>) {
-                    log.error(<span style="font-style:italic">&#34;message send failed. {}&#34;</span>, exception.getStackTrace());
-                    <span style="font-weight:bold">return</span>;
-                }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>record<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>metadata<span style="color:#f92672">,</span> exception<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>exception <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message send failed. {}&#34;</span><span style="color:#f92672">,</span> exception<span style="color:#f92672">.</span><span style="color:#a6e22e">getStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
 
-                <span style="font-weight:bold">if</span> (metadata != <span style="font-weight:bold">null</span>) {
-                    log.info(<span style="font-style:italic">&#34;message send successfully, {}&#34;</span>, metadata.toString());
-                }
-            });
-        }
-    }
-}
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>metadata <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message send successfully, {}&#34;</span><span style="color:#f92672">,</span> metadata<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div>
       </div>
 
@@ -597,30 +597,28 @@ Headset</p>
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

@@ -55,7 +55,7 @@ import asyncio import websockets import json async def test_ws_quote(): async wi
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -166,63 +166,63 @@ import asyncio import websockets import json async def test_ws_quote(): async wi
 <ul>
 <li>
 <p>客户端测试脚本(Python)</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">import</span> <span style="font-weight:bold">asyncio</span>
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">websockets</span>
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">json</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> asyncio
+<span style="color:#f92672">import</span> websockets
+<span style="color:#f92672">import</span> json
   
-async <span style="font-weight:bold">def</span> test_ws_quote():
-    async <span style="font-weight:bold">with</span> websockets.connect(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">ws://localhost:8080/ws</span><span style="font-style:italic">&#39;</span>) <span style="font-weight:bold">as</span> websocket:
-        req = {<span style="font-style:italic"></span><span style="font-style:italic">&#34;</span><span style="font-style:italic">protocol</span><span style="font-style:italic">&#34;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#34;</span><span style="font-style:italic">history_req</span><span style="font-style:italic">&#34;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">code</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">XAGODS</span><span style="font-style:italic">&#39;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">type</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">MINUTE</span><span style="font-style:italic">&#39;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">start_pos</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">0</span><span style="font-style:italic">&#39;</span>,<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">pos_num</span><span style="font-style:italic">&#39;</span>:<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">10</span><span style="font-style:italic">&#39;</span>}
-        await websocket.send(json.dumps(req))
-        <span style="font-weight:bold">while</span> True:
-            quote = await websocket.recv()
-            <span style="font-weight:bold">print</span>(quote)
+async <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_ws_quote</span>():
+    async <span style="color:#66d9ef">with</span> websockets<span style="color:#f92672">.</span>connect(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">ws://localhost:8080/ws</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">as</span> websocket:
+        req <span style="color:#f92672">=</span> {<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">protocol</span><span style="color:#e6db74">&#34;</span>:<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">history_req</span><span style="color:#e6db74">&#34;</span>,<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">code</span><span style="color:#e6db74">&#39;</span>:<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">XAGODS</span><span style="color:#e6db74">&#39;</span>,<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">type</span><span style="color:#e6db74">&#39;</span>:<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">MINUTE</span><span style="color:#e6db74">&#39;</span>,<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">start_pos</span><span style="color:#e6db74">&#39;</span>:<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0</span><span style="color:#e6db74">&#39;</span>,<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">pos_num</span><span style="color:#e6db74">&#39;</span>:<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">10</span><span style="color:#e6db74">&#39;</span>}
+        await websocket<span style="color:#f92672">.</span>send(json<span style="color:#f92672">.</span>dumps(req))
+        <span style="color:#66d9ef">while</span> True:
+            quote <span style="color:#f92672">=</span> await websocket<span style="color:#f92672">.</span>recv()
+            <span style="color:#66d9ef">print</span>(quote)
   
-asyncio.get_event_loop().run_until_complete(test_ws_quote())
+asyncio<span style="color:#f92672">.</span>get_event_loop()<span style="color:#f92672">.</span>run_until_complete(test_ws_quote())
 </code></pre></div></li>
 <li>
 <p>Java服务器端maven依赖，配置类，业务处理类</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-          <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
-          <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-      <span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+          <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+          <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;/dependency&gt;</span>
   
-      <span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-          <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
-          <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-websocket<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-      <span style="font-weight:bold">&lt;/dependency&gt;</span>
-      <span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-          <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.projectlombok<span style="font-weight:bold">&lt;/groupId&gt;</span>
-          <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>lombok<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-  <span style="font-weight:bold">&lt;/dependency&gt;</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
-@Configuration
-@EnableWebSocket
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MyWebSocketConfig</span> <span style="font-weight:bold">implements</span> WebSocketConfigurer {
+      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+          <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+          <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-websocket<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;/dependency&gt;</span>
+      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+          <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
+          <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@EnableWebSocket</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyWebSocketConfig</span> <span style="color:#66d9ef">implements</span> WebSocketConfigurer <span style="color:#f92672">{</span>
   
-    @Override
-    <span style="font-weight:bold">public</span> <span style="">void</span> registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(<span style="font-weight:bold">new</span> MyWebSocketHandler(), <span style="font-style:italic">&#34;/ws&#34;</span>)
-                .addInterceptors(<span style="font-weight:bold">new</span> HttpSessionHandshakeInterceptor());
-    }
-}
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MyWebSocketHandler</span> <span style="font-weight:bold">extends</span> TextWebSocketHandler {
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerWebSocketHandlers</span><span style="color:#f92672">(</span>WebSocketHandlerRegistry webSocketHandlerRegistry<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        webSocketHandlerRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MyWebSocketHandler<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/ws&#34;</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptors</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HttpSessionHandshakeInterceptor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyWebSocketHandler</span> <span style="color:#66d9ef">extends</span> TextWebSocketHandler <span style="color:#f92672">{</span>
   
-    @Override
-    <span style="font-weight:bold">public</span> <span style="">void</span> handleTextMessage(WebSocketSession session, TextMessage message) {
-        log.info(<span style="font-style:italic">&#34;new message: {}&#34;</span>, message.getPayload());
-        WebSocketMessage&lt;String&gt; webSocketMessage = <span style="font-weight:bold">new</span> TextMessage(<span style="font-style:italic">&#34;Hello world&#34;</span>);
-        <span style="font-weight:bold">try</span> {
-            <span style="font-weight:bold">for</span> (<span style="">int</span> i = 0; i &lt; 10; i++) {
-                session.sendMessage(webSocketMessage);
-                Thread.sleep(2000);
-            }
-        } <span style="font-weight:bold">catch</span> (Exception e) {
-            log.error(<span style="font-style:italic">&#34;{}&#34;</span>, e.getMessage());
-        }
-    }
-}
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleTextMessage</span><span style="color:#f92672">(</span>WebSocketSession session<span style="color:#f92672">,</span> TextMessage message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;new message: {}&#34;</span><span style="color:#f92672">,</span> message<span style="color:#f92672">.</span><span style="color:#a6e22e">getPayload</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        WebSocketMessage<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> webSocketMessage <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TextMessage<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello world&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 10<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                session<span style="color:#f92672">.</span><span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>webSocketMessage<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>2000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div></li>
 </ul>
 
@@ -233,30 +233,28 @@ asyncio.get_event_loop().run_until_complete(test_ws_quote())
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

@@ -43,7 +43,7 @@
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -213,109 +213,109 @@
 </tbody>
 </table>
 <p>举几个🌰：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-@ConditionalOnProperty(prefix = <span style="font-style:italic">&#34;cn.shareif.auth&#34;</span>, value = <span style="font-style:italic">&#34;enabled&#34;</span>, matchIfMissing = <span style="font-weight:bold">true</span>)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">ShareifAuthAutoConfiguration</span> {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@ConditionalOnProperty</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cn.shareif.auth&#34;</span><span style="color:#f92672">,</span> value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;enabled&#34;</span><span style="color:#f92672">,</span> matchIfMissing <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShareifAuthAutoConfiguration</span> <span style="color:#f92672">{</span>
 
-    @Bean
-    <span style="font-weight:bold">public</span> FilterRegistrationBean filterRegistrationBean() {
-        FilterRegistrationBean bean = <span style="font-weight:bold">new</span> FilterRegistrationBean();
-        bean.setFilter(<span style="font-weight:bold">new</span> AuthFilter());
-        bean.addUrlPatterns(<span style="font-style:italic">&#34;/*&#34;</span>);
-        <span style="font-weight:bold">return</span> bean;
-    }
-}
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> FilterRegistrationBean <span style="color:#a6e22e">filterRegistrationBean</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        FilterRegistrationBean bean <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FilterRegistrationBean<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        bean<span style="color:#f92672">.</span><span style="color:#a6e22e">setFilter</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AuthFilter<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        bean<span style="color:#f92672">.</span><span style="color:#a6e22e">addUrlPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/*&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> bean<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>设置Web拦截器，当然设置拦截器有更简单的方法，比如<code>@WebFilter</code>注解，此处仅仅是举一个<code>@ConditinalOnProperty</code>的栗子。当项目的配置文件中（比如 application.properties）定义了<code>cn.shareif.auth.enabled=true</code> 时，就会触发这个自动配置类，如果没有配置属性，默认自动触发。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
-@Configuration
-@ConditionalOnResource(resources = <span style="font-style:italic">&#34;classpath:lib/certificate.so&#34;</span>)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">LibResourceAutoConfiguration</span> {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@ConditionalOnResource</span><span style="color:#f92672">(</span>resources <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classpath:lib/certificate.so&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LibResourceAutoConfiguration</span> <span style="color:#f92672">{</span>
 
-    @Bean
-    <span style="font-weight:bold">public</span> CertificateHelper load() {
-        <span style="font-style:italic">// load from resources and return a helper bean consist of this resource.
-</span><span style="font-style:italic"></span>        log.info(<span style="font-style:italic">&#34;Oh, you have loaded the resource&#34;</span>);
-        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> CertificateHelper();
-    }
-}
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> CertificateHelper <span style="color:#a6e22e">load</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// load from resources and return a helper bean consist of this resource.
+</span><span style="color:#75715e"></span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Oh, you have loaded the resource&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> CertificateHelper<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>当classpath中存在某个资源文件时，进行自动配置。</p>
 <h3 id="jackson">Jackson</h3>
 <p>无起步依赖。</p>
 <p>Springboot默认的Json实现是Jackson，其对应的自动配置类为<code>JacksonAutoConfiguration</code>，同时通过<code>JacksonHttpMessageConvertersConfiguration</code> 配置HttpMessageConverter实现类用于Http请求中Json到Java对象或者Java对象到Json的转换。</p>
 <p>JacksonAutoConfiguration的触发条件为存在类：<code>com.fasterxml.jackson.databind.ObjectMapper.class</code>。此配置将提供一些基础bean，比如<code>ObjectMapper</code> bean，<code>JsonComponentModule</code> bean。<code>ObjectMapper</code> bean是POJO和String转换的关键角色，而<code>JsonComponentModule</code> bean是配置由<code>@JsonComponent</code>定义的序列化和反序列化组件的关键角色。摘取源码中对<code>@JsonComponent</code>的注释（Redis章节有实际应用）：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/**
-</span><span style="font-style:italic"> * {@link Component} that provides {@link JsonSerializer} and/or {@link JsonDeserializer}
-</span><span style="font-style:italic"> * implementations to be registered with Jackson when {@link JsonComponentModule} is in
-</span><span style="font-style:italic"> * use. Can be used to annotate {@link JsonSerializer} or {@link JsonDeserializer}
-</span><span style="font-style:italic"> * implementations directly or a class that contains them as inner-classes. For example:
-</span><span style="font-style:italic"> * 
-</span><span style="font-style:italic"> * 用法举例：
-</span><span style="font-style:italic"> * @JsonComponent
-</span><span style="font-style:italic"> * public class CustomerJsonComponent {
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> *     public static class SomeDTOSerializer extends JsonSerializer&lt;Customer&gt; {
-</span><span style="font-style:italic"> *         // ...
-</span><span style="font-style:italic"> *     }
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> *     public static class SomeDTODeserializer extends JsonDeserializer&lt;Customer&gt; {
-</span><span style="font-style:italic"> *         // ...
-</span><span style="font-style:italic"> *     }
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> * }
-</span><span style="font-style:italic"> *
-</span><span style="font-style:italic"> */</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * {@link Component} that provides {@link JsonSerializer} and/or {@link JsonDeserializer}
+</span><span style="color:#75715e"> * implementations to be registered with Jackson when {@link JsonComponentModule} is in
+</span><span style="color:#75715e"> * use. Can be used to annotate {@link JsonSerializer} or {@link JsonDeserializer}
+</span><span style="color:#75715e"> * implementations directly or a class that contains them as inner-classes. For example:
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 用法举例：
+</span><span style="color:#75715e"> * @JsonComponent
+</span><span style="color:#75715e"> * public class CustomerJsonComponent {
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> *     public static class SomeDTOSerializer extends JsonSerializer&lt;Customer&gt; {
+</span><span style="color:#75715e"> *         // ...
+</span><span style="color:#75715e"> *     }
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> *     public static class SomeDTODeserializer extends JsonDeserializer&lt;Customer&gt; {
+</span><span style="color:#75715e"> *         // ...
+</span><span style="color:#75715e"> *     }
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * }
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> */</span>
 </code></pre></div><p>JacksonHttpMessageConvertersConfiguration配置类可以提供两个bean，一个为<code>MappingJackson2HttpMessageConverter</code>，另一个为<code>MappingJackson2XmlHttpMessageConverter</code> 。前者解析媒体类型为<code>application/json</code>的数据，后者解析<code>application/xml</code>的数据。</p>
 <p><code>MappingJackson2HttpMessageConverter</code>实现了关键接口<code>GenericHttpMessageConverter</code> 用于将http请求转换为指定泛型类型的目标对象，将指定泛型类型的源对象转换为http响应。</p>
 <p>总结，在Springboot启动后，就已经自动配置了一系列的bean来支持Json和Java对象的转化，如果追求性能，完全不用自己再new一个ObjectMapper甚至多个ObjectMapper，<code>ObjectMapper</code>是线程安全的，可以放心大胆的用单例模式。同时由于注解<code>@JsonComponent</code> 和bean <code>JsonComponentModule</code> ,可以非常方便的自定义某些类型的序列化与反序列化方法。所以一个项目里面有多个<code>ObjectMapper</code>是无意义的。一个项目里有一个json实现库就够了，而且Springboot完全可以针对不同的json库进行自动配置，比如gson。从微服务依赖的角度以及序列化反序列化动作一致性的角度来讲，最好不要引入多个ObjectMapper或者多个json库。</p>
 <p>附：如何用Springboot的自己创建的<code>ObjectMapper</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Component
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">SpringUtil</span> <span style="font-weight:bold">implements</span> BeanFactoryAware {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringUtil</span> <span style="color:#66d9ef">implements</span> BeanFactoryAware <span style="color:#f92672">{</span>
 
-    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> BeanFactory beanFactory;
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> BeanFactory beanFactory<span style="color:#f92672">;</span>
 
-    @Override
-    <span style="font-weight:bold">public</span> <span style="">void</span> setBeanFactory(BeanFactory beanFactory) <span style="font-weight:bold">throws</span> BeansException {
-        SpringUtil.beanFactory = beanFactory;
-    }
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setBeanFactory</span><span style="color:#f92672">(</span>BeanFactory beanFactory<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+        SpringUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span> <span style="color:#f92672">=</span> beanFactory<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Object getBean(String beanName){
-        <span style="font-weight:bold">return</span> beanFactory.getBean(beanName);
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Object <span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>beanName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Object getBean(Class&lt;?&gt; clazz) {
-        <span style="font-weight:bold">return</span> beanFactory.getBean(clazz);
-    }
-}
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">JacksonUtil</span> {
-    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> ObjectMapper objectMapper;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Object <span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JacksonUtil</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> ObjectMapper objectMapper<span style="color:#f92672">;</span>
 
-    <span style="font-weight:bold">static</span> {
-        objectMapper = SpringUtil.getBean(ObjectMapper.class);
-    }
+    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
+        objectMapper <span style="color:#f92672">=</span> SpringUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>ObjectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> String toJson(Object obj) {
-        Assert.notNull(obj, <span style="font-style:italic">&#34;Object must not be null&#34;</span>);
-        <span style="font-weight:bold">try</span> {
-            <span style="font-weight:bold">return</span> objectMapper.writeValueAsString(obj);
-        } <span style="font-weight:bold">catch</span> (Exception e) {
-            log.error(<span style="font-style:italic">&#34;convert to string failed, {}&#34;</span>, e.getStackTrace());
-            <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
-        }
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">toJson</span><span style="color:#f92672">(</span>Object obj<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>obj<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Object must not be null&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">writeValueAsString</span><span style="color:#f92672">(</span>obj<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;convert to string failed, {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; T fromJson(String json, Class&lt;T&gt; clazz) {
-        Assert.notNull(json, <span style="font-style:italic">&#34;json string must not be null&#34;</span>);
-        Assert.notNull(clazz, <span style="font-style:italic">&#34;Class Type must not be null&#34;</span>);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">fromJson</span><span style="color:#f92672">(</span>String json<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>json<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;json string must not be null&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Class Type must not be null&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-weight:bold">try</span> {
-            <span style="font-weight:bold">return</span> objectMapper.readValue(json, clazz);
-        } <span style="font-weight:bold">catch</span> (Exception e) {
-            log.error(<span style="font-style:italic">&#34;convert to obj failed, {}&#34;</span>, e.getStackTrace());
-            <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
-        }
-    }
-}
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">readValue</span><span style="color:#f92672">(</span>json<span style="color:#f92672">,</span> clazz<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;convert to obj failed, {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>当然不用静态方法的形式暴露功能，而直接在bean里autowired也是可以滴。</p>
 <blockquote>
 <p>References:</p>
@@ -328,44 +328,44 @@
 <ol>
 <li>
 <p>内存式mongo自动配置依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo </span><span style="font-style:italic">--&gt;</span>
-<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>de.flapdoodle.embed<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>de.flapdoodle.embed.mongo<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>x.x.x<span style="font-weight:bold">&lt;/version&gt;</span>
-    <span style="font-weight:bold">&lt;scope</span><span style="font-weight:bold">&gt;</span>test<span style="font-weight:bold">&lt;/scope&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>de.flapdoodle.embed<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>de.flapdoodle.embed.mongo<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>x.x.x<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
    
-<span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/org.springframework.boot/spring</span><span style="font-style:italic">-</span><span style="font-style:italic">boot</span><span style="font-style:italic">-</span><span style="font-style:italic">starter</span><span style="font-style:italic">-</span><span style="font-style:italic">data</span><span style="font-style:italic">-</span><span style="font-style:italic">mongodb </span><span style="font-style:italic">--&gt;</span>
-<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-mongodb<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>x.x.x.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> https://mvnrepository.com/artifact/org.springframework.boot/spring</span><span style="color:#75715e">-</span><span style="color:#75715e">boot</span><span style="color:#75715e">-</span><span style="color:#75715e">starter</span><span style="color:#75715e">-</span><span style="color:#75715e">data</span><span style="color:#75715e">-</span><span style="color:#75715e">mongodb </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-data-mongodb<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>x.x.x.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div></li>
 <li>
 <p>真实mongo配置可以直接依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/org.springframework.boot/spring</span><span style="font-style:italic">-</span><span style="font-style:italic">boot</span><span style="font-style:italic">-</span><span style="font-style:italic">starter</span><span style="font-style:italic">-</span><span style="font-style:italic">data</span><span style="font-style:italic">-</span><span style="font-style:italic">mongodb </span><span style="font-style:italic">--&gt;</span>
-<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-mongodb<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>x.x.x.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> https://mvnrepository.com/artifact/org.springframework.boot/spring</span><span style="color:#75715e">-</span><span style="color:#75715e">boot</span><span style="color:#75715e">-</span><span style="color:#75715e">starter</span><span style="color:#75715e">-</span><span style="color:#75715e">data</span><span style="color:#75715e">-</span><span style="color:#75715e">mongodb </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-data-mongodb<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>x.x.x.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div></li>
 </ol>
 <p>所以，当要使用mongodb时，引入<code>spring-boot-starter-data-mongodb</code>即可，如果需要用到内存式mongo，则在此基础上再引入<code>de.flapdoodle.embed.mongo</code>即可。AutoConfiguration就是这么叼，他能根据你引入的包来自动配置对应的bean。</p>
 <p>首先，内存式mongo的自动配置类条件：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-@EnableConfigurationProperties({ MongoProperties.class, EmbeddedMongoProperties.class })
-@AutoConfigureBefore(MongoAutoConfiguration.class)
-@ConditionalOnClass({ MongoClient.class, MongodStarter.class })
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">EmbeddedMongoAutoConfiguration</span> {}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@EnableConfigurationProperties</span><span style="color:#f92672">(</span><span style="color:#f92672">{</span> MongoProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> EmbeddedMongoProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@AutoConfigureBefore</span><span style="color:#f92672">(</span>MongoAutoConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@ConditionalOnClass</span><span style="color:#f92672">(</span><span style="color:#f92672">{</span> MongoClient<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> MongodStarter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmbeddedMongoAutoConfiguration</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 </code></pre></div><p>该配置早于<code>MongoAutoConfiguration</code>配置：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-@ConditionalOnClass(MongoClient.class)
-@EnableConfigurationProperties(MongoProperties.class)
-@ConditionalOnMissingBean(type = <span style="font-style:italic">&#34;org.springframework.data.mongodb.MongoDbFactory&#34;</span>)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MongoAutoConfiguration</span> {}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@ConditionalOnClass</span><span style="color:#f92672">(</span>MongoClient<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@EnableConfigurationProperties</span><span style="color:#f92672">(</span>MongoProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@ConditionalOnMissingBean</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;org.springframework.data.mongodb.MongoDbFactory&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MongoAutoConfiguration</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 </code></pre></div><p><code>MongoAutoConfiguration</code>配置仅当容器内缺少<code>MongoDbFactory</code> bean时才会生效。</p>
 <p>最后，<code>MongoDataAutoConfiguration</code>会完成Spring Data for Mongo的支持，这样，在使用的时候直接注入对应的bean即可。该配置提供<code>MongoTemplate</code>, <code>GridFsTemplate</code> 用于存储小文档和大文档。</p>
 <p>对Mongo配置项感兴趣的话，可以直接查看<code>MongoProperties</code>配置类</p>
@@ -374,108 +374,108 @@
 <p>定时任务调度，起步依赖：</p>
 <h3 id="kafka">Kafka</h3>
 <p>Spring提供的对Kafka客户端的封装，起步依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-	  <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.kafka<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-kafka<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+	  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.kafka<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-kafka<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>自动配置相关类</p>
 <ul>
 <li><code>KafkaAutoConfiguration</code></li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-@ConditionalOnClass(KafkaTemplate.class)
-@EnableConfigurationProperties(KafkaProperties.class)
-@Import({ KafkaAnnotationDrivenConfiguration.class, KafkaStreamsAnnotationDrivenConfiguration.class })
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">KafkaAutoConfiguration</span> {}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@ConditionalOnClass</span><span style="color:#f92672">(</span>KafkaTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@EnableConfigurationProperties</span><span style="color:#f92672">(</span>KafkaProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Import</span><span style="color:#f92672">(</span><span style="color:#f92672">{</span> KafkaAnnotationDrivenConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> KafkaStreamsAnnotationDrivenConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KafkaAutoConfiguration</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 </code></pre></div><p><code>KafkaTemplate</code>由spring-kafka包引入。同时完成自动配置后，还会引入<code>KafkaAnnotationDrivenConfiguration</code>和<code>KafkaStreamsAnnotationDrivenConfiguration</code> 两个配置，前者主要用来支持spring-kafka提供的相关注解，后者和Kafka Stream相关，不做讨论，实际上起步依赖中也不会包含Kafka-Stream相关的东西，所以后者并不会生效。</p>
 <p>自动配置提供的最重要的bean就是<code>KafkaTemplate</code>了，通过该类提供的方法，可以完成kafka消息的发送。</p>
 <p>同时spring-kafka-test提供了内存式的kafka来进行测试，只需要引入依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.kafka<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-kafka-test<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.kafka<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-kafka-test<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><ul>
 <li>修改配置文件：</li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="font-weight:bold">spring</span>:  
-  <span style="font-weight:bold">kafka</span>:
-    <span style="font-weight:bold">bootstrap-servers</span>: ${spring.embedded.kafka.brokers}
-    <span style="font-weight:bold">consumer</span>:
-      <span style="font-weight:bold">group-id</span>: honeyroom
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">spring</span>:  
+  <span style="color:#66d9ef">kafka</span>:
+    <span style="color:#66d9ef">bootstrap-servers</span>: ${spring.embedded.kafka.brokers}
+    <span style="color:#66d9ef">consumer</span>:
+      <span style="color:#66d9ef">group-id</span>: honeyroom
 </code></pre></div><ul>
 <li>测试示例（消费者）：</li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
-@Component
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">DemoConsumer</span> {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Component</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DemoConsumer</span> <span style="color:#f92672">{</span>
 
-    @KafkaListener(topics = <span style="font-style:italic">&#34;test-consumer&#34;</span>)
-    <span style="font-weight:bold">public</span> <span style="">void</span> handle(String message) {
-        log.info(<span style="font-style:italic">&#34;receive message: {}&#34;</span>, message);
-        System.out.println(<span style="font-style:italic">&#34;========== kafka message ===========&#34;</span>);
-        System.out.println(message);
-    }
-}
+    <span style="color:#a6e22e">@KafkaListener</span><span style="color:#f92672">(</span>topics <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test-consumer&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;receive message: {}&#34;</span><span style="color:#f92672">,</span> message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;========== kafka message ===========&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>其中，<code>DemoMessage</code>结构为：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Data
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">DemoMessage</span> {
-    <span style="font-weight:bold">private</span> String key;
-    <span style="font-weight:bold">private</span> String value;
-    <span style="font-weight:bold">private</span> DateTime timestamp; <span style="font-style:italic">//joda time
-</span><span style="font-style:italic"></span>}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DemoMessage</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> String key<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String value<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> DateTime timestamp<span style="color:#f92672">;</span> <span style="color:#75715e">//joda time
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><ul>
 <li>测试示例（生产者）：</li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">KafkaTests</span> {
-    @ClassRule
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> EmbeddedKafkaRule embeddedKafka = <span style="font-weight:bold">new</span> EmbeddedKafkaRule(1, <span style="font-weight:bold">false</span>, 5).kafkaPorts(9092);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@SpringBootTest</span><span style="color:#f92672">(</span>webEnvironment <span style="color:#f92672">=</span> SpringBootTest<span style="color:#f92672">.</span><span style="color:#a6e22e">WebEnvironment</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RANDOM_PORT</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KafkaTests</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@ClassRule</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> EmbeddedKafkaRule embeddedKafka <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EmbeddedKafkaRule<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> 5<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kafkaPorts</span><span style="color:#f92672">(</span>9092<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-    @Autowired
-    <span style="font-weight:bold">private</span> KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> KafkaTemplate<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> kafkaTemplate<span style="color:#f92672">;</span>
 
-    @Autowired
-    ObjectMapper objectMapper;
+    <span style="color:#a6e22e">@Autowired</span>
+    ObjectMapper objectMapper<span style="color:#f92672">;</span>
 
-    @Test
-    <span style="font-weight:bold">public</span> <span style="">void</span> testKafka() <span style="font-weight:bold">throws</span> Exception {
-        DemoMessage message = <span style="font-weight:bold">new</span> DemoMessage();
-        message.setKey(<span style="font-style:italic">&#34;key&#34;</span>);
-        message.setValue(<span style="font-style:italic">&#34;value&#34;</span>);
-        message.setTimestamp(DateTime.now());
-        kafkaTemplate.send(<span style="font-style:italic">&#34;test.consumer&#34;</span>, objectMapper.writeValueAsString(message));
-        Thread.sleep(1000000);
-    }
-}
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testKafka</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        DemoMessage message <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DemoMessage<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setKey</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setTimestamp</span><span style="color:#f92672">(</span>DateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        kafkaTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test.consumer&#34;</span><span style="color:#f92672">,</span> objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">writeValueAsString</span><span style="color:#f92672">(</span>message<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>1000000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>通过在本地执行脚本监听，可以看到测试发出的kafka消息。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.consumer --from-beginning
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.consumer --from-beginning
 </code></pre></div><p>kafka shell文件在<a href="http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.3.1/kafka_2.11-2.3.1.tgz">Kafka binary package</a> 的bin目录下。</p>
 <h3 id="redis">Redis</h3>
 <p>spring提供的Redis客户端的封装，起步依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-     <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
-     <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-redis<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+     <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-data-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>自动配置类<code>RedisAutoConfiguration</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-@ConditionalOnClass(RedisOperations.class)
-@EnableConfigurationProperties(RedisProperties.class)
-@Import({ LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class })
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisAutoConfiguration</span> {}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@ConditionalOnClass</span><span style="color:#f92672">(</span>RedisOperations<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@EnableConfigurationProperties</span><span style="color:#f92672">(</span>RedisProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Import</span><span style="color:#f92672">(</span><span style="color:#f92672">{</span> LettuceConnectionConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> JedisConnectionConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisAutoConfiguration</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 </code></pre></div><p>熟悉的配方，熟悉的套路，引入起步依赖后能满足<code>@ConditionalOnClass(RedisOperations.class)</code>条件，然后配置文件获取<code>RedisProperties.class</code>的配置，最后再导入<code>LettuceConnectionConfiguration.class</code> 或者 <code>JedisConnectionConfiguration.class</code>，这俩都是一个功能，就是提供<code>RedisTemplate</code>所依赖的bean，比如 <code>RedisConnectionFactory.class</code>，默认<code>LettuceConnectionConfiguration.class</code>生效。</p>
 <h4 id="运行基于docker的redis">运行基于Docker的Redis</h4>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic">#1. 获取镜像</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#1. 获取镜像</span>
 docker pull redis
 
-<span style="font-style:italic">#2. 运行镜像</span>
-docker run -p 6379:6379 -d redis:latest redis-server --requirepass <span style="font-style:italic">&#34;123456&#34;</span>
+<span style="color:#75715e">#2. 运行镜像</span>
+docker run -p 6379:6379 -d redis:latest redis-server --requirepass <span style="color:#e6db74">&#34;123456&#34;</span>
 
-<span style="font-style:italic">#3. 进入容器内的Redis命令行界面</span>
+<span style="color:#75715e">#3. 进入容器内的Redis命令行界面</span>
 docker exec -ti 1729cb4a78c4 redis-cli
 
-<span style="font-style:italic">#4. 进入后进行鉴权</span>
-auth 123456
+<span style="color:#75715e">#4. 进入后进行鉴权</span>
+auth <span style="color:#ae81ff">123456</span>
 </code></pre></div><ul>
 <li><code>-p</code> 映射容器端口到主机端口</li>
 <li><code>-d</code> 后台运行容器并打印容器ID</li>
@@ -486,106 +486,106 @@ auth 123456
 <ul>
 <li>
 <p>Jackson中，对于joda time的序列化和反序列化自定义方法</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@JsonComponent
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">DateTimeComponent</span> {
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> String DEFAULT_DATETIME_FORMATTER = <span style="font-style:italic">&#34;yyyy-MM-dd&#39;T&#39;hh:mm:ss&#39;Z&#39;&#34;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@JsonComponent</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DateTimeComponent</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String DEFAULT_DATETIME_FORMATTER <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yyyy-MM-dd&#39;T&#39;hh:mm:ss&#39;Z&#39;&#34;</span><span style="color:#f92672">;</span>
   
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">SomeDTOSerializer</span> <span style="font-weight:bold">extends</span> JsonSerializer&lt;DateTime&gt; {
-        @Override
-        <span style="font-weight:bold">public</span> <span style="">void</span> serialize(DateTime value, JsonGenerator gen, SerializerProvider serializers) <span style="font-weight:bold">throws</span> IOException {
-            gen.writeString(value.toString(DEFAULT_DATETIME_FORMATTER));
-        }
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeDTOSerializer</span> <span style="color:#66d9ef">extends</span> JsonSerializer<span style="color:#f92672">&lt;</span>DateTime<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serialize</span><span style="color:#f92672">(</span>DateTime value<span style="color:#f92672">,</span> JsonGenerator gen<span style="color:#f92672">,</span> SerializerProvider serializers<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            gen<span style="color:#f92672">.</span><span style="color:#a6e22e">writeString</span><span style="color:#f92672">(</span>value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>DEFAULT_DATETIME_FORMATTER<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
   
-    <span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">SomeDTODeserializer</span> <span style="font-weight:bold">extends</span> JsonDeserializer&lt;DateTime&gt; {
-        @Override
-        <span style="font-weight:bold">public</span> DateTime deserialize(JsonParser p, DeserializationContext ctxt) <span style="font-weight:bold">throws</span> IOException, JsonProcessingException {
-            <span style="font-weight:bold">return</span> DateTime.parse(p.getValueAsString(), DateTimeFormat.forPattern(DEFAULT_DATETIME_FORMATTER));
-        }
-    }
-}
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeDTODeserializer</span> <span style="color:#66d9ef">extends</span> JsonDeserializer<span style="color:#f92672">&lt;</span>DateTime<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> DateTime <span style="color:#a6e22e">deserialize</span><span style="color:#f92672">(</span>JsonParser p<span style="color:#f92672">,</span> DeserializationContext ctxt<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> JsonProcessingException <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> DateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">parse</span><span style="color:#f92672">(</span>p<span style="color:#f92672">.</span><span style="color:#a6e22e">getValueAsString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> DateTimeFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">forPattern</span><span style="color:#f92672">(</span>DEFAULT_DATETIME_FORMATTER<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>请注意，此时实际上是对spring mvc中的Jackson做了配置，如需运用在Redis中，还需要以下配置：</p>
 </li>
 <li>
 <p>RedisConfig</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-@AllArgsConstructor
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisConfig</span> {
-    <span style="font-weight:bold">private</span> ObjectMapper objectMapper; <span style="font-style:italic">//类构造器注入
-</span><span style="font-style:italic"></span>  
-    @Autowired
-    <span style="font-weight:bold">public</span> <span style="">void</span> jsonRedisTemplate(RedisTemplate redisTemplate) {
-        redisTemplate.setKeySerializer(RedisSerializer.string());
-        <span style="font-style:italic">// 使用和MVC的Jackson同一个转换器，mvc的jackson转换器比较方便定义特殊类型的转换，比如joda time
-</span><span style="font-style:italic"></span>        redisTemplate.setValueSerializer(<span style="font-weight:bold">new</span> GenericJackson2JsonRedisSerializer(objectMapper));
-        redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        redisTemplate.setHashValueSerializer(<span style="font-weight:bold">new</span> GenericJackson2JsonRedisSerializer(objectMapper));
-    }
-}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisConfig</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> ObjectMapper objectMapper<span style="color:#f92672">;</span> <span style="color:#75715e">//类构造器注入
+</span><span style="color:#75715e"></span>  
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">jsonRedisTemplate</span><span style="color:#f92672">(</span>RedisTemplate redisTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setKeySerializer</span><span style="color:#f92672">(</span>RedisSerializer<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 使用和MVC的Jackson同一个转换器，mvc的jackson转换器比较方便定义特殊类型的转换，比如joda time
+</span><span style="color:#75715e"></span>        redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setValueSerializer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> GenericJackson2JsonRedisSerializer<span style="color:#f92672">(</span>objectMapper<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setHashKeySerializer</span><span style="color:#f92672">(</span>RedisSerializer<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">setHashValueSerializer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> GenericJackson2JsonRedisSerializer<span style="color:#f92672">(</span>objectMapper<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div></li>
 <li>
 <p>和其他template一样，使用上相当简单：</p>
 </li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Slf4j
-@Service
-@AllArgsConstructor
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisService</span> {
-    <span style="font-weight:bold">private</span> RedisTemplate&lt;Object, Object&gt; redisTemplate;
-    <span style="font-weight:bold">private</span> ObjectMapper objectMapper;
-    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> <span style="">int</span> DEFAULT_EXPIRE_INTERVAL = 300;
-    <span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="font-weight:bold">final</span> TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Service</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisService</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> RedisTemplate<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> redisTemplate<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> ObjectMapper objectMapper<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_EXPIRE_INTERVAL <span style="color:#f92672">=</span> 300<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> TimeUnit DEFAULT_TIME_UNIT <span style="color:#f92672">=</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">;</span>
 
-    <span style="font-weight:bold">public</span> <span style="">boolean</span> save(String key, Object value) {
-        <span style="font-weight:bold">try</span> {
-            redisTemplate.opsForValue().set(key, value);
-            redisTemplate.expire(key, DEFAULT_EXPIRE_INTERVAL, DEFAULT_TIME_UNIT);
-            <span style="font-weight:bold">return</span> <span style="font-weight:bold">true</span>;
-        } <span style="font-weight:bold">catch</span> (Exception e) {
-            log.error(<span style="font-style:italic">&#34;can&#39;t cache data, {}&#34;</span>, e.getMessage());
-            <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
-        }
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">,</span> Object value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">opsForValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">expire</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> DEFAULT_EXPIRE_INTERVAL<span style="color:#f92672">,</span> DEFAULT_TIME_UNIT<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;can&#39;t cache data, {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    <span style="font-weight:bold">public</span> &lt;T&gt; T get(String key, Class&lt;T&gt; clazz) {
-        <span style="font-weight:bold">try</span> {
-            Object value = redisTemplate.opsForValue().get(key);
-            <span style="font-weight:bold">return</span> objectMapper.convertValue(value, clazz);
-        } <span style="font-weight:bold">catch</span> (Exception e) {
-            log.error(<span style="font-style:italic">&#34;can&#39;t get cached data, {}&#34;</span>, e.getMessage());
-            <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
-        }
-    }
-}
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            Object value <span style="color:#f92672">=</span> redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">opsForValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">convertValue</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> clazz<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;can&#39;t get cached data, {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>写个LLT调用一下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">RedisTest</span> {
-    @Autowired
-    RedisService redisService;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@SpringBootTest</span><span style="color:#f92672">(</span>webEnvironment <span style="color:#f92672">=</span> SpringBootTest<span style="color:#f92672">.</span><span style="color:#a6e22e">WebEnvironment</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RANDOM_PORT</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Autowired</span>
+    RedisService redisService<span style="color:#f92672">;</span>
 
-    @Autowired
-    ObjectMapper objectMapper;
+    <span style="color:#a6e22e">@Autowired</span>
+    ObjectMapper objectMapper<span style="color:#f92672">;</span>
 
-    @Test
-    <span style="font-weight:bold">public</span> <span style="">void</span> testSave() <span style="font-weight:bold">throws</span> Exception {
-        DemoMessage message = <span style="font-weight:bold">new</span> DemoMessage();
-        message.setKey(<span style="font-style:italic">&#34;key&#34;</span>);
-        message.setValue(<span style="font-style:italic">&#34;value&#34;</span>);
-        message.setTimestamp(DateTime.now());
-        redisService.save(<span style="font-style:italic">&#34;test&#34;</span>, message);
-    }
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSave</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        DemoMessage message <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DemoMessage<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setKey</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setTimestamp</span><span style="color:#f92672">(</span>DateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        redisService<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">,</span> message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    @Test
-    <span style="font-weight:bold">public</span> <span style="">void</span> testGet() <span style="font-weight:bold">throws</span> Exception {
-        DemoMessage demoMessage = redisService.get(<span style="font-style:italic">&#34;test&#34;</span>, DemoMessage.class);
-        System.out.println(<span style="font-style:italic">&#34;====demomessage===: {}&#34;</span> + demoMessage.toString());
-        Assert.notNull(demoMessage);
-        Assert.isTrue(<span style="font-style:italic">&#34;key&#34;</span>.equals(demoMessage.getKey()));
-        Assert.isTrue(<span style="font-style:italic">&#34;value&#34;</span>.equals(demoMessage.getValue()));
-        Assert.notNull(demoMessage.getTimestamp());
-    }
-}
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGet</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        DemoMessage demoMessage <span style="color:#f92672">=</span> redisService<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">,</span> DemoMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;====demomessage===: {}&#34;</span> <span style="color:#f92672">+</span> demoMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>demoMessage<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>demoMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>demoMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>demoMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getTimestamp</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><h4 id="why-">WHY ?</h4>
 <ul>
 <li>
@@ -612,30 +612,28 @@ auth 123456
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

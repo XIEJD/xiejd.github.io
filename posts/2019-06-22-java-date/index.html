@@ -45,7 +45,7 @@ Java 8 时间工具 无时区时间类  LocalDate LocalTime LocalDateTime  publi
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -177,25 +177,25 @@ Java 8 时间工具 无时区时间类  LocalDate LocalTime LocalDateTime  publi
 <li>LocalTime</li>
 <li>LocalDateTime</li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
-<span style="font-weight:bold">public</span> <span style="">void</span> testLocal() {
-        <span style="">long</span> timeStamp = System.currentTimeMillis();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testLocal</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">long</span> timeStamp <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-style:italic">// epochDays 从1970年1月1日开始，到timeStamp的天数
-</span><span style="font-style:italic"></span>        LocalDate localDate = LocalDate.ofEpochDay(Math.floorDiv(timeStamp, 24 * 60 * 60 * 1000));
-        <span style="font-style:italic">// 转换成一天的时间（无日期信息）
-</span><span style="font-style:italic"></span>        LocalTime localTime = LocalTime.ofSecondOfDay(Math.floorDiv(timeStamp, 1000) % (24 * 60 * 60));
-        <span style="font-style:italic">// 转换成时间
-</span><span style="font-style:italic"></span>        LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
-        System.out.println(<span style="font-style:italic">&#34;now: &#34;</span> + LocalDateTime.now());
-        System.out.println(<span style="font-style:italic">&#34;timeStamp: &#34;</span> + timeStamp);
-        System.out.println(<span style="font-style:italic">&#34;localDate: &#34;</span> + localDate.toString());
-        System.out.println(<span style="font-style:italic">&#34;localTime: &#34;</span> + localTime.toString());
-        System.out.println(<span style="font-style:italic">&#34;localDateTime: &#34;</span> + localDateTime.toString());
-}
+        <span style="color:#75715e">// epochDays 从1970年1月1日开始，到timeStamp的天数
+</span><span style="color:#75715e"></span>        LocalDate localDate <span style="color:#f92672">=</span> LocalDate<span style="color:#f92672">.</span><span style="color:#a6e22e">ofEpochDay</span><span style="color:#f92672">(</span>Math<span style="color:#f92672">.</span><span style="color:#a6e22e">floorDiv</span><span style="color:#f92672">(</span>timeStamp<span style="color:#f92672">,</span> 24 <span style="color:#f92672">*</span> 60 <span style="color:#f92672">*</span> 60 <span style="color:#f92672">*</span> 1000<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 转换成一天的时间（无日期信息）
+</span><span style="color:#75715e"></span>        LocalTime localTime <span style="color:#f92672">=</span> LocalTime<span style="color:#f92672">.</span><span style="color:#a6e22e">ofSecondOfDay</span><span style="color:#f92672">(</span>Math<span style="color:#f92672">.</span><span style="color:#a6e22e">floorDiv</span><span style="color:#f92672">(</span>timeStamp<span style="color:#f92672">,</span> 1000<span style="color:#f92672">)</span> <span style="color:#f92672">%</span> <span style="color:#f92672">(</span>24 <span style="color:#f92672">*</span> 60 <span style="color:#f92672">*</span> 60<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 转换成时间
+</span><span style="color:#75715e"></span>        LocalDateTime localDateTime <span style="color:#f92672">=</span> LocalDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>localDate<span style="color:#f92672">,</span> localTime<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;now: &#34;</span> <span style="color:#f92672">+</span> LocalDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;timeStamp: &#34;</span> <span style="color:#f92672">+</span> timeStamp<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localDate: &#34;</span> <span style="color:#f92672">+</span> localDate<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localTime: &#34;</span> <span style="color:#f92672">+</span> localTime<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localDateTime: &#34;</span> <span style="color:#f92672">+</span> localDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>结果：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">now: 2019-09-28T02:28:02.258
-timeStamp: 1569608882253
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">now: 2019-09-28T02:28:02.258
+timeStamp: <span style="color:#ae81ff">1569608882253</span>
 localDate: 2019-09-27
 localTime: 18:28:02
 localDateTime: 2019-09-27T18:28:02
@@ -330,46 +330,46 @@ localDateTime: 2019-09-27T18:28:02
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">public</span> <span style="">void</span> testZoned() {
-        <span style="">long</span> timeStamp = System.currentTimeMillis();
-        LocalDate localDate = LocalDate.ofEpochDay(Math.floorDiv(timeStamp, 24 * 60 * 60 * 1000));
-        LocalTime localTime = LocalTime.ofSecondOfDay(Math.floorDiv(timeStamp, 1000) % (24 * 60 * 60));
-        LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testZoned</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">long</span> timeStamp <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        LocalDate localDate <span style="color:#f92672">=</span> LocalDate<span style="color:#f92672">.</span><span style="color:#a6e22e">ofEpochDay</span><span style="color:#f92672">(</span>Math<span style="color:#f92672">.</span><span style="color:#a6e22e">floorDiv</span><span style="color:#f92672">(</span>timeStamp<span style="color:#f92672">,</span> 24 <span style="color:#f92672">*</span> 60 <span style="color:#f92672">*</span> 60 <span style="color:#f92672">*</span> 1000<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        LocalTime localTime <span style="color:#f92672">=</span> LocalTime<span style="color:#f92672">.</span><span style="color:#a6e22e">ofSecondOfDay</span><span style="color:#f92672">(</span>Math<span style="color:#f92672">.</span><span style="color:#a6e22e">floorDiv</span><span style="color:#f92672">(</span>timeStamp<span style="color:#f92672">,</span> 1000<span style="color:#f92672">)</span> <span style="color:#f92672">%</span> <span style="color:#f92672">(</span>24 <span style="color:#f92672">*</span> 60 <span style="color:#f92672">*</span> 60<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        LocalDateTime localDateTime <span style="color:#f92672">=</span> LocalDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>localDate<span style="color:#f92672">,</span> localTime<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-style:italic">// 系统默认时间ID
-</span><span style="font-style:italic"></span>        ZoneId zoneId = ZoneId.systemDefault();
+        <span style="color:#75715e">// 系统默认时间ID
+</span><span style="color:#75715e"></span>        ZoneId zoneId <span style="color:#f92672">=</span> ZoneId<span style="color:#f92672">.</span><span style="color:#a6e22e">systemDefault</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-style:italic">// 根据和0时区相差的小时数获取时区偏移
-</span><span style="font-style:italic"></span>        ZoneOffset zoneOffset = ZoneOffset.ofHours(8);
+        <span style="color:#75715e">// 根据和0时区相差的小时数获取时区偏移
+</span><span style="color:#75715e"></span>        ZoneOffset zoneOffset <span style="color:#f92672">=</span> ZoneOffset<span style="color:#f92672">.</span><span style="color:#a6e22e">ofHours</span><span style="color:#f92672">(</span>8<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        ZonedDateTime zonedDateTimeOfId = ZonedDateTime.of(localDateTime, zoneId);
-        ZonedDateTime zonedDateTimeOfIdAndOffset = ZonedDateTime.ofInstant(localDateTime, zoneOffset, zoneId);
-        ZonedDateTime zonedDateTimeOfIdAndOffsetLocal = ZonedDateTime.ofLocal(localDateTime, zoneId, zoneOffset);
+        ZonedDateTime zonedDateTimeOfId <span style="color:#f92672">=</span> ZonedDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>localDateTime<span style="color:#f92672">,</span> zoneId<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ZonedDateTime zonedDateTimeOfIdAndOffset <span style="color:#f92672">=</span> ZonedDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">ofInstant</span><span style="color:#f92672">(</span>localDateTime<span style="color:#f92672">,</span> zoneOffset<span style="color:#f92672">,</span> zoneId<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ZonedDateTime zonedDateTimeOfIdAndOffsetLocal <span style="color:#f92672">=</span> ZonedDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">ofLocal</span><span style="color:#f92672">(</span>localDateTime<span style="color:#f92672">,</span> zoneId<span style="color:#f92672">,</span> zoneOffset<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="">long</span> beforeConversion = Math.floorDiv(timeStamp, 1000);
-        <span style="">long</span> afterConversion = zonedDateTimeOfIdAndOffset.toEpochSecond();
+        <span style="color:#66d9ef">long</span> beforeConversion <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">floorDiv</span><span style="color:#f92672">(</span>timeStamp<span style="color:#f92672">,</span> 1000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">long</span> afterConversion <span style="color:#f92672">=</span> zonedDateTimeOfIdAndOffset<span style="color:#f92672">.</span><span style="color:#a6e22e">toEpochSecond</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
 
-        System.out.println(<span style="font-style:italic">&#34;now: &#34;</span> + ZonedDateTime.now());
-        System.out.println(<span style="font-style:italic">&#34;timeStamp: &#34;</span> + timeStamp);
-        System.out.println(<span style="font-style:italic">&#34;zoneId: &#34;</span> + zoneId.toString());
-        System.out.println(<span style="font-style:italic">&#34;zoneOffset: &#34;</span> + zoneOffset.toString());
-        System.out.println(<span style="font-style:italic">&#34;zonedDateTimeOfId: &#34;</span> + zonedDateTimeOfId.toString());
-        System.out.println(<span style="font-style:italic">&#34;zonedDateTimeOfIdAndOffset: &#34;</span> + zonedDateTimeOfIdAndOffset.toString());
-        System.out.println(<span style="font-style:italic">&#34;zonedDateTimeOfIdAndOffsetLocal: &#34;</span> + zonedDateTimeOfIdAndOffsetLocal.toString());
-        System.out.println(<span style="font-style:italic">&#34;beforeConversion: &#34;</span> + beforeConversion);
-        System.out.println(<span style="font-style:italic">&#34;afterConversion: &#34;</span> + afterConversion);
-        System.out.println(<span style="font-style:italic">&#34;conversionOffsetHours: &#34;</span> + ((afterConversion - beforeConversion)/3600));
-}
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">now: 2019-09-28T02:26:47.884+08:00[Asia/Shanghai]
-timeStamp: 1569608807874
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;now: &#34;</span> <span style="color:#f92672">+</span> ZonedDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;timeStamp: &#34;</span> <span style="color:#f92672">+</span> timeStamp<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;zoneId: &#34;</span> <span style="color:#f92672">+</span> zoneId<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;zoneOffset: &#34;</span> <span style="color:#f92672">+</span> zoneOffset<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;zonedDateTimeOfId: &#34;</span> <span style="color:#f92672">+</span> zonedDateTimeOfId<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;zonedDateTimeOfIdAndOffset: &#34;</span> <span style="color:#f92672">+</span> zonedDateTimeOfIdAndOffset<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;zonedDateTimeOfIdAndOffsetLocal: &#34;</span> <span style="color:#f92672">+</span> zonedDateTimeOfIdAndOffsetLocal<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;beforeConversion: &#34;</span> <span style="color:#f92672">+</span> beforeConversion<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;afterConversion: &#34;</span> <span style="color:#f92672">+</span> afterConversion<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;conversionOffsetHours: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>afterConversion <span style="color:#f92672">-</span> beforeConversion<span style="color:#f92672">)</span><span style="color:#f92672">/</span>3600<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">now: 2019-09-28T02:26:47.884+08:00<span style="color:#f92672">[</span>Asia/Shanghai<span style="color:#f92672">]</span>
+timeStamp: <span style="color:#ae81ff">1569608807874</span>
 zoneId: Asia/Shanghai
 zoneOffset: +08:00
-zonedDateTimeOfId: 2019-09-27T18:26:47+08:00[Asia/Shanghai]
-zonedDateTimeOfIdAndOffset: 2019-09-27T18:26:47+08:00[Asia/Shanghai]
-zonedDateTimeOfIdAndOffsetLocal: 2019-09-27T18:26:47+08:00[Asia/Shanghai]
-beforeConversion: 1569608807
-afterConversion: 1569580007
+zonedDateTimeOfId: 2019-09-27T18:26:47+08:00<span style="color:#f92672">[</span>Asia/Shanghai<span style="color:#f92672">]</span>
+zonedDateTimeOfIdAndOffset: 2019-09-27T18:26:47+08:00<span style="color:#f92672">[</span>Asia/Shanghai<span style="color:#f92672">]</span>
+zonedDateTimeOfIdAndOffsetLocal: 2019-09-27T18:26:47+08:00<span style="color:#f92672">[</span>Asia/Shanghai<span style="color:#f92672">]</span>
+beforeConversion: <span style="color:#ae81ff">1569608807</span>
+afterConversion: <span style="color:#ae81ff">1569580007</span>
 conversionOffsetHours: -8
 </code></pre></div><p>由对比结果可以下结论：ZonedDateTime在获取时间的时候，并不会根据时间戳+时区偏移来得到时间，而是将其变成：时间戳时间 == 带时区的时间。从上面测试可以看出，当直接获取系统时间时，时间为正常的东8区时间。当用时间戳转换成ZonedDateTime时，时间“损失”了8小时，原因即ZonedDateTime在将时间转换成某时区时间的时候，并不会对时间进行便宜，而仅仅是打上了一个时区标签而已。（跟我没有测试之前的直觉完全相反）</p>
 <p>或者说，人家不是以时间戳为基准的[摊手]&hellip;</p>
@@ -379,22 +379,22 @@ conversionOffsetHours: -8
 <ul>
 <li>DateTime</li>
 </ul>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="font-weight:bold">public</span> <span style="">void</span> testJoda() {
-        <span style="">long</span> timeStamp = System.currentTimeMillis();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testJoda</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">long</span> timeStamp <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        DateTime dateTime = <span style="font-weight:bold">new</span> DateTime(timeStamp);
-        DateTime offsetDateTime = dateTime.toDateTime(DateTimeZone.forOffsetHours(6));
-        DateTime utcDateTime = dateTime.toDateTime(DateTimeZone.UTC);
+        DateTime dateTime <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DateTime<span style="color:#f92672">(</span>timeStamp<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        DateTime offsetDateTime <span style="color:#f92672">=</span> dateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">toDateTime</span><span style="color:#f92672">(</span>DateTimeZone<span style="color:#f92672">.</span><span style="color:#a6e22e">forOffsetHours</span><span style="color:#f92672">(</span>6<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        DateTime utcDateTime <span style="color:#f92672">=</span> dateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">toDateTime</span><span style="color:#f92672">(</span>DateTimeZone<span style="color:#f92672">.</span><span style="color:#a6e22e">UTC</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        System.out.println(<span style="font-style:italic">&#34;now: &#34;</span> + ZonedDateTime.now());
-        System.out.println(<span style="font-style:italic">&#34;timeStamp: &#34;</span> + timeStamp);
-        System.out.println(<span style="font-style:italic">&#34;dateTime: &#34;</span> + dateTime + <span style="font-style:italic">&#34;zone: &#34;</span> + dateTime.getZone());
-        System.out.println(<span style="font-style:italic">&#34;offset dateTime: &#34;</span> + offsetDateTime + <span style="font-style:italic">&#34;offsetzone: &#34;</span> + offsetDateTime.getZone());
-        System.out.println(<span style="font-style:italic">&#34;utc dateTime: &#34;</span> + utcDateTime + <span style="font-style:italic">&#34;utc zone: &#34;</span> + utcDateTime.getZone());
-    }
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;now: &#34;</span> <span style="color:#f92672">+</span> ZonedDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;timeStamp: &#34;</span> <span style="color:#f92672">+</span> timeStamp<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dateTime: &#34;</span> <span style="color:#f92672">+</span> dateTime <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;zone: &#34;</span> <span style="color:#f92672">+</span> dateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">getZone</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;offset dateTime: &#34;</span> <span style="color:#f92672">+</span> offsetDateTime <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;offsetzone: &#34;</span> <span style="color:#f92672">+</span> offsetDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">getZone</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;utc dateTime: &#34;</span> <span style="color:#f92672">+</span> utcDateTime <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;utc zone: &#34;</span> <span style="color:#f92672">+</span> utcDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">getZone</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 </code></pre></div><p>结果：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">now: 2019-09-28T12:54:06.786+08:00[Asia/Shanghai]
-timeStamp: 1569646446711
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">now: 2019-09-28T12:54:06.786+08:00<span style="color:#f92672">[</span>Asia/Shanghai<span style="color:#f92672">]</span>
+timeStamp: <span style="color:#ae81ff">1569646446711</span>
 dateTime: 2019-09-28T12:54:06.711+08:00zone: Asia/Shanghai
 offset dateTime: 2019-09-28T10:54:06.711+06:00offsetzone: +06:00
 utc dateTime: 2019-09-28T04:54:06.711Zutc zone: UTC
@@ -407,9 +407,9 @@ utc dateTime: 2019-09-28T04:54:06.711Zutc zone: UTC
 <li>Clock</li>
 </ul>
 <p>利用Clock生成ZonedDateTime：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Clock clock = Clock.systemDefaultZone();
-Instant defaultZoneInstant = clock.instant();
-ZonedDateTime atrDT = defaultZoneInstant.atZone(ZoneId.of(<span style="font-style:italic">&#34;Asia/Tokyo&#34;</span>))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Clock clock <span style="color:#f92672">=</span> Clock<span style="color:#f92672">.</span><span style="color:#a6e22e">systemDefaultZone</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+Instant defaultZoneInstant <span style="color:#f92672">=</span> clock<span style="color:#f92672">.</span><span style="color:#a6e22e">instant</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+ZonedDateTime atrDT <span style="color:#f92672">=</span> defaultZoneInstant<span style="color:#f92672">.</span><span style="color:#a6e22e">atZone</span><span style="color:#f92672">(</span>ZoneId<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Asia/Tokyo&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
 </code></pre></div><p>Instant为某一个UTC时间点，Instant利用Clock生成，Clock实际上也是利用System.currentTimeMillis生成，Instant可以转换成任意时区的时间。</p>
 <h2 id="总结">总结</h2>
 <p>UTC时间类（不用考虑时区）：</p>
@@ -428,30 +428,28 @@ ZonedDateTime atrDT = defaultZoneInstant.atZone(ZoneId.of(<span style="font-styl
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

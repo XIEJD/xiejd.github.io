@@ -55,7 +55,7 @@ cd $GDAL_HOME/swig/java make 如果编译Java的过程报作用域的错误，�
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -175,66 +175,66 @@ cd $GDAL_HOME/swig/java make 如果编译Java的过程报作用域的错误，�
 <li>gdal.jar</li>
 </ul>
 <h4 id="编译源码">编译源码</h4>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd $GDAL_HOME
-./configure --with-java=$JAVA_HOME --prefix=$PATH_YOU_WANT_TO_INSTALL
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd $GDAL_HOME
+./configure --with-java<span style="color:#f92672">=</span>$JAVA_HOME --prefix<span style="color:#f92672">=</span>$PATH_YOU_WANT_TO_INSTALL
 make
 make install
 </code></pre></div><p>编译结束后，继续编译Java接口和JNI支持库</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd $GDAL_HOME/swig/java
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd $GDAL_HOME/swig/java
 make
 </code></pre></div><p>如果编译Java的过程报作用域的错误，直接找到对应Java文件，加个<code>public</code>，简单粗暴。实际上有用的就这俩：<code>libgdalalljni.so</code>和<code>gdal.jar</code>，如果不能确保maven中心库的编译工具和自己环境的编译工具一致，就不要引用maven中心库的jar包。</p>
 <p>由于项目里暂时没法自定义基础容器，所以需要将这GDAL手动集成到项目的包里，又一个蛋疼</p>
 <h4 id="集成">集成</h4>
 <p>源码编译完成后，将<code>$PATH_YOU_WANT_TO_INSTALL/share </code>和<code>$PATH_YOU_WANT_TO_INSTALL/lib</code>复制出来放到项目的某个文件夹下比如<code>$PROJECT_LIB/gdal</code>，怎么打包可以百度，同时，由于容器化部署，GDAL的依赖库不一定都包含在了基础容器中，所以还要验证：</p>
 <p>查看<code>libgdalalljni.so</code>所有动态链接库依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># 懒得找linux环境了，Mac上的动态链接库依赖查看用otool</span>
-<span style="font-style:italic"># Linux环境用 ldd libgdalalljni.so</span> 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 懒得找linux环境了，Mac上的动态链接库依赖查看用otool</span>
+<span style="color:#75715e"># Linux环境用 ldd libgdalalljni.so</span> 
 otool -L libgdalalljni.20.dylib 
 	libgdalalljni.20.dylib:
-	/Users/xjd/tools/gdal-2.4.0/build/lib/libgdalalljni.20.dylib (compatibility version 26.0.0, current version 26.0.0)
-	/Users/xjd/tools/gdal-2.4.0/build/lib/libgdal.20.dylib (compatibility version 26.0.0, current version 26.0.0)
-	/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 400.9.4)
-	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)
+	/Users/xjd/tools/gdal-2.4.0/build/lib/libgdalalljni.20.dylib <span style="color:#f92672">(</span>compatibility version 26.0.0, current version 26.0.0<span style="color:#f92672">)</span>
+	/Users/xjd/tools/gdal-2.4.0/build/lib/libgdal.20.dylib <span style="color:#f92672">(</span>compatibility version 26.0.0, current version 26.0.0<span style="color:#f92672">)</span>
+	/usr/lib/libc++.1.dylib <span style="color:#f92672">(</span>compatibility version 1.0.0, current version 400.9.4<span style="color:#f92672">)</span>
+	/usr/lib/libSystem.B.dylib <span style="color:#f92672">(</span>compatibility version 1.0.0, current version 1252.200.5<span style="color:#f92672">)</span>
 </code></pre></div><p>查看基础容器中<code>/usr/lib</code>和<code>/usr/lib64</code>中是否都包含了上面的依赖，如果没有，还需要将这些添加到你的<code>$PROJECT_LIB/gdal/lib</code>中。</p>
 <p>容器化部署添加环境变量</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="font-weight:bold">ENV</span> GDAL_DATA /opt/local/.../gdal-2.4.0/share/gdal/<span style="">
-</span><span style=""></span><span style="font-weight:bold">ENV</span> LD_LIBRARY_PATH /opt/local/.../gdal-2.4.0/lib/<span style="">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">ENV</span> GDAL_DATA /opt/local/.../gdal-2.4.0/share/gdal/<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> LD_LIBRARY_PATH /opt/local/.../gdal-2.4.0/lib/<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>应用启动时，加载动态库：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">private</span> <span style="font-weight:bold">static</span> <span style="">void</span> loadJNILibDynamically() {
-    String libPath = <span style="font-style:italic">&#34;:/opt/local/.../gdal-2.4.0/lib/&#34;</span>
-    <span style="font-weight:bold">try</span> {
-        System.setProperty(<span style="font-style:italic">&#34;java.library.path&#34;</span>, System.getProperty(<span style="font-style:italic">&#34;java.library.path&#34;</span>) + libPath);
-        Field fieldSysPath = ClassLoader.class.getDeclaredField(<span style="font-style:italic">&#34;sys_paths&#34;</span>);
-        fieldSysPath.setAccessible(<span style="font-weight:bold">true</span>);
-        fieldSysPath.set(<span style="font-weight:bold">null</span>, <span style="font-weight:bold">null</span>);
-        System.loadLibrary(<span style="font-style:italic">&#34;libjdalalljni.so&#34;</span>);
-    } <span style="font-weight:bold">catch</span> (Exception e) {
-        <span style="font-style:italic">// do nothing for exception
-</span><span style="font-style:italic"></span>    }
-}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loadJNILibDynamically</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    String libPath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;:/opt/local/.../gdal-2.4.0/lib/&#34;</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;java.library.path&#34;</span><span style="color:#f92672">,</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;java.library.path&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> libPath<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Field fieldSysPath <span style="color:#f92672">=</span> ClassLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaredField</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sys_paths&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        fieldSysPath<span style="color:#f92672">.</span><span style="color:#a6e22e">setAccessible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        fieldSysPath<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">loadLibrary</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;libjdalalljni.so&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// do nothing for exception
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><h3 id="验证">验证</h3>
 <p>由于部署环境为linux，如果需要在Windows上面或者Mac上进行调试，Windows下好办，直接在<a href="http://www.gisinternals.com/release.php">GISInternals</a>下载对应版本，放到系统路径下，项目中直接引用Maven库中的GDAL就行了。Mac下虽然也有第三方编译好的库，但是，没有2.4.0版本的，所以还是得自己编译，编译方法同理，只是在mac下，动态链接库的后缀是<code>.dylib</code>。</p>
 <p>将Shapefile转换成Json的小Demo，程序参考自网络：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">static</span> <span style="">void</span> gdalTest() {
-		ogr.RegisterAll();
-    <span style="font-style:italic">//文件路径
-</span><span style="font-style:italic"></span>    String from = <span style="font-style:italic">&#34;service/src/main/resources/data/HRoad.shp&#34;</span>;
-    <span style="font-style:italic">//转换后的文件路径
-</span><span style="font-style:italic"></span>    String to = <span style="font-style:italic">&#34;service/src/main/resources/data/HRoad.json&#34;</span>;
-    <span style="font-style:italic">//打开数据
-</span><span style="font-style:italic"></span>    DataSource ds = ogr.Open(from,0);
-    <span style="font-weight:bold">if</span> (ds == <span style="font-weight:bold">null</span>) {
-      <span style="font-style:italic">// something is wrong.
-</span><span style="font-style:italic"></span>    }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">gdalTest</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		ogr<span style="color:#f92672">.</span><span style="color:#a6e22e">RegisterAll</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">//文件路径
+</span><span style="color:#75715e"></span>    String from <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;service/src/main/resources/data/HRoad.shp&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">//转换后的文件路径
+</span><span style="color:#75715e"></span>    String to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;service/src/main/resources/data/HRoad.json&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">//打开数据
+</span><span style="color:#75715e"></span>    DataSource ds <span style="color:#f92672">=</span> ogr<span style="color:#f92672">.</span><span style="color:#a6e22e">Open</span><span style="color:#f92672">(</span>from<span style="color:#f92672">,</span>0<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ds <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// something is wrong.
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
   
-    Driver dv = ogr.GetDriverByName(<span style="font-style:italic">&#34;GeoJSON&#34;</span>);
-    <span style="font-weight:bold">if</span> (dv == <span style="font-weight:bold">null</span>) {
-      <span style="font-style:italic">// something is wrong.
-</span><span style="font-style:italic"></span>    }
+    Driver dv <span style="color:#f92672">=</span> ogr<span style="color:#f92672">.</span><span style="color:#a6e22e">GetDriverByName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;GeoJSON&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>dv <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// something is wrong.
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
   
-    dv.CopyDataSource(ds, to);
-    System.out.println(<span style="font-style:italic">&#34;转换成功！&#34;</span>);
-}
+    dv<span style="color:#f92672">.</span><span style="color:#a6e22e">CopyDataSource</span><span style="color:#f92672">(</span>ds<span style="color:#f92672">,</span> to<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;转换成功！&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><h2 id="预热">预热</h2>
 <h3 id="地理空间基本概念">地理空间基本概念</h3>
 <ul>
@@ -304,30 +304,28 @@ otool -L libgdalalljni.20.dylib
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

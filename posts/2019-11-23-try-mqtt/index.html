@@ -55,7 +55,7 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -158,8 +158,8 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
 <li>
 <p>运行EMQX作为MQTT Broker</p>
 <p>容器部署：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull emqx/emqx:v3.2.5
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull emqx/emqx:v3.2.5
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqx/emqx
 </code></pre></div><table>
 <thead>
 <tr>
@@ -190,91 +190,91 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
 <li>
 <p>客户端使用spring-integration-mqtt作为mqtt客户端，</p>
 <p>依赖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">            <span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-                <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.integration<span style="font-weight:bold">&lt;/groupId&gt;</span>
-                <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-integration-mqtt<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-                <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>5.2.1.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
-            <span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">            <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.integration<span style="color:#f92672">&lt;/groupId&gt;</span>
+                <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-integration-mqtt<span style="color:#f92672">&lt;/artifactId&gt;</span>
+                <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>5.2.1.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+            <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>Java Configuration:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MqttConfiguration</span> {
-    @Bean
-    <span style="font-weight:bold">public</span> MqttPahoClientFactory mqttClientFactory() {
-        DefaultMqttPahoClientFactory factory = <span style="font-weight:bold">new</span> DefaultMqttPahoClientFactory();
-        MqttConnectOptions options = <span style="font-weight:bold">new</span> MqttConnectOptions();
-        options.setServerURIs(<span style="font-weight:bold">new</span> String[]{<span style="font-style:italic">&#34;tcp://localhost:1883&#34;</span>});
-        factory.setConnectionOptions(options);
-        <span style="font-weight:bold">return</span> factory;
-    }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MqttConfiguration</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> MqttPahoClientFactory <span style="color:#a6e22e">mqttClientFactory</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        DefaultMqttPahoClientFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultMqttPahoClientFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        MqttConnectOptions options <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MqttConnectOptions<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        options<span style="color:#f92672">.</span><span style="color:#a6e22e">setServerURIs</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> String<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;tcp://localhost:1883&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setConnectionOptions</span><span style="color:#f92672">(</span>options<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> factory<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
    
-    @Bean
-    <span style="font-weight:bold">public</span> MessageChannel mqttInputChannel() {
-        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> DirectChannel();
-    }
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> MessageChannel <span style="color:#a6e22e">mqttInputChannel</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectChannel<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
    
-    @Bean
-    <span style="font-weight:bold">public</span> MessageProducer inbound() {
-        MqttPahoMessageDrivenChannelAdapter adapter = <span style="font-weight:bold">new</span> MqttPahoMessageDrivenChannelAdapter(<span style="font-style:italic">&#34;mqttSubscriber&#34;</span>,
-                mqttClientFactory(), <span style="font-style:italic">&#34;mqtt-test&#34;</span>);
-        adapter.setCompletionTimeout(5000);
-        adapter.setConverter(<span style="font-weight:bold">new</span> DefaultPahoMessageConverter());
-        adapter.setQos(1);
-        adapter.setOutputChannel(mqttInputChannel());
-        <span style="font-weight:bold">return</span> adapter;
-    }
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> MessageProducer <span style="color:#a6e22e">inbound</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        MqttPahoMessageDrivenChannelAdapter adapter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MqttPahoMessageDrivenChannelAdapter<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mqttSubscriber&#34;</span><span style="color:#f92672">,</span>
+                mqttClientFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;mqtt-test&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        adapter<span style="color:#f92672">.</span><span style="color:#a6e22e">setCompletionTimeout</span><span style="color:#f92672">(</span>5000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        adapter<span style="color:#f92672">.</span><span style="color:#a6e22e">setConverter</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> DefaultPahoMessageConverter<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        adapter<span style="color:#f92672">.</span><span style="color:#a6e22e">setQos</span><span style="color:#f92672">(</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        adapter<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputChannel</span><span style="color:#f92672">(</span>mqttInputChannel<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> adapter<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
    
-    @Bean
-    @ServiceActivator(inputChannel = <span style="font-style:italic">&#34;mqttInputChannel&#34;</span>)
-    <span style="font-weight:bold">public</span> MessageHandler handler() {
-        <span style="font-weight:bold">return</span> message -&gt; {
-            String payload = message.getPayload().toString();
-            String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
-            System.out.println(<span style="font-style:italic">&#34;收到来自&#34;</span> + topic + <span style="font-style:italic">&#34;的消息：&#34;</span> + payload);
-        };
-    }
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#a6e22e">@ServiceActivator</span><span style="color:#f92672">(</span>inputChannel <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mqttInputChannel&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> MessageHandler <span style="color:#a6e22e">handler</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> message <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+            String payload <span style="color:#f92672">=</span> message<span style="color:#f92672">.</span><span style="color:#a6e22e">getPayload</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            String topic <span style="color:#f92672">=</span> message<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeaders</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>MqttHeaders<span style="color:#f92672">.</span><span style="color:#a6e22e">RECEIVED_TOPIC</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;收到来自&#34;</span> <span style="color:#f92672">+</span> topic <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;的消息：&#34;</span> <span style="color:#f92672">+</span> payload<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
    
-    @Bean
-    <span style="font-weight:bold">public</span> MessageChannel mqttOutboundChannel() {
-        <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> DirectChannel();
-    }
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> MessageChannel <span style="color:#a6e22e">mqttOutboundChannel</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectChannel<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
    
-    @Bean
-    @ServiceActivator(inputChannel = <span style="font-style:italic">&#34;mqttOutboundChannel&#34;</span>)
-    <span style="font-weight:bold">public</span> MessageHandler outbound() {
-        <span style="font-style:italic">// 在这里进行mqttOutboundChannel的相关设置
-</span><span style="font-style:italic"></span>        MqttPahoMessageHandler messageHandler =
-                <span style="font-weight:bold">new</span> MqttPahoMessageHandler(<span style="font-style:italic">&#34;mqttPublisher&#34;</span>, mqttClientFactory());
-        messageHandler.setAsync(<span style="font-weight:bold">true</span>); <span style="font-style:italic">//如果设置成true，发送消息时将不会阻塞。
-</span><span style="font-style:italic"></span>        messageHandler.setDefaultTopic(<span style="font-style:italic">&#34;mqtt-test&#34;</span>);
-        <span style="font-weight:bold">return</span> messageHandler;
-    }
-}
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#a6e22e">@ServiceActivator</span><span style="color:#f92672">(</span>inputChannel <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mqttOutboundChannel&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> MessageHandler <span style="color:#a6e22e">outbound</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 在这里进行mqttOutboundChannel的相关设置
+</span><span style="color:#75715e"></span>        MqttPahoMessageHandler messageHandler <span style="color:#f92672">=</span>
+                <span style="color:#66d9ef">new</span> MqttPahoMessageHandler<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mqttPublisher&#34;</span><span style="color:#f92672">,</span> mqttClientFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        messageHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsync</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//如果设置成true，发送消息时将不会阻塞。
+</span><span style="color:#75715e"></span>        messageHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefaultTopic</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mqtt-test&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> messageHandler<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>Mqtt Message Gateway：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@MessagingGateway(defaultRequestChannel = <span style="font-style:italic">&#34;mqttOutboundChannel&#34;</span>)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">MqttPublisher</span> {
-    <span style="">void</span> sendToMqtt(String payload);
-    <span style="">void</span> sendToMqtt(@Header(MqttHeaders.TOPIC) String topic, String payload);
-    <span style="">void</span> sendToMqtt(@Header(MqttHeaders.TOPIC) String topic, @Header(MqttHeaders.QOS) <span style="">int</span> qos, String payload);
-}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@MessagingGateway</span><span style="color:#f92672">(</span>defaultRequestChannel <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mqttOutboundChannel&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MqttPublisher</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendToMqtt</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendToMqtt</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Header</span><span style="color:#f92672">(</span>MqttHeaders<span style="color:#f92672">.</span><span style="color:#a6e22e">TOPIC</span><span style="color:#f92672">)</span> String topic<span style="color:#f92672">,</span> String payload<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendToMqtt</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Header</span><span style="color:#f92672">(</span>MqttHeaders<span style="color:#f92672">.</span><span style="color:#a6e22e">TOPIC</span><span style="color:#f92672">)</span> String topic<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Header</span><span style="color:#f92672">(</span>MqttHeaders<span style="color:#f92672">.</span><span style="color:#a6e22e">QOS</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> qos<span style="color:#f92672">,</span> String payload<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>来个LLT测试一下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">MqttTest</span> {
-    @Autowired
-    <span style="font-weight:bold">private</span> MqttPublisher mqttGateway;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@SpringBootTest</span><span style="color:#f92672">(</span>webEnvironment <span style="color:#f92672">=</span> SpringBootTest<span style="color:#f92672">.</span><span style="color:#a6e22e">WebEnvironment</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RANDOM_PORT</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MqttTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> MqttPublisher mqttGateway<span style="color:#f92672">;</span>
    
-    @Test
-    <span style="font-weight:bold">public</span> <span style="">void</span> init() {
-        <span style="font-weight:bold">try</span> {
-            mqttGateway.sendToMqtt(<span style="font-style:italic">&#34;mqtt-test&#34;</span>, <span style="font-style:italic">&#34;this is a mqtt message from test&#34;</span>);
-            System.out.println(<span style="font-style:italic">&#34;send mqtt message successfully.&#34;</span>);
-        } <span style="font-weight:bold">catch</span> (Exception e) {
-            System.out.println(<span style="font-style:italic">&#34;send mqtt message failed.&#34;</span>);
-        }
-    }
-}
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            mqttGateway<span style="color:#f92672">.</span><span style="color:#a6e22e">sendToMqtt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mqtt-test&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;this is a mqtt message from test&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;send mqtt message successfully.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;send mqtt message failed.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>执行成功后，配置中定义的订阅消费者MessageHandler会收到消息，并打印：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">收到来自mqtt-test的消息：this is a mqtt message from test
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">收到来自mqtt-test的消息：this is a mqtt message from test
 </code></pre></div></li>
 </ol>
 
@@ -285,30 +285,28 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

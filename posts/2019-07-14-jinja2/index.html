@@ -53,7 +53,7 @@ How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官�
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -167,24 +167,24 @@ How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官�
 <p>Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官网。</p>
 <h3 id="如何设计一个模板">如何设计一个模板</h3>
 <p>如何设计一个HTML模板，最最最基本的模板实例：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="">&lt;!DOCTYPE html&gt;</span>
-&lt;<span style="font-weight:bold">html</span> lang=<span style="font-style:italic">&#34;en&#34;</span>&gt;
-&lt;<span style="font-weight:bold">head</span>&gt;
-    &lt;<span style="font-weight:bold">title</span>&gt;My Webpage&lt;/<span style="font-weight:bold">title</span>&gt;
-&lt;/<span style="font-weight:bold">head</span>&gt;
-&lt;<span style="font-weight:bold">body</span>&gt;
-    &lt;<span style="font-weight:bold">ul</span> id=<span style="font-style:italic">&#34;navigation&#34;</span>&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;My Webpage&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navigation&#34;</span>&gt;
     \{\% for item in navigation \%\}
-        &lt;<span style="font-weight:bold">li</span>&gt;&lt;<span style="font-weight:bold">a</span> href=<span style="font-style:italic">&#34;\{\{ item.href \}\}&#34;</span>&gt;\{\{ item.caption \}\}&lt;/<span style="font-weight:bold">a</span>&gt;&lt;/<span style="font-weight:bold">li</span>&gt;
+        &lt;<span style="color:#f92672">li</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\{\{ item.href \}\}&#34;</span>&gt;\{\{ item.caption \}\}&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
     \{\% endfor \%\}
-    &lt;/<span style="font-weight:bold">ul</span>&gt;
+    &lt;/<span style="color:#f92672">ul</span>&gt;
 
-    &lt;<span style="font-weight:bold">h1</span>&gt;My Webpage&lt;/<span style="font-weight:bold">h1</span>&gt;
+    &lt;<span style="color:#f92672">h1</span>&gt;My Webpage&lt;/<span style="color:#f92672">h1</span>&gt;
     \{\{ a_variable \}\}
 
     \{# a comment #\}
-&lt;/<span style="font-weight:bold">body</span>&gt;
-&lt;/<span style="font-weight:bold">html</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
 </code></pre></div><p>如上例子，第8~10行表示一个动态的代码逻辑，根据输入来决定生成什么。<code>\{\{ \}\}</code>表示一个动态的表达，他无法控制html标签的生成与否。但能输出一个特定的数据，比如要输出data中的username属性，可以使用<code>\{\{ data.username \}\}</code>。<code>\{# #\}</code> 表示其中的为注释，可以跨行，不会对最终输出产生什么影响。行内注释可以直接使用<code>#</code> 和python一样。<code>##</code> 比<code>#</code>更强大，也是注释，而且在最后渲染时，<code>##</code>注释后的东西全部会被忽略，即不会输出到最后的结果中。</p>
 <h4 id="变量">变量</h4>
 <p><code>\{\{ data.username \}\}</code> 和<code>\{\{ data['username'] \}\}</code>还是有区别的，在python中，直接用dot是对属性的引用，而中括号引用是对dict中的键值对的引用。Jinja2对此作了一点“美化”，Jinja2中这两个语法互为补充，不管是用点还是中括号，既可以对属性进行引用，也可以对键值对进行引用，唯一不同是，点会先获取属性，如果没有对应属性，再获取键值对。中括号的方式反之。</p>
@@ -195,36 +195,36 @@ How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官�
 <p>更多内建的stage方法参考官网：<a href="http://jinja.pocoo.org/docs/2.10/templates/#builtin-filters">Built-in Filters</a></p>
 <h4 id="测试器tests">测试器（Tests）</h4>
 <p>测试器其实就是一个判断语句。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% if loop.index is divisibleby(3) \%\}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% if loop.index is divisibleby(3) \%\}
 </code></pre></div><p>其中<code>divisibleby()</code>就是一个测试器函数，更多测试器函数参考：<a href="http://jinja.pocoo.org/docs/2.10/templates/#builtin-tests">Built-in Tests</a></p>
 <h4 id="控制非可见字符-whitespace-control">控制非可见字符 （Whitespace Control）</h4>
 <p>默认情况下（<code>trim_blocks</code>，<code>lstrip_blocks</code>都开启），一个Jinja2的模板语句会在其后面带上一个换行符。所以，Jinja2在渲染模板的时候，会帮我们去掉这个单独的多余的换行符以及多余的空格。比如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">div</span>&gt;\n
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span>&gt;\n
     \{\% if True \%\}\n
         yay\n
     \{\% endif \%\}\n
-&lt;/<span style="font-weight:bold">div</span>&gt;\n
+&lt;/<span style="color:#f92672">div</span>&gt;\n
 </code></pre></div><p>实际上：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">div</span>&gt;\n
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span>&gt;\n
     \n
         yay\n
     \n
-&lt;/<span style="font-weight:bold">div</span>&gt;\n
+&lt;/<span style="color:#f92672">div</span>&gt;\n
 </code></pre></div><p>显然，这里多了两个换行符和其前面的空格，在最终渲染完成后，Jinja2会将其删除掉：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">div</span>&gt;\n
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span>&gt;\n
         yay\n
-&lt;/<span style="font-weight:bold">div</span>&gt;\n
+&lt;/<span style="color:#f92672">div</span>&gt;\n
 </code></pre></div><p>而其他的换行符会保持不变。</p>
 <p>Jinja2同时提供了一个语法糖：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\%- -\%\} 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\%- -\%\} 
 \{\%+ +\%\}
 </code></pre></div><p>前者表示在渲染时，把此Block前面和后面的不可见字符都删除掉，而后者表示保留此Block前后的不可见字符。</p>
 <p>比如：如果<code>seq=[1,2,3,4,5,6]</code></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% for item in seq -\%\}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% for item in seq -\%\}
     \{\{ item \}\}
 \{\%- endfor \%\}
 </code></pre></div><p>则渲染完成后其输出为：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">123456
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">123456
 </code></pre></div><h4 id="转义">转义</h4>
 <p>Jinja2提供了两种形式来输出原始的字符，而不会被识别成模板语法：</p>
 <ol>
@@ -233,7 +233,7 @@ How Jinja2可以搭配Django使用，基本的Django项目搭建参考Django官�
 </li>
 <li>
 <p>块转义：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% raw \%\}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% raw \%\}
 asdfasdfasdfasdfasdf\{\}\{\}\{\}\{\}\{\}\{\}
 \{\% endraw \%\}
 </code></pre></div><p>这两个表达式中间的所有字符都会不会被Jinja2解析，而是按原样输出。</p>
@@ -242,63 +242,63 @@ asdfasdfasdfasdfasdf\{\}\{\}\{\}\{\}\{\}\{\}
 <h3 id="如何复用一个模板">如何复用一个模板</h3>
 <h4 id="模板继承">模板继承</h4>
 <p>定义一个父模板：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="">&lt;!DOCTYPE html&gt;</span>
-&lt;<span style="font-weight:bold">html</span> lang=<span style="font-style:italic">&#34;en&#34;</span>&gt;
-&lt;<span style="font-weight:bold">head</span>&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
     \{\% block head \%\}
-    &lt;<span style="font-weight:bold">link</span> rel=<span style="font-style:italic">&#34;stylesheet&#34;</span> href=<span style="font-style:italic">&#34;style.css&#34;</span> /&gt;
-    &lt;<span style="font-weight:bold">title</span>&gt;\{\% block title \%\}\{\% endblock \%\} - My Webpage&lt;/<span style="font-weight:bold">title</span>&gt;
+    &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;style.css&#34;</span> /&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;\{\% block title \%\}\{\% endblock \%\} - My Webpage&lt;/<span style="color:#f92672">title</span>&gt;
     \{\% endblock \%\}
-&lt;/<span style="font-weight:bold">head</span>&gt;
-&lt;<span style="font-weight:bold">body</span>&gt;
-    &lt;<span style="font-weight:bold">div</span> id=<span style="font-style:italic">&#34;content&#34;</span>&gt;\{\% block content \%\}\{\% endblock \%\}&lt;/<span style="font-weight:bold">div</span>&gt;
-    &lt;<span style="font-weight:bold">div</span> id=<span style="font-style:italic">&#34;footer&#34;</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;content&#34;</span>&gt;\{\% block content \%\}\{\% endblock \%\}&lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;footer&#34;</span>&gt;
         \{\% block footer \%\}
-        <span style="font-weight:bold">&amp;copy;</span> Copyright 2008 by &lt;<span style="font-weight:bold">a</span> href=<span style="font-style:italic">&#34;http://domain.invalid/&#34;</span>&gt;you&lt;/<span style="font-weight:bold">a</span>&gt;.
+        &amp;copy; Copyright 2008 by &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://domain.invalid/&#34;</span>&gt;you&lt;/<span style="color:#f92672">a</span>&gt;.
         \{\% endblock \%\}
-    &lt;/<span style="font-weight:bold">div</span>&gt;
-&lt;/<span style="font-weight:bold">body</span>&gt;
-&lt;/<span style="font-weight:bold">html</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
 </code></pre></div><p>继承父模板：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% extends &#34;base.html&#34; \%\} 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% extends &#34;base.html&#34; \%\} 
 \{\% block title \%\}Index\{\% endblock \%\}
 \{\% block head \%\}
     \{\{ super() \}\}
-    &lt;<span style="font-weight:bold">style</span> type=<span style="font-style:italic">&#34;text/css&#34;</span>&gt;
-        .<span style="font-weight:bold">important</span> <span style="">\</span>{ <span style="font-weight:bold">color</span>: #336699; <span style="">\</span>}
-    &lt;/<span style="font-weight:bold">style</span>&gt;
+    &lt;<span style="color:#f92672">style</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span>&gt;
+        .<span style="color:#a6e22e">important</span> <span style="color:#960050;background-color:#1e0010">\</span>{ <span style="color:#66d9ef">color</span>: <span style="color:#ae81ff">#336699</span>; <span style="color:#960050;background-color:#1e0010">\</span>}
+    &lt;/<span style="color:#f92672">style</span>&gt;
 \{\% endblock \%\}
 \{\% block content \%\}
-    &lt;<span style="font-weight:bold">h1</span>&gt;Index&lt;/<span style="font-weight:bold">h1</span>&gt;
-    &lt;<span style="font-weight:bold">p</span> class=<span style="font-style:italic">&#34;important&#34;</span>&gt;
+    &lt;<span style="color:#f92672">h1</span>&gt;Index&lt;/<span style="color:#f92672">h1</span>&gt;
+    &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;important&#34;</span>&gt;
       Welcome to my awesome homepage.
-    &lt;/<span style="font-weight:bold">p</span>&gt;
+    &lt;/<span style="color:#f92672">p</span>&gt;
 \{\% endblock \%\}
 </code></pre></div><p>第一行声明继承自父模板 base.html，第二行表示名为title的Block会在父模板中被值<code>Index</code>填充。第3~8行，首先会保留父模块的在名为head的Block中的内容，同时还会将css属性加入到此模块的最后。第9~14行，将会把子模板content block中定义的内容，填充到父模板同名的block中</p>
 <h4 id="模板引用">模板引用</h4>
 <p>模板引用相较于模板继承更加直观，且容易理解。</p>
 <p>比如在<code>head.html</code>中定义了一个block：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="font-weight:bold">head</span>&gt;
-  &lt;<span style="font-weight:bold">title</span>&gt;this is header&lt;/<span style="font-weight:bold">title</span>&gt;
-&lt;/<span style="font-weight:bold">head</span>&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">head</span>&gt;
+  &lt;<span style="color:#f92672">title</span>&gt;this is header&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
 </code></pre></div><p>当设计一个博客页面的时候，就可以直接引用这个header.html：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% include &#39;header.html&#39; \%\}
-&lt;<span style="font-weight:bold">body</span>&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% include &#39;header.html&#39; \%\}
+&lt;<span style="color:#f92672">body</span>&gt;
 ...
-&lt;/<span style="font-weight:bold">body</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
 </code></pre></div><h4 id="导入宏macro">导入宏（Macro）</h4>
 <p>所谓宏，其实是一个抽象出来的模板方法，比如有一个form表单，这个表单可以单独用一个Block来定义，但是表单里的属性名对于不同页面可能不太一样，此时用Block来定义就不太方便了。可以用Macro来定义：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% macro input(name, value=&#39;&#39;, type=&#39;text&#39;) -\%\}
-    &lt;<span style="font-weight:bold">input</span> type=<span style="font-style:italic">&#34;\{\{ type \}\}&#34;</span> value=<span style="font-style:italic">&#34;\{\{ value|e \}\}&#34;</span> name=<span style="font-style:italic">&#34;\{\{ name \}\}&#34;</span>&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% macro input(name, value=&#39;&#39;, type=&#39;text&#39;) -\%\}
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\{\{ type \}\}&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\{\{ value|e \}\}&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\{\{ name \}\}&#34;</span>&gt;
 \{\%- endmacro \%\}
 </code></pre></div><p>假设这个定义在components.macro中（用macro而不用html后缀，是想把它和普通的html模板区分开，没有其他作用）。可以这样引用这个宏：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% from &#39;components.macro&#39; import input as input_field \%\}
-&lt;<span style="font-weight:bold">dl</span>&gt;
-    &lt;<span style="font-weight:bold">dt</span>&gt;Username&lt;/<span style="font-weight:bold">dt</span>&gt;
-    &lt;<span style="font-weight:bold">dd</span>&gt;\{\{ input_field(&#39;username&#39;) \}\}&lt;/<span style="font-weight:bold">dd</span>&gt;
-    &lt;<span style="font-weight:bold">dt</span>&gt;Password&lt;/<span style="font-weight:bold">dt</span>&gt;
-    &lt;<span style="font-weight:bold">dd</span>&gt;\{\{ input_field(&#39;password&#39;, type=&#39;password&#39;) \}\}&lt;/<span style="font-weight:bold">dd</span>&gt;
-&lt;/<span style="font-weight:bold">dl</span>&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">\{\% from &#39;components.macro&#39; import input as input_field \%\}
+&lt;<span style="color:#f92672">dl</span>&gt;
+    &lt;<span style="color:#f92672">dt</span>&gt;Username&lt;/<span style="color:#f92672">dt</span>&gt;
+    &lt;<span style="color:#f92672">dd</span>&gt;\{\{ input_field(&#39;username&#39;) \}\}&lt;/<span style="color:#f92672">dd</span>&gt;
+    &lt;<span style="color:#f92672">dt</span>&gt;Password&lt;/<span style="color:#f92672">dt</span>&gt;
+    &lt;<span style="color:#f92672">dd</span>&gt;\{\{ input_field(&#39;password&#39;, type=&#39;password&#39;) \}\}&lt;/<span style="color:#f92672">dd</span>&gt;
+&lt;/<span style="color:#f92672">dl</span>&gt;
 </code></pre></div><p>very easy.</p>
 <blockquote>
 <p>REFERENCES</p>
@@ -314,30 +314,28 @@ asdfasdfasdfasdfasdf\{\}\{\}\{\}\{\}\{\}\{\}
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

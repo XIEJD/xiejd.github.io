@@ -43,7 +43,7 @@
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -130,30 +130,30 @@
 <!-- raw HTML omitted -->
 <h2 id="scheduledexecutorservice">ScheduledExecutorService</h2>
 <p>JUC包中提供的任务线程池类，可以完成定时器任务，但是使用范围比较狭窄，无法提供像Cron那种强大的定时器语义。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">		@Test
-    <span style="font-weight:bold">public</span> <span style="">void</span> queueTaskInMultiTread() <span style="font-weight:bold">throws</span> Exception {
-        <span style="font-style:italic">// 核心线程池大小设置为1，则所有任务变成串行。且只有当上一个任务完成后，才会进行下一次任务。
-</span><span style="font-style:italic"></span>        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
-        Runnable printA = <span style="font-weight:bold">new</span> ThreadTask(<span style="font-style:italic">&#34;A&#34;</span>);
-        Runnable printB = <span style="font-weight:bold">new</span> ThreadTask(<span style="font-style:italic">&#34;B&#34;</span>);
-        ScheduledFuture futureA = scheduler.scheduleAtFixedRate(printA, 0, 5, TimeUnit.SECONDS);
-        ScheduledFuture futureB = scheduler.scheduleAtFixedRate(printB, 0, 5, TimeUnit.SECONDS);
-        Thread.sleep(10000);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">		<span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">queueTaskInMultiTread</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 核心线程池大小设置为1，则所有任务变成串行。且只有当上一个任务完成后，才会进行下一次任务。
+</span><span style="color:#75715e"></span>        ScheduledExecutorService scheduler <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newScheduledThreadPool</span><span style="color:#f92672">(</span>2<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Runnable printA <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ThreadTask<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Runnable printB <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ThreadTask<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;B&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ScheduledFuture futureA <span style="color:#f92672">=</span> scheduler<span style="color:#f92672">.</span><span style="color:#a6e22e">scheduleAtFixedRate</span><span style="color:#f92672">(</span>printA<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ScheduledFuture futureB <span style="color:#f92672">=</span> scheduler<span style="color:#f92672">.</span><span style="color:#a6e22e">scheduleAtFixedRate</span><span style="color:#f92672">(</span>printB<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>10000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-style:italic">//删除futureA
-</span><span style="font-style:italic"></span>        futureA.cancel(<span style="font-weight:bold">true</span>);
-        System.out.println(<span style="font-style:italic">&#34;================&#34;</span>);
-        Thread.sleep(10000);
+        <span style="color:#75715e">//删除futureA
+</span><span style="color:#75715e"></span>        futureA<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;================&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>10000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        <span style="font-style:italic">//添加任务C
-</span><span style="font-style:italic"></span>        Runnable printC = <span style="font-weight:bold">new</span> ThreadTask(<span style="font-style:italic">&#34;C&#34;</span>);
-        System.out.println(<span style="font-style:italic">&#34;================&#34;</span>);
-        ScheduledFuture futureC = scheduler.scheduleAtFixedRate(printC, 0, 5, TimeUnit.SECONDS);
-        Thread.sleep(10000);
-        System.out.println(<span style="font-style:italic">&#34;================&#34;</span>);
+        <span style="color:#75715e">//添加任务C
+</span><span style="color:#75715e"></span>        Runnable printC <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ThreadTask<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;C&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;================&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ScheduledFuture futureC <span style="color:#f92672">=</span> scheduler<span style="color:#f92672">.</span><span style="color:#a6e22e">scheduleAtFixedRate</span><span style="color:#f92672">(</span>printC<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>10000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;================&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        System.out.println(<span style="font-style:italic">&#34;shutdown runnables: &#34;</span> + scheduler.shutdownNow());
-    }
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;shutdown runnables: &#34;</span> <span style="color:#f92672">+</span> scheduler<span style="color:#f92672">.</span><span style="color:#a6e22e">shutdownNow</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 </code></pre></div><p>通过ScheduledExecutorService提供的接口，可以完成任务的执行、延迟执行、周期执行，任务的取消等操作，对于简单场景的定时任务可以胜任，但是如果碰到像“每天早上8点执行”这种定时任务，实现起来就比较丑了。</p>
 
       </div>
@@ -163,30 +163,28 @@
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

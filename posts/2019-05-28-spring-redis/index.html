@@ -45,7 +45,7 @@
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -140,25 +140,25 @@
 <ul>
 <li>
 <p>对于SpringBoot Starter项目</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.boot<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-boot-starter-data-redis<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-data-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div></li>
 <li>
 <p>SpringData</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="font-style:italic">&lt;!--</span><span style="font-style:italic"> https://mvnrepository.com/artifact/org.springframework.data/spring</span><span style="font-style:italic">-</span><span style="font-style:italic">data</span><span style="font-style:italic">-</span><span style="font-style:italic">redis </span><span style="font-style:italic">--&gt;</span>
-<span style="font-weight:bold">&lt;dependency</span><span style="font-weight:bold">&gt;</span>
-    <span style="font-weight:bold">&lt;groupId</span><span style="font-weight:bold">&gt;</span>org.springframework.data<span style="font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="font-weight:bold">&lt;artifactId</span><span style="font-weight:bold">&gt;</span>spring-data-redis<span style="font-weight:bold">&lt;/artifactId&gt;</span>
-    <span style="font-weight:bold">&lt;version</span><span style="font-weight:bold">&gt;</span>2.1.8.RELEASE<span style="font-weight:bold">&lt;/version&gt;</span>
-<span style="font-weight:bold">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> https://mvnrepository.com/artifact/org.springframework.data/spring</span><span style="color:#75715e">-</span><span style="color:#75715e">data</span><span style="color:#75715e">-</span><span style="color:#75715e">redis </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.data<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-data-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.1.8.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div></li>
 </ul>
 <h3 id="redis-docker">Redis Docker</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># 拉取镜像</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 拉取镜像</span>
 docker pull redis
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># 运行容器</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 运行容器</span>
 docker run --name redis -d -p 6379:6379 redis
 </code></pre></div>
       </div>
@@ -168,30 +168,28 @@ docker run --name redis -d -p 6379:6379 redis
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

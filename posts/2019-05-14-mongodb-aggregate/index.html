@@ -49,7 +49,7 @@ MongoDB聚合框架 MongoDB自身提供三种形式的聚合操作：管道聚�
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -163,19 +163,19 @@ MongoDB聚合框架 MongoDB自身提供三种形式的聚合操作：管道聚�
 </blockquote>
 <h3 id="map-reduce">Map-Reduce</h3>
 <p>Map-Reduce模式相信接触过Hadoop都很容易理解。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">graph LR
+<pre><code class="language-mermaid" data-lang="mermaid">graph LR
 A[Data Source] --&gt;|Document|B(Map Part1)
    	A --&gt;|Document| C[Map Part2]
     A --&gt;|Document| D[Map Part3]
-    B --&gt;|Result| E(&#34;key:value&#34;)
-    C --&gt;|Result| F(&#34;key:value&#34;)
-    D --&gt;|Result| G(&#34;key:value&#34;)
+    B --&gt;|Result| E(&quot;key:value&quot;)
+    C --&gt;|Result| F(&quot;key:value&quot;)
+    D --&gt;|Result| G(&quot;key:value&quot;)
     E --&gt; L(Reduce: merge values with same key)
     F --&gt; L
     G --&gt; L
     L --&gt;|Optional| M(Finalize)
     M --&gt; N(Results)
-</code></pre></div><blockquote>
+</code></pre><blockquote>
 <p>For most aggregation operations, the <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">Aggregation Pipeline</a> provides better performance and more coherent interface. However, map-reduce operations provide some flexibility that is not presently available in the aggregation pipeline.</p>
 </blockquote>
 <p><a href="https://docs.mongodb.com/manual/reference/command/mapReduce/#dbcmd.mapReduce">参考Doc</a></p>
@@ -190,16 +190,16 @@ A[Data Source] --&gt;|Document|B(Map Part1)
 </ul>
 <p>这四个抽象中，<code>Aggregation</code>是最上层的抽象，它由一系列的<code>AggregationOperation</code>来定义，说的具体一点，<code>Aggregation</code>定义了一个管道，而管道中的各种操作由<code>AggregationOperation</code>来定义。<code>AggregationOperation</code>一般会对输出的文档结构产生变化。<code>AggregationExpression</code>是更加基础微小的操作，一般作用于文档的某个字段，比如类型转换，类似于Java Stream中的各种匿名函数（方法参数）。而<code>AggregationResult</code>实际上是将MongoDB返回的操作结果映射成Java定义的数据对象结构。</p>
 <p>一个官方提供的伪代码示例：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">import static</span> <span style="font-weight:bold">org.springframework.data.mongodb.core.aggregation.Aggregation.*</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import static</span> org.springframework.data.mongodb.core.aggregation.Aggregation.*<span style="color:#f92672">;</span>
 
-Aggregation agg = newAggregation(
-    pipelineOP1(), <span style="font-style:italic">//AggregationOperation
-</span><span style="font-style:italic"></span>    pipelineOP2(),
-    pipelineOPn()
-);
+Aggregation agg <span style="color:#f92672">=</span> newAggregation<span style="color:#f92672">(</span>
+    pipelineOP1<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#75715e">//AggregationOperation
+</span><span style="color:#75715e"></span>    pipelineOP2<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+    pipelineOPn<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-AggregationResults&lt;OutputType&gt; results = mongoTemplate.aggregate(agg, <span style="font-style:italic">&#34;INPUT_COLLECTION_NAME&#34;</span>, OutputType.class);
-List&lt;OutputType&gt; mappedResult = results.getMappedResults();
+AggregationResults<span style="color:#f92672">&lt;</span>OutputType<span style="color:#f92672">&gt;</span> results <span style="color:#f92672">=</span> mongoTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">aggregate</span><span style="color:#f92672">(</span>agg<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;INPUT_COLLECTION_NAME&#34;</span><span style="color:#f92672">,</span> OutputType<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+List<span style="color:#f92672">&lt;</span>OutputType<span style="color:#f92672">&gt;</span> mappedResult <span style="color:#f92672">=</span> results<span style="color:#f92672">.</span><span style="color:#a6e22e">getMappedResults</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p>上述代码中，由一组<code>AggregationOperation</code>操作定义的<code>Aggregation</code>对象，通过<code>MongoTemplate</code>交由MongoDB执行，其结果通过<code>AggregationResults</code>转换成需要的对象结构<code>OutputType</code>。由此完成一个完成的聚合过程。</p>
 <p>所以，可以根据业务自定义组合的<code>AggregationOperation</code>是应该被重点关注的。</p>
 <h3 id="aggregation">Aggregation</h3>
@@ -207,33 +207,33 @@ List&lt;OutputType&gt; mappedResult = results.getMappedResults();
 <blockquote>
 <p>所有源码取自 SpringData MongoDB 2.1.5.RELEASE (Current GA版本)</p>
 </blockquote>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">/*
-</span><span style="font-style:italic"> * 数组初始化方法
-</span><span style="font-style:italic"> */</span>
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Aggregation newAggregation(AggregationOperation... operations) {
-		<span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> Aggregation(operations);
-}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 数组初始化方法
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Aggregation <span style="color:#a6e22e">newAggregation</span><span style="color:#f92672">(</span>AggregationOperation<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> operations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Aggregation<span style="color:#f92672">(</span>operations<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span style="font-style:italic">/*
-</span><span style="font-style:italic"> * 列表初始化方法，实际上还是转换成数组，调用的数组初始化方法
-</span><span style="font-style:italic"> */</span>
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> Aggregation newAggregation(List&lt;? <span style="font-weight:bold">extends</span> AggregationOperation&gt; operations) {
-    <span style="font-weight:bold">return</span> newAggregation((AggregationOperation[])operations.toArray(<span style="font-weight:bold">new</span> AggregationOperation[operations.size()]));
-}
+<span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 列表初始化方法，实际上还是转换成数组，调用的数组初始化方法
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Aggregation <span style="color:#a6e22e">newAggregation</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> AggregationOperation<span style="color:#f92672">&gt;</span> operations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> newAggregation<span style="color:#f92672">(</span><span style="color:#f92672">(</span>AggregationOperation<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>operations<span style="color:#f92672">.</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AggregationOperation<span style="color:#f92672">[</span>operations<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span style="font-style:italic">/*
-</span><span style="font-style:italic"> * 比第一个初始化方法多一个 type 参数，返回一个TypedAggregation，是Aggregation的子类。
-</span><span style="font-style:italic"> */</span>
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; TypedAggregation&lt;T&gt; newAggregation(Class&lt;T&gt; type, AggregationOperation... operations) {
-    <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> TypedAggregation(type, operations);
-}
+<span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 比第一个初始化方法多一个 type 参数，返回一个TypedAggregation，是Aggregation的子类。
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> TypedAggregation<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">newAggregation</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> type<span style="color:#f92672">,</span> AggregationOperation<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> operations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TypedAggregation<span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> operations<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span style="font-style:italic">/*
-</span><span style="font-style:italic"> * 列表初始化方法
-</span><span style="font-style:italic"> */</span>
-<span style="font-weight:bold">public</span> <span style="font-weight:bold">static</span> &lt;T&gt; TypedAggregation&lt;T&gt; newAggregation(Class&lt;T&gt; type, List&lt;? <span style="font-weight:bold">extends</span> AggregationOperation&gt; operations) {
-    <span style="font-weight:bold">return</span> newAggregation(type, (AggregationOperation[])operations.toArray(<span style="font-weight:bold">new</span> AggregationOperation[operations.size()]));
-}
+<span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 列表初始化方法
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> TypedAggregation<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">newAggregation</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> type<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> AggregationOperation<span style="color:#f92672">&gt;</span> operations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> newAggregation<span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>AggregationOperation<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>operations<span style="color:#f92672">.</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AggregationOperation<span style="color:#f92672">[</span>operations<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 </code></pre></div><p>静态构造函数提供了两套方法，分别返回<code>Aggregation</code>和<code>TypedAggregation</code>对象，子类<code>TypedAggregation</code>相比于其父类<code>Aggregation</code>差异非常小，主要不同在于子类多了一个私有变量<code>private final Class&lt;I&gt; inputType;</code> 以及配套的构造方法。(<code>Aggregation</code>的构造方法是从List最终转化成数组进行初始化，而<code>TypedAggregation</code>恰好相反，最终转化成List进行初始化&hellip;)。</p>
 <h3 id="aggregationoperations">AggregationOperations</h3>
 <h4 id="概览">概览</h4>
@@ -382,30 +382,28 @@ List&lt;OutputType&gt; mappedResult = results.getMappedResults();
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         

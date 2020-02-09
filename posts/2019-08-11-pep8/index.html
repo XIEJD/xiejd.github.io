@@ -41,7 +41,7 @@
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.f836d178c998732a4e8b7e49798325e194b50b4149203e005dfe464c83c20051.css" integrity="sha256-&#43;DbReMmYcypOi35JeYMl4ZS1C0FJID4AXf5GTIPCAFE=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -210,69 +210,69 @@
 <p>用4个空格表示一个缩进。</p>
 <p>连续行应该用有隐式连接作用的圆括号、方括号、花括号包裹并且垂直对齐。或者使用悬挂缩进<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。当使用悬挂缩进时，应考虑以下事项：第一行不应有任何参数，应使用进一步缩进来清楚地将其区分为连续行。</p>
 <p><em><strong>Yes:</strong></em></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 与起始分割符垂直对齐</span>
-foo = long_function_name(var_one, var_two,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 与起始分割符垂直对齐</span>
+foo <span style="color:#f92672">=</span> long_function_name(var_one, var_two,
                          var_three, var_four)
 
-<span style="font-style:italic"># 缩进更多以和其他代码区分开。</span>
-<span style="font-weight:bold">def</span> long_function_name(
+<span style="color:#75715e"># 缩进更多以和其他代码区分开。</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">long_function_name</span>(
         var_one, var_two, var_three,
         var_four):
-    <span style="font-weight:bold">print</span>(var_one)
+    <span style="color:#66d9ef">print</span>(var_one)
 
-<span style="font-style:italic"># 悬挂缩进需要多缩进一个层次。</span>
-foo = long_function_name(
+<span style="color:#75715e"># 悬挂缩进需要多缩进一个层次。</span>
+foo <span style="color:#f92672">=</span> long_function_name(
     var_one, var_two,
     var_three, var_four)
 </code></pre></div><p><em><strong>No:</strong></em></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 当第一行包含参数时，只能和起始分隔符垂直对齐。</span>
-foo = long_function_name(var_one, var_two,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 当第一行包含参数时，只能和起始分隔符垂直对齐。</span>
+foo <span style="color:#f92672">=</span> long_function_name(var_one, var_two,
     var_three, var_four)
 
-<span style="font-style:italic"># 当连续行无法和其他代码区分时，需要多进行缩进。</span>
-<span style="font-weight:bold">def</span> long_function_name(
+<span style="color:#75715e"># 当连续行无法和其他代码区分时，需要多进行缩进。</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">long_function_name</span>(
     var_one, var_two, var_three,
     var_four):
-    <span style="font-weight:bold">print</span>(var_one)
+    <span style="color:#66d9ef">print</span>(var_one)
 </code></pre></div><p>4个空格等于1缩进的规则在连续行中是可选的。</p>
 <p><em><strong>Optional:</strong></em></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 悬挂缩进中缩进不一定非得是4个空格。</span>
-foo = long_function_name(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 悬挂缩进中缩进不一定非得是4个空格。</span>
+foo <span style="color:#f92672">=</span> long_function_name(
   var_one, var_two,
   var_three, var_four)
 </code></pre></div><p>当条件判断语句(if-statement)足够长而需要进行多行书写时，需要注意 &ldquo;if&rdquo; 这个单词加一个空格，加一个括弧总共会占用4个空格从而导致和if的内嵌代码缩进一致产生视觉混淆。对于如何进一步区分这些条件行和内嵌代码，此文档没有明确规定，可以接受的情况包括但不仅限于以下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># 无额外缩进</span>
-<span style="font-weight:bold">if</span> (this_is_one_thing <span style="font-weight:bold">and</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 无额外缩进</span>
+<span style="color:#66d9ef">if</span> (this_is_one_thing <span style="color:#f92672">and</span>
     that_is_another_thing):
     do_something()
 
-<span style="font-style:italic"># 插入注释</span>
-<span style="font-weight:bold">if</span> (this_is_one_thing <span style="font-weight:bold">and</span>
+<span style="color:#75715e"># 插入注释</span>
+<span style="color:#66d9ef">if</span> (this_is_one_thing <span style="color:#f92672">and</span>
     that_is_another_thing):
-    <span style="font-style:italic"># Since both conditions are true, we can frobnicate.</span>
+    <span style="color:#75715e"># Since both conditions are true, we can frobnicate.</span>
     do_something()
 
-<span style="font-style:italic"># 加入额外缩进</span>
-<span style="font-weight:bold">if</span> (this_is_one_thing
-        <span style="font-weight:bold">and</span> that_is_another_thing):
+<span style="color:#75715e"># 加入额外缩进</span>
+<span style="color:#66d9ef">if</span> (this_is_one_thing
+        <span style="color:#f92672">and</span> that_is_another_thing):
     do_something()
 </code></pre></div><p>右圆括号/方括号/花括号在多行结构时，可以将其放在第一个非空字符下面，比如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_list = [
-    1, 2, 3,
-    4, 5, 6,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_list <span style="color:#f92672">=</span> [
+    <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>,
+    <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>,
     ]
-result = some_function_that_takes_arguments(
-    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">a</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">b</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">c</span><span style="font-style:italic">&#39;</span>,
-    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">d</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">e</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">f</span><span style="font-style:italic">&#39;</span>,
+result <span style="color:#f92672">=</span> some_function_that_takes_arguments(
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">a</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">c</span><span style="color:#e6db74">&#39;</span>,
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">d</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">e</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span>,
     )
 </code></pre></div><p>或者也可以放在最后一行行首：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_list = [
-    1, 2, 3,
-    4, 5, 6,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_list <span style="color:#f92672">=</span> [
+    <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>,
+    <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>,
 ]
-result = some_function_that_takes_arguments(
-    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">a</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">b</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">c</span><span style="font-style:italic">&#39;</span>,
-    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">d</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">e</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">f</span><span style="font-style:italic">&#39;</span>,
+result <span style="color:#f92672">=</span> some_function_that_takes_arguments(
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">a</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">c</span><span style="color:#e6db74">&#39;</span>,
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">d</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">e</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span>,
 )
 </code></pre></div><h4 id="制表符还是空格">制表符还是空格？</h4>
 <p>空格是缩进的首选方法。</p>
@@ -289,27 +289,27 @@ result = some_function_that_takes_arguments(
 <p>Python标准库是保守的，需要限制行为79个字符（文档字符串/评论72个字符）。</p>
 <p>长行的首选方法是使用Python在圆括号、fa方括号和花括号中进行隐式的行延续。长的行可以在括号中进行换行。这些应该优先用于使用反斜杠进行行延续。</p>
 <p>反斜杠在某些情况下任然适用，比如，在长with-statements中，无法隐式的进行行延续，这是需要使用反斜杠：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">with</span> open(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">/path/to/some/file/you/want/to/read</span><span style="font-style:italic">&#39;</span>) <span style="font-weight:bold">as</span> file_1, \
-     open(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">/path/to/some/file/being/written</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">w</span><span style="font-style:italic">&#39;</span>) <span style="font-weight:bold">as</span> file_2:
-    file_2.write(file_1.read())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/path/to/some/file/you/want/to/read</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">as</span> file_1, \
+     open(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/path/to/some/file/being/written</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">w</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">as</span> file_2:
+    file_2<span style="color:#f92672">.</span>write(file_1<span style="color:#f92672">.</span>read())
 </code></pre></div><p>（类似if-statements，这里的with语句延续行的缩进和with内嵌代码同样产生了缩进混淆问题）</p>
 <p>另外一个例子是 assert statements。</p>
 <p>确保适当的对延续行进行缩进。</p>
 <h4 id="应该在二元运算符之前断行还是之后断行">应该在二元运算符之前断行还是之后断行？</h4>
 <p>几十年来，推荐的方式都是在二元运算符后面断行，这对代码可读性会产生两个坏影响：一是运算符分散在屏幕上不同列，二是运算符被移到了它运算元的之前一行，阅读时需要耗费额外的精力来区分是对这个运算元做加法还是减法：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># No: operators sit far away from their operands</span>
-income = (gross_wages +
-          taxable_interest +
-          (dividends - qualified_dividends) -
-          ira_deduction -
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># No: operators sit far away from their operands</span>
+income <span style="color:#f92672">=</span> (gross_wages <span style="color:#f92672">+</span>
+          taxable_interest <span style="color:#f92672">+</span>
+          (dividends <span style="color:#f92672">-</span> qualified_dividends) <span style="color:#f92672">-</span>
+          ira_deduction <span style="color:#f92672">-</span>
           student_loan_interest)
 </code></pre></div><p>为了解决可读性问题，数学家和出版社们采取了截然相反的方式，Donald Knuth在他的《Computers and Typesetting》系列中对传统的规则解释道：“Although formulas within a paragraph always break after binary operations and relations, displayed formulas always break before binary operations”[^3]。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: easy to match operators with operands</span>
-income = (gross_wages
-          + taxable_interest
-          + (dividends - qualified_dividends)
-          - ira_deduction
-          - student_loan_interest)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: easy to match operators with operands</span>
+income <span style="color:#f92672">=</span> (gross_wages
+          <span style="color:#f92672">+</span> taxable_interest
+          <span style="color:#f92672">+</span> (dividends <span style="color:#f92672">-</span> qualified_dividends)
+          <span style="color:#f92672">-</span> ira_deduction
+          <span style="color:#f92672">-</span> student_loan_interest)
 </code></pre></div><p>在Python代码中，不管在二元运算符之前还是之后断行都是允许的，只要保持一致即可。新代码应听从 Knuth 的风格建议。</p>
 <h4 id="空行">空行</h4>
 <p>顶层的函数和类定义前应有两空行。</p>
@@ -327,12 +327,12 @@ income = (gross_wages
 <ul>
 <li>
 <p>导入时每个库都应该分行</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yes: <span style="font-weight:bold">import</span> <span style="font-weight:bold">os</span>
-     <span style="font-weight:bold">import</span> <span style="font-weight:bold">sys</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yes: <span style="color:#f92672">import</span> os
+     <span style="color:#f92672">import</span> sys
 
-No:  <span style="font-weight:bold">import</span> <span style="font-weight:bold">sys</span>, <span style="font-weight:bold">os</span>
+No:  <span style="color:#f92672">import</span> sys<span style="color:#f92672">,</span> os
 </code></pre></div><p>这种情况是可以的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">subprocess</span> <span style="font-weight:bold">import</span> Popen, PIPE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> subprocess <span style="color:#f92672">import</span> Popen, PIPE
 </code></pre></div></li>
 <li>
 <p>导入语句应该放在文件的最上面，同时处于模块注释和文档注释之下，模块全局变量和常量之上。</p>
@@ -346,22 +346,22 @@ No:  <span style="font-weight:bold">import</span> <span style="font-weight:bold"
 </li>
 <li>
 <p>推荐使用绝对方式导入，一般而言绝对方式导入更易读，当导入系统配置错误时表现的更好（至少可以给出更好的错误信息）。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">import</span> <span style="font-weight:bold">mypkg.sibling</span>
-<span style="font-weight:bold">from</span> <span style="font-weight:bold">mypkg</span> <span style="font-weight:bold">import</span> sibling
-<span style="font-weight:bold">from</span> <span style="font-weight:bold">mypkg.sibling</span> <span style="font-weight:bold">import</span> example
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> mypkg.sibling
+<span style="color:#f92672">from</span> mypkg <span style="color:#f92672">import</span> sibling
+<span style="color:#f92672">from</span> mypkg.sibling <span style="color:#f92672">import</span> example
 </code></pre></div><p>然而，相对导入仍然是绝对导入的可接受替代方案，尤其是当导入拥有复杂结构的包时，使用绝对导入会增加不必要的冗余。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">.</span> <span style="font-weight:bold">import</span> sibling
-<span style="font-weight:bold">from</span> <span style="font-weight:bold">.sibling</span> <span style="font-weight:bold">import</span> example
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> . <span style="color:#f92672">import</span> sibling
+<span style="color:#f92672">from</span> .sibling <span style="color:#f92672">import</span> example
 </code></pre></div><p>标准库代码应该避免复杂的包结构同时使用绝对导入方式。</p>
 <p>隐式相对导入已经从Python3中移除。</p>
 </li>
 <li>
 <p>从包含类的模块中导入类的时候，通常可以这些写：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">myclass</span> <span style="font-weight:bold">import</span> MyClass
-<span style="font-weight:bold">from</span> <span style="font-weight:bold">foo.bar.yourclass</span> <span style="font-weight:bold">import</span> YourClass
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> myclass <span style="color:#f92672">import</span> MyClass
+<span style="color:#f92672">from</span> foo.bar.yourclass <span style="color:#f92672">import</span> YourClass
 </code></pre></div><p>如果和本地名称产生了冲突，可以这样写：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">import</span> <span style="font-weight:bold">myclass</span>
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">foo.bar.yourclass</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> myclass
+<span style="color:#f92672">import</span> foo.bar.yourclass
 </code></pre></div><p>然后用 <code>myclass.MyClass</code> 和 <code>foo.bar.yourclass.YourClass</code> 来调用。</p>
 </li>
 <li>
@@ -371,19 +371,19 @@ No:  <span style="font-weight:bold">import</span> <span style="font-weight:bold"
 </ul>
 <h4 id="模块层次的魔法名字">模块层次的魔法名字</h4>
 <p>模块级“dunders”（即名字前后有两个下划线）如<code>__all__，__author__，__version__</code>等等，除了<code>__future__</code>都应该放在模块注释之后和导入语句之前。Python中future导入语句必须所有语句之前出现，除了文档注释。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span><span style="font-style:italic">This is the example module.</span><span style="font-style:italic">
-</span><span style="font-style:italic"></span><span style="font-style:italic">
-</span><span style="font-style:italic"></span><span style="font-style:italic">This module does stuff.</span><span style="font-style:italic">
-</span><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">This is the example module.</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">This module does stuff.</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span>
 
-<span style="font-weight:bold">from</span> <span style="font-weight:bold">__future__</span> <span style="font-weight:bold">import</span> barry_as_FLUFL
+<span style="color:#f92672">from</span> __future__ <span style="color:#f92672">import</span> barry_as_FLUFL
 
-__all__ = [<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">a</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">b</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">c</span><span style="font-style:italic">&#39;</span>]
-__version__ = <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">0.1</span><span style="font-style:italic">&#39;</span>
-__author__ = <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">Cardinal Biggles</span><span style="font-style:italic">&#39;</span>
+__all__ <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">a</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">c</span><span style="color:#e6db74">&#39;</span>]
+__version__ <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0.1</span><span style="color:#e6db74">&#39;</span>
+__author__ <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Cardinal Biggles</span><span style="color:#e6db74">&#39;</span>
 
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">os</span>
-<span style="font-weight:bold">import</span> <span style="font-weight:bold">sys</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> sys
 </code></pre></div><h3 id="字符串引号">字符串引号</h3>
 <p>在Python中，单引号和双引号的作用是一样的，此文档不会选择偏好哪一个，你只需要选择其中一个并坚持就行了。当需要在字符串中使用引号时，用另外一种引号来包围字符串可以避免使用反斜杠，提高代码易读性。</p>
 <p>对于三引号，始终用双引号表示以确保一致性 <a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>。</p>
@@ -393,74 +393,74 @@ __author__ = <span style="font-style:italic"></span><span style="font-style:ital
 <ul>
 <li>
 <p>立即在圆括号、方括号、花括号前后使用空格。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-spam(ham[1], {eggs: 2})
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+spam(ham[<span style="color:#ae81ff">1</span>], {eggs: <span style="color:#ae81ff">2</span>})
 
-<span style="font-style:italic"># No:  </span>
-spam( ham[ 1 ], { eggs: 2 } )
+<span style="color:#75715e"># No:  </span>
+spam( ham[ <span style="color:#ae81ff">1</span> ], { eggs: <span style="color:#ae81ff">2</span> } )
 </code></pre></div></li>
 <li>
 <p>在一个跟着右括号的逗号后面。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-foo = (0,)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+foo <span style="color:#f92672">=</span> (<span style="color:#ae81ff">0</span>,)
 
-<span style="font-style:italic"># No:  </span>
-bar = (0, )
+<span style="color:#75715e"># No:  </span>
+bar <span style="color:#f92672">=</span> (<span style="color:#ae81ff">0</span>, )
 </code></pre></div></li>
 <li>
 <p>在逗号、分号、冒号之前。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-<span style="font-weight:bold">if</span> x == 4: <span style="font-weight:bold">print</span> x, y; x, y = y, x
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+<span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span>: <span style="color:#66d9ef">print</span> x, y; x, y <span style="color:#f92672">=</span> y, x
 
-<span style="font-style:italic"># No:  </span>
-<span style="font-weight:bold">if</span> x == 4 : <span style="font-weight:bold">print</span> x , y ; x , y = y , x
+<span style="color:#75715e"># No:  </span>
+<span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span> : <span style="color:#66d9ef">print</span> x , y ; x , y <span style="color:#f92672">=</span> y , x
 </code></pre></div></li>
 <li>
 <p>在切片中，冒号就像一个二进制运算符，在两边应该有相等量的数（把他当成优先级最低的运算符），在一个扩展切片中，所有冒号的两边的空格数必须相同。一个另外：如果切片中有一个参数省略了，那空格也将被省略。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+ham[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">9</span>], ham[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">9</span>:<span style="color:#ae81ff">3</span>], ham[:<span style="color:#ae81ff">9</span>:<span style="color:#ae81ff">3</span>], ham[<span style="color:#ae81ff">1</span>::<span style="color:#ae81ff">3</span>], ham[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">9</span>:]
 ham[lower:upper], ham[lower:upper:], ham[lower::step]
-ham[lower+offset : upper+offset]
+ham[lower<span style="color:#f92672">+</span>offset : upper<span style="color:#f92672">+</span>offset]
 ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
-ham[lower + offset : upper + offset]
+ham[lower <span style="color:#f92672">+</span> offset : upper <span style="color:#f92672">+</span> offset]
 
-<span style="font-style:italic"># No:</span>
+<span style="color:#75715e"># No:</span>
 
-ham[lower + offset:upper + offset]
-ham[1: 9], ham[1 :9], ham[1:9 :3]
+ham[lower <span style="color:#f92672">+</span> offset:upper <span style="color:#f92672">+</span> offset]
+ham[<span style="color:#ae81ff">1</span>: <span style="color:#ae81ff">9</span>], ham[<span style="color:#ae81ff">1</span> :<span style="color:#ae81ff">9</span>], ham[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">9</span> :<span style="color:#ae81ff">3</span>]
 ham[lower : : upper]
 ham[ : upper]
 </code></pre></div></li>
 <li>
 <p>在函数的参数列表的左括号前。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-spam(1)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+spam(<span style="color:#ae81ff">1</span>)
 
-<span style="font-style:italic"># No:  </span>
-spam (1)
+<span style="color:#75715e"># No:  </span>
+spam (<span style="color:#ae81ff">1</span>)
 </code></pre></div></li>
 <li>
 <p>在切片的左括号前。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-dct[<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">key</span><span style="font-style:italic">&#39;</span>] = lst[index]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+dct[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">key</span><span style="color:#e6db74">&#39;</span>] <span style="color:#f92672">=</span> lst[index]
 
-<span style="font-style:italic"># No:  </span>
-dct [<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">key</span><span style="font-style:italic">&#39;</span>] = lst [index]
+<span style="color:#75715e"># No:  </span>
+dct [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">key</span><span style="color:#e6db74">&#39;</span>] <span style="color:#f92672">=</span> lst [index]
 </code></pre></div></li>
 <li>
 <p>为了对齐等号而在之前添加多个空格。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-x = 1
-y = 2
-long_variable = 3
+x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+y <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+long_variable <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
 
-<span style="font-style:italic"># No:</span>
+<span style="color:#75715e"># No:</span>
 
-x             = 1
-y             = 2
-long_variable = 3
+x             <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+y             <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+long_variable <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
 </code></pre></div></li>
 </ul>
 <h4 id="其他建议">其他建议</h4>
@@ -473,113 +473,113 @@ long_variable = 3
 </li>
 <li>
 <p>如果表达式中有不同优先级的运算符，可以在最低优先级运算符两边加上空格，但是不要超过一个且运算符两边空格数相等。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-i = i + 1
-submitted += 1
-x = x*2 - 1
-hypot2 = x*x + y*y
-c = (a+b) * (a-b)
+i <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+submitted <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+x <span style="color:#f92672">=</span> x<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+hypot2 <span style="color:#f92672">=</span> x<span style="color:#f92672">*</span>x <span style="color:#f92672">+</span> y<span style="color:#f92672">*</span>y
+c <span style="color:#f92672">=</span> (a<span style="color:#f92672">+</span>b) <span style="color:#f92672">*</span> (a<span style="color:#f92672">-</span>b)
 
-<span style="font-style:italic"># No:</span>
+<span style="color:#75715e"># No:</span>
 
-i=i+1
-submitted +=1
-x = x * 2 - 1
-hypot2 = x * x + y * y
-c = (a + b) * (a - b)
+i<span style="color:#f92672">=</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+submitted <span style="color:#f92672">+</span><span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+x <span style="color:#f92672">=</span> x <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+hypot2 <span style="color:#f92672">=</span> x <span style="color:#f92672">*</span> x <span style="color:#f92672">+</span> y <span style="color:#f92672">*</span> y
+c <span style="color:#f92672">=</span> (a <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> (a <span style="color:#f92672">-</span> b)
 </code></pre></div></li>
 <li>
 <p>在关键字参数的等号两边，不要加空格。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-<span style="font-weight:bold">def</span> complex(real, imag=0.0):
-    <span style="font-weight:bold">return</span> magic(r=real, i=imag)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">complex</span>(real, imag<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0</span>):
+    <span style="color:#66d9ef">return</span> magic(r<span style="color:#f92672">=</span>real, i<span style="color:#f92672">=</span>imag)
       
-<span style="font-style:italic"># No:</span>
+<span style="color:#75715e"># No:</span>
 
-<span style="font-weight:bold">def</span> complex(real, imag = 0.0):
-    <span style="font-weight:bold">return</span> magic(r = real, i = imag)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">complex</span>(real, imag <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>):
+    <span style="color:#66d9ef">return</span> magic(r <span style="color:#f92672">=</span> real, i <span style="color:#f92672">=</span> imag)
 </code></pre></div></li>
 <li>
 <p>函数注解中，对于冒号应该采用通常的办法来添加空格，而对于<code>'-&gt;'</code>应该在两边都加上空格（查看更多关于函数注解<a href="https://www.python.org/dev/peps/pep-0008/#function-annotations">Function Annotations</a>）。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-<span style="font-weight:bold">def</span> munge(input: AnyStr): ...
-<span style="font-weight:bold">def</span> munge() -&gt; AnyStr: ...
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>(input: AnyStr): <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>() <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> AnyStr: <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<span style="font-style:italic"># No:</span>
+<span style="color:#75715e"># No:</span>
 
-<span style="font-weight:bold">def</span> munge(input:AnyStr): ...
-<span style="font-weight:bold">def</span> munge()-&gt;PosInt: ...
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>(input:AnyStr): <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>()<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>PosInt: <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 </code></pre></div></li>
 <li>
 <p>当参数注释时，如果有默认值，则在等号两边加上空格。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-<span style="font-weight:bold">def</span> munge(sep: AnyStr = None): ...
-<span style="font-weight:bold">def</span> munge(input: AnyStr, sep: AnyStr = None, limit=1000): ...
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>(sep: AnyStr <span style="color:#f92672">=</span> None): <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>(input: AnyStr, sep: AnyStr <span style="color:#f92672">=</span> None, limit<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>): <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<span style="font-style:italic"># No:</span>
+<span style="color:#75715e"># No:</span>
 
-<span style="font-weight:bold">def</span> munge(input: AnyStr=None): ...
-<span style="font-weight:bold">def</span> munge(input: AnyStr, limit = 1000): ...
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>(input: AnyStr<span style="color:#f92672">=</span>None): <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">munge</span>(input: AnyStr, limit <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>): <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 </code></pre></div></li>
 <li>
 <p>复合语句通常是不被鼓励的（多条语句写在同一行）</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
 
-<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>:
+<span style="color:#66d9ef">if</span> foo <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blah</span><span style="color:#e6db74">&#39;</span>:
     do_blah_thing()
 do_one()
 do_two()
 do_three()
 
-<span style="font-style:italic"># Rather not:</span>
+<span style="color:#75715e"># Rather not:</span>
 
-<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: do_blah_thing()
+<span style="color:#66d9ef">if</span> foo <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blah</span><span style="color:#e6db74">&#39;</span>: do_blah_thing()
 do_one(); do_two(); do_three()
 </code></pre></div></li>
 <li>
 <p>但是有时将很短的 if/for/while 放在同一行是可以的。但是永远别将有多个关键字的语句（multi-clause statements）放在同一行，不要试图折叠它们。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Rather not:</span>
-<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: do_blah_thing()
-<span style="font-weight:bold">for</span> x <span style="font-weight:bold">in</span> lst: total += x
-<span style="font-weight:bold">while</span> t &lt; 10: t = delay()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Rather not:</span>
+<span style="color:#66d9ef">if</span> foo <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blah</span><span style="color:#e6db74">&#39;</span>: do_blah_thing()
+<span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> lst: total <span style="color:#f92672">+</span><span style="color:#f92672">=</span> x
+<span style="color:#66d9ef">while</span> t <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>: t <span style="color:#f92672">=</span> delay()
 
-<span style="font-style:italic"># Definitely not:</span>
-<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: do_blah_thing()
-<span style="font-weight:bold">else</span>: do_non_blah_thing()
+<span style="color:#75715e"># Definitely not:</span>
+<span style="color:#66d9ef">if</span> foo <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blah</span><span style="color:#e6db74">&#39;</span>: do_blah_thing()
+<span style="color:#66d9ef">else</span>: do_non_blah_thing()
 
-<span style="font-weight:bold">try</span>: something()
-<span style="font-weight:bold">finally</span>: cleanup()
+<span style="color:#66d9ef">try</span>: something()
+<span style="color:#66d9ef">finally</span>: cleanup()
 
 do_one(); do_two(); do_three(long, argument,
                              list, like, this)
 
-<span style="font-weight:bold">if</span> foo == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">blah</span><span style="font-style:italic">&#39;</span>: one(); two(); three()
+<span style="color:#66d9ef">if</span> foo <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blah</span><span style="color:#e6db74">&#39;</span>: one(); two(); three()
 </code></pre></div></li>
 </ul>
 <h3 id="什么时候尾随一个逗号">什么时候尾随一个逗号</h3>
 <p>尾随一个逗号通常是可选的，除非是为了得到一个元素的元组而强制添加（在Python2的<code>print</code>语句中是有意义的）。为清楚起见，建议在后者加上括号（技术上是冗余的）</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
-FILES = (<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>,)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
+FILES <span style="color:#f92672">=</span> (<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">setup.cfg</span><span style="color:#e6db74">&#39;</span>,)
 
-<span style="font-style:italic"># OK, but confusing:</span>
-FILES = <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>,
+<span style="color:#75715e"># OK, but confusing:</span>
+FILES <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">setup.cfg</span><span style="color:#e6db74">&#39;</span>,
 </code></pre></div><p>当使用版本控制系统时，当需要扩展一串参数时，多尾随一个逗号通常是有用的。这种模式是将每一个参数放在单独的一行，然后在行尾添加一个逗号，再在最后，另起一行括上右括号。如果将一串参数写在同一行，多添加一个逗号通常是无用的（除了单元素元组情况外）。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
-FILES = [
-    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>,
-    <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">tox.ini</span><span style="font-style:italic">&#39;</span>,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
+FILES <span style="color:#f92672">=</span> [
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">setup.cfg</span><span style="color:#e6db74">&#39;</span>,
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tox.ini</span><span style="color:#e6db74">&#39;</span>,
     ]
 initialize(FILES,
-           error=True,
+           error<span style="color:#f92672">=</span>True,
            )
            
-<span style="font-style:italic"># No:</span>
-FILES = [<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">setup.cfg</span><span style="font-style:italic">&#39;</span>, <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">tox.ini</span><span style="font-style:italic">&#39;</span>,]
-initialize(FILES, error=True,)
+<span style="color:#75715e"># No:</span>
+FILES <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">setup.cfg</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tox.ini</span><span style="color:#e6db74">&#39;</span>,]
+initialize(FILES, error<span style="color:#f92672">=</span>True,)
 </code></pre></div><h3 id="注释">注释</h3>
 <p>与代码相悖的注释比没有注释更加糟糕，始终将更新代码注释保持最高的优先级。</p>
 <p>注释应该是完整的句子。如果注释是一个短语或句子，它的第一个词应该大写，除非它是一个以小写字母开头的标识符（不要改变标识符的写法）！</p>
@@ -593,9 +593,9 @@ initialize(FILES, error=True,)
 <h4 id="内联注释行尾注释">内联注释(行尾注释)</h4>
 <p>尽量少用内联注释。内联注释是与语句在同一行上的注释。内联注释应该和代码保持至少两个空格的间隔。他们应该以一个&rsquo;#&lsquo;和一个空格开头。</p>
 <p>不要进行无必要的注释来分散注意力：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x = x + 1                 <span style="font-style:italic"># Increment x</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>                 <span style="color:#75715e"># Increment x</span>
 </code></pre></div><p>但是如果这样注释是可以的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x = x + 1                 <span style="font-style:italic"># Compensate for border</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>                 <span style="color:#75715e"># Compensate for border</span>
 </code></pre></div><h4 id="文档注释">文档注释</h4>
 <p>关于良好书写文档注释的约定文件（又名 “docstrings”）已经作为<a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>永久生效。</p>
 <ul>
@@ -604,10 +604,10 @@ initialize(FILES, error=True,)
 </li>
 <li>
 <p><a href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>描述了良好的文档注释规范。注意最重要的一点：用 <code>&quot;&quot;&quot;</code> 结束文档注释时，应该单独起一行。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span><span style="font-style:italic">Return a foobang</span><span style="font-style:italic">
-</span><span style="font-style:italic"></span><span style="font-style:italic">
-</span><span style="font-style:italic"></span><span style="font-style:italic">Optional plotz says to frobnicate the bizbaz first.</span><span style="font-style:italic">
-</span><span style="font-style:italic"></span><span style="font-style:italic">&#34;&#34;&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">Return a foobang</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">Optional plotz says to frobnicate the bizbaz first.</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span>
 </code></pre></div></li>
 <li>
 <p>对于单行文档注释，应该写在同一行。</p>
@@ -673,10 +673,10 @@ initialize(FILES, error=True,)
 <p>注意，对内置的名字单独约定：大多数的内置对象的名字是单个单词（或两个词写在一起），包括异常类命名和内置常量命名都使用驼峰命名法。</p>
 <h5 id="类型变量名">类型变量名</h5>
 <p>在<a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> 中介绍的类型变量名一般使用简短的驼峰命名法：<code>T, AnyStr, Num</code>等，最好在名字前加上前缀，比如<code>_co, _contra</code>等来表明其行为特点。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">from</span> <span style="font-weight:bold">typing</span> <span style="font-weight:bold">import</span> TypeVar
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> TypeVar
 
-VT_co = TypeVar(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">VT_co</span><span style="font-style:italic">&#39;</span>, covariant=True)
-KT_contra = TypeVar(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">KT_contra</span><span style="font-style:italic">&#39;</span>, contravariant=True)
+VT_co <span style="color:#f92672">=</span> TypeVar(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">VT_co</span><span style="color:#e6db74">&#39;</span>, covariant<span style="color:#f92672">=</span>True)
+KT_contra <span style="color:#f92672">=</span> TypeVar(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">KT_contra</span><span style="color:#e6db74">&#39;</span>, contravariant<span style="color:#f92672">=</span>True)
 </code></pre></div><h5 id="异常名">异常名</h5>
 <p>因为异常应该是类，所以类命名约定适用于这里。但是，您应该在异常名称上使用后缀“Error”（如果该异常确实表示的是一个错误）。</p>
 <h5 id="全局变量名">全局变量名</h5>
@@ -735,11 +735,11 @@ KT_contra = TypeVar(<span style="font-style:italic"></span><span style="font-sty
 </li>
 <li>
 <p>用 <code>is not</code> 而不是 <code>not ... is</code> 虽然两者的意思是一样的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
-<span style="font-weight:bold">if</span> foo <span style="font-weight:bold">is</span> <span style="font-weight:bold">not</span> None:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
+<span style="color:#66d9ef">if</span> foo <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
 
-<span style="font-style:italic"># No:</span>
-<span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> foo <span style="font-weight:bold">is</span> None:
+<span style="color:#75715e"># No:</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> foo <span style="color:#f92672">is</span> None:
 </code></pre></div></li>
 <li>
 <p>当实现比较丰富的比较操作时，最好实现所有六种比较操作（<code>__eq__, __ne__, __lt__, __le__, __gt__, __ge__</code>）而不是只是实现其中一种操作。
@@ -750,11 +750,11 @@ KT_contra = TypeVar(<span style="font-style:italic"></span><span style="font-sty
 </li>
 <li>
 <p>总是使用 <code>def</code> 语句，而不是直接将lambda表达式绑定到标识符。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
-<span style="font-weight:bold">def</span> f(x): <span style="font-weight:bold">return</span> 2*x
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">f</span>(x): <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>x
 
-<span style="font-style:italic"># No:</span>
-f = <span style="font-weight:bold">lambda</span> x: 2*x
+<span style="color:#75715e"># No:</span>
+f <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> x: <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>x
 </code></pre></div><p>第一个表单意味着生成的函数对象的名称是 <code>f</code> 而不是泛型“&lt; lambda &gt;”。这在一般的回溯和字符串表示更有用。赋值语句的使用消除了lambda表达式在和显式 <code>def</code> 语句（即它可以嵌入较大表达式中）比较时所能提供的唯一好处。</p>
 </li>
 <li>
@@ -774,10 +774,10 @@ f = <span style="font-weight:bold">lambda</span> x: 2*x
 <p>当捕捉异常时，尽可能的提及具体的异常，而不是使用一个简单的 <code>except:</code> 语句。比如用以下形式：</p>
 </li>
 </ol>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">try</span>:
-    <span style="font-weight:bold">import</span> <span style="font-weight:bold">platform_specific_module</span>
-<span style="font-weight:bold">except</span> <span style="font-weight:bold">ImportError</span>:
-    platform_specific_module = None
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">try</span>:
+    <span style="color:#f92672">import</span> platform_specific_module
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ImportError</span>:
+    platform_specific_module <span style="color:#f92672">=</span> None
 </code></pre></div><p>毫无修饰的使用 <code>except:</code> 会捕获 <code>SystemExit</code> 和 <code>KeyboardInterrupt</code> 异常，使得程序更难以被 Control-C 中断，也会掩盖其他问题。如果你想捕获用来表示程序错误的所有异常，使用 <code>except Exception:</code> ，毫无修饰的 <code>except:</code> 等于 <code>except BaseException</code> 。</p>
 <p>一个很好的经验是限制在以下两种情况中使用 <code>except:</code></p>
 <ul>
@@ -790,59 +790,59 @@ f = <span style="font-weight:bold">lambda</span> x: 2*x
 </li>
 <li>
 <p>另外，对于所有 <code>try...except...</code> 语句，将 <code>try</code> 中的必要代码最少化，这样能避免掩盖错误。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
-<span style="font-weight:bold">try</span>:
-    value = collection[key]
-<span style="font-weight:bold">except</span> <span style="font-weight:bold">KeyError</span>:
-    <span style="font-weight:bold">return</span> key_not_found(key)
-<span style="font-weight:bold">else</span>:
-    <span style="font-weight:bold">return</span> handle_value(value)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
+<span style="color:#66d9ef">try</span>:
+    value <span style="color:#f92672">=</span> collection[key]
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyError</span>:
+    <span style="color:#66d9ef">return</span> key_not_found(key)
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#66d9ef">return</span> handle_value(value)
         
-<span style="font-style:italic"># No:</span>
-<span style="font-weight:bold">try</span>:
-    <span style="font-style:italic"># Too broad!</span>
-    <span style="font-weight:bold">return</span> handle_value(collection[key])
-<span style="font-weight:bold">except</span> <span style="font-weight:bold">KeyError</span>:
-    <span style="font-style:italic"># Will also catch KeyError raised by handle_value()</span>
-    <span style="font-weight:bold">return</span> key_not_found(key)
+<span style="color:#75715e"># No:</span>
+<span style="color:#66d9ef">try</span>:
+    <span style="color:#75715e"># Too broad!</span>
+    <span style="color:#66d9ef">return</span> handle_value(collection[key])
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyError</span>:
+    <span style="color:#75715e"># Will also catch KeyError raised by handle_value()</span>
+    <span style="color:#66d9ef">return</span> key_not_found(key)
 </code></pre></div></li>
 <li>
 <p>当某个资源仅在一段代码中起作用时，用 <code>with</code> 语句来及时和有效的关闭/清理该资源。使用 <code>try...finally...</code>也是可以接受的。</p>
 </li>
 <li>
 <p>无论何时获取和释放资源，都应该通过单独的函数或方法调用上下文管理器。例如:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes:</span>
-<span style="font-weight:bold">with</span> conn.begin_transaction():
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes:</span>
+<span style="color:#66d9ef">with</span> conn<span style="color:#f92672">.</span>begin_transaction():
     do_stuff_in_transaction(conn)
         
-<span style="font-style:italic"># No:</span>
-<span style="font-weight:bold">with</span> conn:
+<span style="color:#75715e"># No:</span>
+<span style="color:#66d9ef">with</span> conn:
     do_stuff_in_transaction(conn)
 </code></pre></div><p>后一个例子，除了能在 transaction 之后关闭连接之外，没有提供任何信息表明 <code>__enter__</code> 和 <code>__exit__</code> 方法做了些事情。明确表示出来是很重要的。</p>
 </li>
 <li>
 <p>保持返回语句的一致性，在一个函数中，要不所有 return 都能返回一个表达式，要不就都不要。如果有一些语句返回了表达式，所有没有返回值的 return语句应该明确的写成 <code>return None</code> 。并且如果函数能运行到末尾，那应该在末尾明确的写一个返回语句。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="font-style:italic"># Yes:</span>
-<span style="font-weight:bold">def</span> foo(x):
-    <span style="font-weight:bold">if</span> x &gt;= 0:
-        <span style="font-weight:bold">return</span> math.sqrt(x)
-    <span style="font-weight:bold">else</span>:
-        <span style="font-weight:bold">return</span> None
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#75715e"># Yes:</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>(x):
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>sqrt(x)
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> None
 
-<span style="font-weight:bold">def</span> bar(x):
-    <span style="font-weight:bold">if</span> x &lt; 0:
-        <span style="font-weight:bold">return</span> None
-    <span style="font-weight:bold">return</span> math.sqrt(x)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bar</span>(x):
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">return</span> None
+    <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>sqrt(x)
       
-<span style="font-style:italic"># No:</span>
-<span style="font-weight:bold">def</span> foo(x):
-    <span style="font-weight:bold">if</span> x &gt;= 0:
-        <span style="font-weight:bold">return</span> math.sqrt(x)
+<span style="color:#75715e"># No:</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>(x):
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>sqrt(x)
 
-<span style="font-weight:bold">def</span> bar(x):
-    <span style="font-weight:bold">if</span> x &lt; 0:
-        <span style="font-weight:bold">return</span>
-    <span style="font-weight:bold">return</span> math.sqrt(x)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bar</span>(x):
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">return</span>
+    <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>sqrt(x)
 </code></pre></div></li>
 <li>
 <p>使用字符串方法而不是字符串模块。
@@ -850,41 +850,41 @@ f = <span style="font-weight:bold">lambda</span> x: 2*x
 </li>
 <li>
 <p>使用 <code>''.startswith()</code> 和 <code>''.endswith()</code> 代替字符串切片来检查字符串前缀和后缀，这两个方法看上去更加干净且不容易出错：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-<span style="font-weight:bold">if</span> foo.startswith(<span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">bar</span><span style="font-style:italic">&#39;</span>):
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+<span style="color:#66d9ef">if</span> foo<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">bar</span><span style="color:#e6db74">&#39;</span>):
       
-<span style="font-style:italic"># No:  </span>
-<span style="font-weight:bold">if</span> foo[:3] == <span style="font-style:italic"></span><span style="font-style:italic">&#39;</span><span style="font-style:italic">bar</span><span style="font-style:italic">&#39;</span>:
+<span style="color:#75715e"># No:  </span>
+<span style="color:#66d9ef">if</span> foo[:<span style="color:#ae81ff">3</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">bar</span><span style="color:#e6db74">&#39;</span>:
 </code></pre></div></li>
 <li>
 <p>对象类型比较应该用 <code>isinstance()</code> 方法而不是直接比较类型。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-<span style="font-weight:bold">if</span> isinstance(obj, int):
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+<span style="color:#66d9ef">if</span> isinstance(obj, int):
 
-<span style="font-style:italic"># No:  </span>
-<span style="font-weight:bold">if</span> type(obj) <span style="font-weight:bold">is</span> type(1):
+<span style="color:#75715e"># No:  </span>
+<span style="color:#66d9ef">if</span> type(obj) <span style="color:#f92672">is</span> type(<span style="color:#ae81ff">1</span>):
 </code></pre></div><p>当检查对象是否是字符串时，请记住它可能也是一个unicode字符串！在Python 2，str和unicode字符都有一个共同的基类，basestring，所以你能这样做：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="font-weight:bold">if</span> isinstance(obj, basestring):
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#66d9ef">if</span> isinstance(obj, basestring):
 </code></pre></div><p>在Python 3，unicode和basestring不再存在（只有str），bytes object 不再是一种字符串（它是一个整数序列代替）</p>
 </li>
 <li>
 <p>对于序列，（string, lists, tuples），记住，空序列的条件判断为假。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-style:italic"># Yes: </span>
-<span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> seq:
-     <span style="font-weight:bold">if</span> seq:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Yes: </span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> seq:
+     <span style="color:#66d9ef">if</span> seq:
 
-<span style="font-style:italic"># No: </span>
-<span style="font-weight:bold">if</span> len(seq):
-    <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> len(seq):
+<span style="color:#75715e"># No: </span>
+<span style="color:#66d9ef">if</span> len(seq):
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> len(seq):
 </code></pre></div></li>
 <li>
 <p>不要写依赖于有意义的尾空格的字符串，这些尾空格视觉上难以区分，而且一些编辑程序（比如最近的 reindent.py）会修剪掉这些空格。</p>
 </li>
 <li>
 <p>不要用<code>==</code>来比较布尔值。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yes:   <span style="font-weight:bold">if</span> greeting:
-No:    <span style="font-weight:bold">if</span> greeting == True:
-Worse: <span style="font-weight:bold">if</span> greeting <span style="font-weight:bold">is</span> True:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yes:   <span style="color:#66d9ef">if</span> greeting:
+No:    <span style="color:#66d9ef">if</span> greeting <span style="color:#f92672">==</span> True:
+Worse: <span style="color:#66d9ef">if</span> greeting <span style="color:#f92672">is</span> True:
 </code></pre></div></li>
 </ol>
 <h4 id="函数注释">函数注释</h4>
@@ -904,7 +904,7 @@ Worse: <span style="font-weight:bold">if</span> greeting <span style="font-weigh
 </li>
 <li>
 <p>如果想要让注释发挥一些不一样得作用，建议使用这种格式：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="font-style:italic"># type: ignore</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#75715e"># type: ignore</span>
 </code></pre></div><p>在文件的顶部；这告诉类型检查器忽略所有注释。（在 <a href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> 中可以找到更细粒度的禁用类型检查器的方法。）</p>
 </li>
 <li>
@@ -942,30 +942,28 @@ Worse: <span style="font-weight:bold">if</span> greeting <span style="font-weigh
         
 
 
-        <div id="vssue"></div>
+            <div id="vssue"></div>
     <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
     <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
     <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
     <script>
-    new Vue({
-      el: '#vssue',
-
-      render: h => h('Vssue', {
-        props: {
-          
-          title: options => `${options.prefix}comments on ${document.location.pathname}`,
-
-          
-          options: {
-            autoCreateIssue: true,
-            owner: 'XIEJD',
-            repo: 'xiejd.github.io',
-            clientId: 'd49c970afdb5dc4631f9',
-            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
-          },
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
         }
-      })
-    })
     </script>
 
         
