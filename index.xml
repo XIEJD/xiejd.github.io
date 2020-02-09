@@ -218,6 +218,25 @@ Stream API概览    Method Description Type     filter() 很常用的方法，�
     </item>
     
     <item>
+      <title></title>
+      <link>https://www.shareif.cn/posts/2020-02-netty/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2020-02-netty/</guid>
+      <description>+++ draft = true date = 2020-02-04T23:23:11+08:00 title = &amp;ldquo;Netty从零开始理解&amp;rdquo; description = &amp;ldquo;理解Netty框架，及其源码&amp;rdquo; slug = &amp;ldquo;netty&amp;rdquo; tags = [] categories = [&amp;ldquo;DIVE-IN-FRAMEWORK&amp;rdquo;] externalLink = &amp;quot;&amp;rdquo; series = []
++++
+关于Netty 简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。
+啥问题？
+应用间通讯的问题。更具体一点，不同场景下（网页浏览、音视频传输、大文件传输、etc.）的应用间通讯协议的开发实现很难保证稳定性和高性能。
+Netty如何解决？
+Netty并不能说完全解决这一类问题，而是为解决这一类问题做出了非常有用的努力，通过提供一些相对稳定健壮的底层实现，比如事件驱动模型、内存Buffer操作等。来使网络应用开发达到“易快好省”的目的，容易使用，快速开发，稳定，高性能。
+（断章取义自官方文档🤪
+理解官网Demo 利用TCP通信实现服务端响应客户端数据。
+两种消息处理模式，一个问题：
+ ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp;amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io.netty.channel.nio.NioEventLoopGroup; import io.</description>
+    </item>
+    
+    <item>
       <title>Me</title>
       <link>https://www.shareif.cn/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

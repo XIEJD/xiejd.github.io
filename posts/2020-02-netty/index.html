@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="&#43;&#43;&#43; draft = true date = 2020-02-04T23:23:11&#43;08:00 title = &ldquo;Netty从零开始理解&rdquo; description = &ldquo;理解Netty框架，及其源码&rdquo; slug = &ldquo;netty&rdquo; tags = [] categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;] externalLink = &quot;&rdquo; series = []
+&#43;&#43;&#43;
+关于Netty 简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。
+啥问题？
+应用间通讯的问题。更具体一点，不同场景下（网页浏览、音视频传输、大文件传输、etc.）的应用间通讯协议的开发实现很难保证稳定性和高性能。
+Netty如何解决？
+Netty并不能说完全解决这一类问题，而是为解决这一类问题做出了非常有用的努力，通过提供一些相对稳定健壮的底层实现，比如事件驱动模型、内存Buffer操作等。来使网络应用开发达到“易快好省”的目的，容易使用，快速开发，稳定，高性能。
+（断章取义自官方文档🤪
+理解官网Demo 利用TCP通信实现服务端响应客户端数据。
+两种消息处理模式，一个问题：
+ ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io.netty.channel.nio.NioEventLoopGroup; import io."/>
+
+    <meta property="og:title" content="" />
+<meta property="og:description" content="&#43;&#43;&#43; draft = true date = 2020-02-04T23:23:11&#43;08:00 title = &ldquo;Netty从零开始理解&rdquo; description = &ldquo;理解Netty框架，及其源码&rdquo; slug = &ldquo;netty&rdquo; tags = [] categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;] externalLink = &quot;&rdquo; series = []
+&#43;&#43;&#43;
+关于Netty 简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。
+啥问题？
+应用间通讯的问题。更具体一点，不同场景下（网页浏览、音视频传输、大文件传输、etc.）的应用间通讯协议的开发实现很难保证稳定性和高性能。
+Netty如何解决？
+Netty并不能说完全解决这一类问题，而是为解决这一类问题做出了非常有用的努力，通过提供一些相对稳定健壮的底层实现，比如事件驱动模型、内存Buffer操作等。来使网络应用开发达到“易快好省”的目的，容易使用，快速开发，稳定，高性能。
+（断章取义自官方文档🤪
+理解官网Demo 利用TCP通信实现服务端响应客户端数据。
+两种消息处理模式，一个问题：
+ ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io.netty.channel.nio.NioEventLoopGroup; import io." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/2020-02-netty/" />
+
+
+
+    
+      <base href="https://www.shareif.cn/posts/2020-02-netty/">
+    
+    <title>
+   · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/2020-02-netty/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+  <body class="colorscheme-light">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title"></h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='0001-01-01T00:00:00Z'>
+                Created 0001-01-01
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3-minute read
+            </span>
+          </div>
+          
+          
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-edit"></i>
+              <time datetime='0001-01-01T00:00:00Z'>
+                Modified 0001-01-01
+              </time>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div>
+        
+        <p>+++
+draft = true
+date = 2020-02-04T23:23:11+08:00
+title = &ldquo;Netty从零开始理解&rdquo;
+description = &ldquo;理解Netty框架，及其源码&rdquo;
+slug = &ldquo;netty&rdquo;
+tags = []
+categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;]
+externalLink = &quot;&rdquo;
+series = []</p>
+<p>+++</p>
+<h2 id="关于netty">关于Netty</h2>
+<p>简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。</p>
+<p>啥问题？</p>
+<p>应用间通讯的问题。更具体一点，不同场景下（网页浏览、音视频传输、大文件传输、etc.）的应用间通讯协议的开发实现很难保证稳定性和高性能。</p>
+<p>Netty如何解决？</p>
+<p>Netty并不能说完全解决这一类问题，而是为解决这一类问题做出了非常有用的努力，通过提供一些相对稳定健壮的底层实现，比如事件驱动模型、内存Buffer操作等。来使网络应用开发达到“易快好省”的目的，容易使用，快速开发，稳定，高性能。</p>
+<p>（断章取义自官方文档🤪</p>
+<h2 id="理解官网demo">理解官网Demo</h2>
+<p>利用TCP通信实现服务端响应客户端数据。</p>
+<p>两种消息处理模式，一个问题：</p>
+<ul>
+<li>ByteBuf 模式</li>
+<li>Java POJO 模式</li>
+<li>粘包问题</li>
+</ul>
+<h3 id="bytebuf-模式---time-server--time-client">ByteBuf 模式 - Time Server &amp; Time Client</h3>
+<h4 id="time-server">Time Server</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> io.netty.bootstrap.ServerBootstrap<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.ChannelFuture<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.ChannelInitializer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.ChannelOption<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.EventLoopGroup<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.nio.NioEventLoopGroup<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.socket.SocketChannel<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> io.netty.channel.socket.nio.NioServerSocketChannel<span style="color:#f92672">;</span>
+    
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 主类
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeServer</span> <span style="color:#f92672">{</span>
+    
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">;</span>
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DiscardServer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> port<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> port<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        EventLoopGroup bossGroup <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NioEventLoopGroup<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        EventLoopGroup workerGroup <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NioEventLoopGroup<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            ServerBootstrap b <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerBootstrap<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            b<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>bossGroup<span style="color:#f92672">,</span> workerGroup<span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">(</span>NioServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">childHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ChannelInitializer<span style="color:#f92672">&lt;</span>SocketChannel<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                 <span style="color:#a6e22e">@Override</span>
+                 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initChannel</span><span style="color:#f92672">(</span>SocketChannel ch<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+                     ch<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TimeServerHandler<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#f92672">}</span>
+             <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">option</span><span style="color:#f92672">(</span>ChannelOption<span style="color:#f92672">.</span><span style="color:#a6e22e">SO_BACKLOG</span><span style="color:#f92672">,</span> 128<span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">childOption</span><span style="color:#f92672">(</span>ChannelOption<span style="color:#f92672">.</span><span style="color:#a6e22e">SO_KEEPALIVE</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    
+            <span style="color:#75715e">// Bind and start to accept incoming connections.
+</span><span style="color:#75715e"></span>            ChannelFuture f <span style="color:#f92672">=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>port<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sync</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    
+            <span style="color:#75715e">// Wait until the server socket is closed.
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// In this example, this does not happen, but you can do that to gracefully
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// shut down your server.
+</span><span style="color:#75715e"></span>            f<span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">closeFuture</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sync</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            workerGroup<span style="color:#f92672">.</span><span style="color:#a6e22e">shutdownGracefully</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            bossGroup<span style="color:#f92672">.</span><span style="color:#a6e22e">shutdownGracefully</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> 8080<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            port <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">new</span> DiscardServer<span style="color:#f92672">(</span>port<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeServerHandler</span> <span style="color:#66d9ef">extends</span> ChannelInboundHandlerAdapter <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelActive</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> ChannelHandlerContext ctx<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> ByteBuf time <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">alloc</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buffer</span><span style="color:#f92672">(</span>4<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        time<span style="color:#f92672">.</span><span style="color:#a6e22e">writeInt</span><span style="color:#f92672">(</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">/</span> 1000L <span style="color:#f92672">+</span> 2208988800L<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        
+        <span style="color:#66d9ef">final</span> ChannelFuture f <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">writeAndFlush</span><span style="color:#f92672">(</span>time<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        f<span style="color:#f92672">.</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ChannelFutureListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">operationComplete</span><span style="color:#f92672">(</span>ChannelFuture future<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">assert</span> f <span style="color:#f92672">=</span><span style="color:#f92672">=</span> future<span style="color:#f92672">;</span>
+                ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">exceptionCaught</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Throwable cause<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        cause<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>此时的TimeServer，功能非常简单，每当建立一个连接，TimeServer就会发送当前系统时间给对端，然后关闭连接。作为一个TCP Server，显然这样有些浪费。</p>
+<p>为了方便后续演示，对官网Demo有一些改动，但是本质上没变化，只是将客户端的解码行为，挪到了服务端，以便用PackageSender持续测试。</p>
+<p>改造TimeServerHandler，在建链阶段不发送数据，等链路中客户端发送请求后，再回显时间，并在回显时间后附带请求数据。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeServerHandler</span> <span style="color:#66d9ef">extends</span> ChannelInboundHandlerAdapter <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">long</span> timestamp <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ByteBuf msgBuf <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>ByteBuf<span style="color:#f92672">)</span> msg<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> ByteBuf response <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">alloc</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buffer</span><span style="color:#f92672">(</span>8 <span style="color:#f92672">+</span> msgBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">capacity</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        response<span style="color:#f92672">.</span><span style="color:#a6e22e">writeLong</span><span style="color:#f92672">(</span>timestamp<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        response<span style="color:#f92672">.</span><span style="color:#a6e22e">writeBytes</span><span style="color:#f92672">(</span>msgBuf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">writeAndFlush</span><span style="color:#f92672">(</span>response<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">exceptionCaught</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Throwable cause<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        cause<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>测试结果：</p>
+<p><img src="https://s2.ax1x.com/2020/02/09/1hCd58.png" alt="1hCd58.png"></p>
+<p>用ByteBuf直接处理，就是这么简单粗暴，是不是感觉回到了C的怀抱🤔</p>
+<h3 id="java-pojo-模式---还是上面的">Java POJO 模式 - 还是上面的🌰</h3>
+<p>如果我十分确定，客户端发送的数据可以映射到一个固定的Java结构当中，而我又不想每次都自己去反序列化，怎么办？Netty能做点啥？</p>
+<p>继续改造，先定义结构体：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Builder</span>
+<span style="color:#a6e22e">@Getter</span>
+<span style="color:#a6e22e">@ToString</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Region</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> zone<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> clientCode<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">BYTES</span> <span style="color:#f92672">+</span> Long<span style="color:#f92672">.</span><span style="color:#a6e22e">BYTES</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>然后，实现反序列化方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeDecoder</span> <span style="color:#66d9ef">extends</span> ByteToMessageDecoder <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">decode</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> ByteBuf in<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> out<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Region request <span style="color:#f92672">=</span>  Region<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">zone</span><span style="color:#f92672">(</span>in<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">clientCode</span><span style="color:#f92672">(</span>in<span style="color:#f92672">.</span><span style="color:#a6e22e">readLong</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        out<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>request<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>再然后，将此反序列化方法，在TimeServer的Pipeline中，加到TimeServerHandler之前：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initChannel</span><span style="color:#f92672">(</span>SocketChannel ch<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+	ch<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TimeDecoder<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	ch<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TimeServerHandler<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>在TimeServerHandler中直接强转即可：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeServerHandler</span> <span style="color:#66d9ef">extends</span> ChannelInboundHandlerAdapter <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">long</span> timestamp <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Region dto <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Region<span style="color:#f92672">)</span> msg<span style="color:#f92672">;</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;receive data frome client: {}&#34;</span><span style="color:#f92672">,</span> dto<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> ByteBuf response <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">alloc</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buffer</span><span style="color:#f92672">(</span>Long<span style="color:#f92672">.</span><span style="color:#a6e22e">BYTES</span> <span style="color:#f92672">+</span> Region<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        response<span style="color:#f92672">.</span><span style="color:#a6e22e">writeLong</span><span style="color:#f92672">(</span>timestamp<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        response<span style="color:#f92672">.</span><span style="color:#a6e22e">writeInt</span><span style="color:#f92672">(</span>dto<span style="color:#f92672">.</span><span style="color:#a6e22e">getZone</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        response<span style="color:#f92672">.</span><span style="color:#a6e22e">writeLong</span><span style="color:#f92672">(</span>dto<span style="color:#f92672">.</span><span style="color:#a6e22e">getClientCode</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">writeAndFlush</span><span style="color:#f92672">(</span>response<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">exceptionCaught</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Throwable cause<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        cause<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>测试结果：</p>
+<p><img src="https://s2.ax1x.com/2020/02/09/1hCaUf.png" alt="1hCaUf.png"></p>
+<h3 id="粘包问题">粘包问题</h3>
+<p>举个🌰：</p>
+<p>假如客户端发送了两条数据：[ABCDE] [FGHIJ]</p>
+<p>但是传输层并不是按你的动作来一次发一次呀，TCP传输层从缓存里面一帧一帧的拿数据，而这个一帧的长度是传输层决定的，并不一定是你应用层一条数据的长度。</p>
+<p>所以就造成了一个问题，数据被打散重新分装了：[AB] [CD] [EF] [GHIJK]</p>
+<p>当这些数据包到达服务端的时候，服务端如何重新组装成应用层的一条一条的数据呢？</p>
+<p>官网Demo给出的方法是直接用应用层一条数据的长度来组装，暴力，也不太实用。</p>
+<p>至此，Netty User Guide基本就讲了这么些事，真不够用</p>
+<h2 id="dive-in-src">Dive In Src</h2>
+<p><img src="https://netty.io/images/components.png" alt="a"></p>
+<h2 id="references">REFERENCES</h2>
+<blockquote>
+<ol>
+<li><a href="https://netty.io/wiki/user-guide-for-4.x.html">Netty User Guide</a></li>
+<li><a href="https://packetsender.com/">TCP 测试工具</a></li>
+</ol>
+</blockquote>
+
+      </div>
+
+
+      <footer>
+        
+
+
+            <div id="vssue"></div>
+    <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
+    <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
+    <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
+    <script>
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
+        }
+    </script>
+
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓于利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
