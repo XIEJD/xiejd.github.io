@@ -17,10 +17,10 @@
       <pubDate>Wed, 12 Feb 2020 22:27:08 +0800</pubDate>
       
       <guid>https://www.shareif.cn/posts/spring-kafka/</guid>
-      <description>1. 如何定义kafka消费者 2. 多实例部署 3. 动态消费者 4. Dive In Src  4.1 注解扫描 4.2 初始化 4.3 运行消费者   5. 总结  5.1 可参考注解配置 5.2 可参考通用配置   6. 有感 7. 参考  Spring Kafka在原生kafka客户端的基础上进行了封装，提供了非常人性化的配置方法和使用方法，不管是生产者或是消费者，都能简单几行代码搞定，且拥有很好的健壮性。非常的Spring。前几天遇到同一消费者组下需要多实例集群中仅单实例消费的需求，由于初次接触Spring Kafka这个框架，一时之间没想到什么好办法，所以索性从上至下溯溯源，增进一下对它的了解。然后顺便再找一找解决方法。
+      <description>1. 如何定义kafka消费者 2. 多实例部署 3. 动态消费者 4. Ack模式与错误处理 5. Dive In Src  4.1 注解扫描 4.2 初始化 4.3 运行消费者   6. 总结 7. 有感 8. 参考  Spring Kafka在原生kafka客户端的基础上进行了封装，提供了非常方便的配置方法和使用方法，不管是生产者或是消费者，都能简单几行代码搞定。非常的Spring。前几天遇到同一消费者组下需要多实例集群中仅单实例消费的需求，由于初次接触Spring Kafka这个框架，一时之间没想到什么好办法，所以索性翻翻源码，增进一下对它的了解。然后顺便再找一找解决方法。
 基于Spring Kafka 2.2.12.RELEASE
 1. 如何定义kafka消费者 在Spring Kafka框架下定义消费者相当简单分别有两种模式：
- 类级别注解定义，相关注解：@KafkaListener、@KafkaListeners、@KafkaHandler 方法级别注解定义，相关注解：@KafkaListener、@KafkaListeners  自动配置的代码可以参考官方教程[^1]，此处略。
+ 类级别注解定义，相关注解：@KafkaListener、@KafkaListeners、@KafkaHandler 方法级别注解定义，相关注解：@KafkaListener、@KafkaListeners  自动配置的代码可以参考官方教程，此处略。
 其中，@KafkaListeners可以由多个@KafkaListener替代。
 类级别注解定义示例：
 @Slf4j @Component @KafkaListener(topics = &amp;#34;test&amp;#34;) public class DemoClassConsumer { @KafkaHandler(isDefault = true) public void handle(String payload) { log.info(&amp;#34;default handle - receive data: {}&amp;#34;, payload); } @KafkaHandler public void handleString(String payload) { log.</description>
