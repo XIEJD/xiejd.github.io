@@ -18,7 +18,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.shareif.cn/posts/spring-kafka/" />
 <meta property="article:published_time" content="2020-02-12T22:27:08+08:00" />
-<meta property="article:modified_time" content="2020-02-23T18:47:12+08:00" />
+<meta property="article:modified_time" content="2020-02-23T23:35:18+08:00" />
 
 
     
@@ -39,7 +39,7 @@
     
       
       
-      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.d141d1c513ddaf5e322d1b1bb0d04c52c2f534803f99eb70a77e9bc95211cc0e.css" integrity="sha256-0UHRxRPdr14yLRsbsNBMUsL1NIA/metwp36byVIRzA4=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -123,7 +123,7 @@
           <div class="date">
             <span class="posted-on">
               <i class="fas fa-edit"></i>
-              <time datetime='2020-02-23T18:47:12&#43;08:00'>
+              <time datetime='2020-02-23T23:35:18&#43;08:00'>
                 Modified 2020-02-23
               </time>
             </span>
@@ -268,44 +268,36 @@
 <thead>
 <tr>
 <th>ACK模式</th>
-<th>是否自动<!-- raw HTML omitted -->（enable-auto-commit）</th>
 <th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>RECORD</td>
-<td>是</td>
 <td>每条消息处理完后马上提交offset</td>
 </tr>
 <tr>
 <td>BATCH</td>
-<td>是</td>
 <td>下一次poll前，将全部提交上一次poll的消息，不管有没有真正消费到🤣</td>
 </tr>
 <tr>
 <td>TIME</td>
-<td>是</td>
 <td>按时提交offset</td>
 </tr>
 <tr>
 <td>COUNT</td>
-<td>是</td>
 <td>按消息数提交</td>
 </tr>
 <tr>
 <td>COUNT_TIME</td>
-<td>是</td>
 <td>即 TIME || COUNT 就提交</td>
 </tr>
 <tr>
 <td>MANUAL</td>
-<td>否</td>
 <td>手动提交，批量模式</td>
 </tr>
 <tr>
 <td>MANUAL_IMMEDIATE</td>
-<td>否</td>
 <td>手动马上提交</td>
 </tr>
 </tbody>
@@ -472,7 +464,7 @@
                         <span style="color:#e6db74">&#34;BeanFactory must be set to find endpoint registry by bean name&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
             <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>KafkaListenerConfigUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">KAFKA_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME</span><span style="color:#f92672">,</span>KafkaListenerEndpointRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
-        
+
         <span style="color:#75715e">// 实际上这个endpointRegistry的Bean就是在自动配置中声明的那个
 </span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registrar</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setEndpointRegistry</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
@@ -535,7 +527,7 @@
 <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doStart</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// 参数校验和设置
 </span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-    
+
     <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">concurrency</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#75715e">//（1）根据concurrency数量，每一次循环又单独初始化一个container
 </span><span style="color:#75715e"></span>        KafkaMessageListenerContainer<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> container<span style="color:#f92672">;</span>
@@ -585,10 +577,10 @@
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// 检查是否被暂停 ...
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// 拉取消息
 </span><span style="color:#75715e"></span>    ConsumerRecords<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> records <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">consumer</span><span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">pollTimeout</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  
+
     <span style="color:#75715e">// 消费消息
 </span><span style="color:#75715e"></span>    invokeListener<span style="color:#f92672">(</span>records<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    
+
     <span style="color:#75715e">//...
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>注释已经把过程抽象出来，Spring Kafka实际上也是调用了原生Kafka客户端的<code>KafkaConsumer.poll()</code>方法来获取kafka消息，然后再喂给业务过程。</p>
