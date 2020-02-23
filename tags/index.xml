@@ -6,9 +6,28 @@
     <description>Recent content in Tags on Shareif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Wed, 12 Feb 2020 22:27:08 +0800</lastBuildDate>
     
 	<atom:link href="https://www.shareif.cn/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>KafkaListener</title>
+      <link>https://www.shareif.cn/tags/kafkalistener/</link>
+      <pubDate>Wed, 12 Feb 2020 22:27:08 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/tags/kafkalistener/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Spring Kafka</title>
+      <link>https://www.shareif.cn/tags/spring-kafka/</link>
+      <pubDate>Wed, 12 Feb 2020 22:27:08 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/tags/spring-kafka/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

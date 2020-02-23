@@ -11,7 +11,7 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="&#43;&#43;&#43; draft = true date = 2020-02-04T23:23:11&#43;08:00 title = &ldquo;Netty从零开始理解&rdquo; description = &ldquo;理解Netty框架，及其源码&rdquo; slug = &ldquo;netty&rdquo; tags = [] categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;] externalLink = &quot;&rdquo; series = []
+<meta name="twitter:description" content="&#43;&#43;&#43; draft = true date = 2020-02-04T23:23:11&#43;08:00 title = &ldquo;Netty源码阅读小记之从零开始&rdquo; description = &ldquo;理解Netty框架，及其源码&rdquo; slug = &ldquo;netty&rdquo; tags = [&ldquo;Netty&rdquo;, &ldquo;Demo&rdquo;, &ldquo;Source&rdquo;] categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;] externalLink = &quot;&rdquo; series = [&ldquo;Netty&rdquo;]
 &#43;&#43;&#43;
 关于Netty 简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。
 啥问题？
@@ -21,10 +21,10 @@ Netty并不能说完全解决这一类问题，而是为解决这一类问题做
 （断章取义自官方文档🤪
 理解官网Demo 利用TCP通信实现服务端响应客户端数据。
 两种消息处理模式，一个问题：
- ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io.netty.channel.nio.NioEventLoopGroup; import io."/>
+ ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io."/>
 
     <meta property="og:title" content="" />
-<meta property="og:description" content="&#43;&#43;&#43; draft = true date = 2020-02-04T23:23:11&#43;08:00 title = &ldquo;Netty从零开始理解&rdquo; description = &ldquo;理解Netty框架，及其源码&rdquo; slug = &ldquo;netty&rdquo; tags = [] categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;] externalLink = &quot;&rdquo; series = []
+<meta property="og:description" content="&#43;&#43;&#43; draft = true date = 2020-02-04T23:23:11&#43;08:00 title = &ldquo;Netty源码阅读小记之从零开始&rdquo; description = &ldquo;理解Netty框架，及其源码&rdquo; slug = &ldquo;netty&rdquo; tags = [&ldquo;Netty&rdquo;, &ldquo;Demo&rdquo;, &ldquo;Source&rdquo;] categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;] externalLink = &quot;&rdquo; series = [&ldquo;Netty&rdquo;]
 &#43;&#43;&#43;
 关于Netty 简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。
 啥问题？
@@ -34,7 +34,7 @@ Netty并不能说完全解决这一类问题，而是为解决这一类问题做
 （断章取义自官方文档🤪
 理解官网Demo 利用TCP通信实现服务端响应客户端数据。
 两种消息处理模式，一个问题：
- ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io.netty.channel.nio.NioEventLoopGroup; import io." />
+ ByteBuf 模式 Java POJO 模式 粘包问题  ByteBuf 模式 - Time Server &amp; Time Client Time Server import io.netty.bootstrap.ServerBootstrap; import io.netty.channel.ChannelFuture; import io.netty.channel.ChannelInitializer; import io.netty.channel.ChannelOption; import io.netty.channel.EventLoopGroup; import io." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.shareif.cn/posts/2020-02-netty/" />
 
@@ -147,13 +147,13 @@ Netty并不能说完全解决这一类问题，而是为解决这一类问题做
         <p>+++
 draft = true
 date = 2020-02-04T23:23:11+08:00
-title = &ldquo;Netty从零开始理解&rdquo;
+title = &ldquo;Netty源码阅读小记之从零开始&rdquo;
 description = &ldquo;理解Netty框架，及其源码&rdquo;
 slug = &ldquo;netty&rdquo;
-tags = []
+tags = [&ldquo;Netty&rdquo;, &ldquo;Demo&rdquo;, &ldquo;Source&rdquo;]
 categories = [&ldquo;DIVE-IN-FRAMEWORK&rdquo;]
 externalLink = &quot;&rdquo;
-series = []</p>
+series = [&ldquo;Netty&rdquo;]</p>
 <p>+++</p>
 <h2 id="关于netty">关于Netty</h2>
 <p>简单的讲，Netty是为了解决一类问题，而提供了一个框架或者一套方法。</p>
@@ -329,7 +329,7 @@ series = []</p>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>测试结果：</p>
 <p><img src="https://s2.ax1x.com/2020/02/09/1hCaUf.png" alt="1hCaUf.png"></p>
-<h3 id="粘包问题">粘包问题</h3>
+<h3 id="粘包拆包问题">粘包/拆包问题</h3>
 <p>举个🌰：</p>
 <p>假如客户端发送了两条数据：[ABCDE] [FGHIJ]</p>
 <p>但是传输层并不是按你的动作来一次发一次呀，TCP传输层从缓存里面一帧一帧的拿数据，而这个一帧的长度是传输层决定的，并不一定是你应用层一条数据的长度。</p>
@@ -337,8 +337,9 @@ series = []</p>
 <p>当这些数据包到达服务端的时候，服务端如何重新组装成应用层的一条一条的数据呢？</p>
 <p>官网Demo给出的方法是直接用应用层一条数据的长度来组装，暴力，也不太实用。</p>
 <p>至此，Netty User Guide基本就讲了这么些事，真不够用</p>
-<h2 id="dive-in-src">Dive In Src</h2>
-<p><img src="https://netty.io/images/components.png" alt="a"></p>
+<h2 id="再理解">再理解</h2>
+<h4 id="业务最关心">业务最关心</h4>
+<p>其实在业务上最关心的并不是netty如何启动，如何分配任务的，业务上最关心的是，链接建立以后，消息如何处理，如何进行数据交互，而在netty中，进行数据交互时最终要的部分当属Pipeline了。</p>
 <h2 id="references">REFERENCES</h2>
 <blockquote>
 <ol>

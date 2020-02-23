@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Shareif">
+    <meta name="description" content="Tech Notes">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spring Kafka源码阅读小记之消费者概览"/>
+<meta name="twitter:description" content="Spring Kafka如何初始化@KafkaListener标记的bean"/>
+
+    <meta property="og:title" content="Spring Kafka源码阅读小记之消费者概览" />
+<meta property="og:description" content="Spring Kafka如何初始化@KafkaListener标记的bean" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.shareif.cn/posts/spring-kafka/" />
+<meta property="article:published_time" content="2020-02-12T22:27:08+08:00" />
+<meta property="article:modified_time" content="2020-02-22T16:39:48+08:00" />
+
+
+    
+      <base href="https://www.shareif.cn/posts/spring-kafka/">
+    
+    <title>
+  Spring Kafka源码阅读小记之消费者概览 · Shareif
+</title>
+
+    
+      <link rel="canonical" href="https://www.shareif.cn/posts/spring-kafka/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.shareif.cn/css/coder.min.45b979f1523e42c451197c38340cae9852ff2d72488f67bec9f75ef5830f875d.css" integrity="sha256-Rbl58VI&#43;QsRRGXw4NAyumFL/LXJIj2e&#43;yfde9YMPh10=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.shareif.cn/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.63.2" />
+  </head>
+
+  
+  
+  <body class="colorscheme-light">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.shareif.cn/">
+      Shareif
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://www.shareif.cn/about/">About</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Spring Kafka源码阅读小记之消费者概览</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2020-02-12T22:27:08&#43;08:00'>
+                Created 2020-02-12
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              5-minute read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://www.shareif.cn/categories/dive-in-framework/">DIVE-IN-FRAMEWORK</a></div>
+
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://www.shareif.cn/tags/spring-kafka/">Spring Kafka</a>
+      <span class="separator">•</span>
+    <a href="https://www.shareif.cn/tags/kafkalistener/">KafkaListener</a></div>
+
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-edit"></i>
+              <time datetime='2020-02-22T16:39:48&#43;08:00'>
+                Modified 2020-02-22
+              </time>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div>
+        
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><a href="#1-%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89kafka%E6%B6%88%E8%B4%B9%E8%80%85">1. 如何定义kafka消费者</a></li>
+<li><a href="#2-%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%83%A8%E7%BD%B2">2. 多实例部署</a></li>
+<li><a href="#3-%E5%8A%A8%E6%80%81%E6%B6%88%E8%B4%B9%E8%80%85">3. 动态消费者</a></li>
+<li><a href="#4-dive-in-src">4. Dive In Src</a>
+<ul>
+<li><a href="#41-%E6%B3%A8%E8%A7%A3%E6%89%AB%E6%8F%8F">4.1 注解扫描</a></li>
+<li><a href="#42-%E5%88%9D%E5%A7%8B%E5%8C%96">4.2 初始化</a></li>
+<li><a href="#43-%E8%BF%90%E8%A1%8C%E6%B6%88%E8%B4%B9%E8%80%85">4.3 运行消费者</a></li>
+</ul>
+</li>
+<li><a href="#5-%E6%80%BB%E7%BB%93">5. 总结</a>
+<ul>
+<li><a href="#51-%E5%8F%AF%E5%8F%82%E8%80%83%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE">5.1 可参考注解配置</a></li>
+<li><a href="#52-%E5%8F%AF%E5%8F%82%E8%80%83%E9%80%9A%E7%94%A8%E9%85%8D%E7%BD%AE">5.2 可参考通用配置</a></li>
+</ul>
+</li>
+<li><a href="#6-%E6%9C%89%E6%84%9F">6. 有感</a></li>
+<li><a href="#7-%E5%8F%82%E8%80%83">7. 参考</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<p>Spring Kafka在原生kafka客户端的基础上进行了封装，提供了非常人性化的配置方法和使用方法，不管是生产者或是消费者，都能简单几行代码搞定，且拥有很好的健壮性。非常的Spring。前几天遇到同一消费者组下需要多实例集群中仅单实例消费的需求，由于初次接触Spring Kafka这个框架，一时之间没想到什么好办法，所以索性从上至下溯溯源，增进一下对它的了解。然后顺便再找一找解决方法。</p>
+<p>基于Spring Kafka <code>2.2.12.RELEASE</code></p>
+<h2 id="1-如何定义kafka消费者">1. 如何定义kafka消费者</h2>
+<p>在Spring Kafka框架下定义消费者相当简单分别有两种模式：</p>
+<ul>
+<li>类级别注解定义，相关注解：<code>@KafkaListener</code>、<code>@KafkaListeners</code>、<code>@KafkaHandler</code></li>
+<li>方法级别注解定义，相关注解：<code>@KafkaListener</code>、<code>@KafkaListeners</code></li>
+</ul>
+<p>自动配置的代码可以参考官方教程[^1]，此处略。</p>
+<p>其中，<code>@KafkaListeners</code>可以由多个<code>@KafkaListener</code>替代。</p>
+<p>类级别注解定义示例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Component</span>
+<span style="color:#a6e22e">@KafkaListener</span><span style="color:#f92672">(</span>topics <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DemoClassConsumer</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@KafkaHandler</span><span style="color:#f92672">(</span>isDefault <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;default handle - receive data: {}&#34;</span><span style="color:#f92672">,</span> payload<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@KafkaHandler</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleString</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string handle - receive data: {}&#34;</span><span style="color:#f92672">,</span> payload<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>@Component</code>注解是必加的，因为只有Spring的Bean才会触发Kafka Spring的Bean后处理方法。<code>@KafkaListener</code>声明消费的topic等信息，该注解还包含许多其他非常有用的属性，后文详解。<code>@KafkaHandler</code>声明处理收到消息的方法，它只有一个属性<code>isDefault</code>。可以使用<code>@KafkaHandler</code>声明多个方法，每一个方法的入参类型必须不一样，Spring Kafka将依靠收到消息的类型，来判断应该用哪个方法处理。当<code>isDefault = true</code>时，指定该方法为所有类型都匹配不到时的默认方法，类似<code>switch</code>的<code>default</code>，此时入参可以与其它方法入参类型相同。</p>
+<p>方法级别的注解定义更加简单：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Component</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DemoConsumer</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@KafkaListener</span><span style="color:#f92672">(</span>topics <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;receive message: {}&#34;</span><span style="color:#f92672">,</span> message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>作为两个消费者的Demo，上面的代码已经至少可以拉通“跑起来了”。</p>
+<h2 id="2-多实例部署">2. 多实例部署</h2>
+<p>作为一个合格的Coder，需要尽最大可能的或者倾尽所能的满足各种场景。所以，当碰到类似“多实例下仅单实例消费，且在同一个消费者组”之类的问题时，上面的理解程度明显就不够用了。此处的多实例，更具体一点是同一个服务的多个实例。</p>
+<p>“对一个Topic，同一个消费者组下服务的多个实例中只能有一个实例消费”，能不能用多个消费者组实现？技术上可以，比如直接在<code>@KafkaListener</code>中用SpEL表达式定义<code>groupId</code>，让其每一个实例都拥有一个不同的消费者组，这样一个消费者组下就只有一个消费者了，貌似问题解决了？</p>
+<p>单纯咬文嚼字确实好像问题解决了，因为保证了，同一个<code>groupId</code>下有且仅有一个消费者。但是，再想想，能不能保证最基本的，不重复消费消息，不丢消息（kafka中的某些消息可能消费不到）？</p>
+<p>答案明显不能，多个<code>groupId</code>就已经注定了所有组下面都会收到相同的消息，不管如何定义消费策略，earlest, latest，都无济于事，如果硬要手动同步不同组下的offset，我想带来的新问题会比解决这个问题更复杂。</p>
+<p>有没有简单的办法？</p>
+<p>肯定有啊，分布式锁 + 动态消费者，抢到锁的实例才能开启消费者。</p>
+<p>分布式锁好办，引入redisson，单线程池持续抢锁，配置+代码，不超过50行，包括空行。</p>
+<p>那如何动态开启消费者？</p>
+<h2 id="3-动态消费者">3. 动态消费者</h2>
+<p>众所周知，Kafka的消费模式为客户端不断的拉消息，所谓动态，指可以动态开启和关闭这个消费者，不是在消息处理方法中判断是否该消费，这样的实现太难看，而是要关闭拉这个过程。</p>
+<p>如果使用原生Kafka客户端来实现，当然可以，但是工作量可能会比较大，既然引入了Spring Kafka这个框架，那就要发挥这个框架的价值，框架能不能实现，如何实现？</p>
+<p>框架能不能实现，当然能。</p>
+<p>如何实现，请看：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">KafkaListener<span style="color:#f92672">(</span>topics <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test-consumer&#34;</span><span style="color:#f92672">,</span> autoStartup <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">)</span>
+</code></pre></div><p><code>autoStartup</code>表示是否在启动后自动开启消费者，否不就完事了，大家都先别消费，抢完锁再消费。</p>
+<p>抢锁过程不在讨论范围，略。</p>
+<p>假如其中的一个实例抢到锁了，怎么能打开它呢？请看：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Service</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConsumerManager</span> <span style="color:#66d9ef">implements</span> ApplicationRunner <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> KafkaListenerEndpointRegistry endpointRegistry<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>ApplicationArguments args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>getDistributeLockSuccessfully<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            endpointRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//此方法会将没运行的消费者全部打开
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>就是这么easy。</p>
+<p>再来回归一下那两个基本问题会不会重复消费，会不会丢消息。</p>
+<p>第一个问题，同一个消费者组，肯定不会。</p>
+<p>第二个问题，绝大概率不会，依赖于具体配置和业务代码的实现。</p>
+<p>针对第二个问题，看一看Spring Kafka拉取到消息后，是如何丢给KafkaListener们消费的。看一看<code>KafkaMessageListenerContainer.invokeOnMessage(final ConsumerRecord&lt;K, V&gt; record, @SuppressWarnings(RAWTYPES) @Nullable Producer producer)</code>的实现：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">invokeOnMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> ConsumerRecord<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> record<span style="color:#f92672">,</span> <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span>RAWTYPES<span style="color:#f92672">)</span> <span style="color:#a6e22e">@Nullable</span> Producer producer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// (1)检查key和value是否是一个DeserializationException异常
+</span><span style="color:#75715e"></span>
+      <span style="color:#75715e">// (2)如果key和value为空，判断其headers中是否包含Spring反序列化异常
+</span><span style="color:#75715e"></span>
+      <span style="color:#75715e">// (3)调用实际的消息处理逻辑
+</span><span style="color:#75715e"></span>            doInvokeOnMessage<span style="color:#f92672">(</span>record<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+      <span style="color:#75715e">// (4)commit offset
+</span><span style="color:#75715e"></span>            ackCurrent<span style="color:#f92672">(</span>record<span style="color:#f92672">,</span> producer<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+</code></pre></div><p>是的，在（3）的时候，即实际的处理业务代码后，Spring Kafka才会帮你提交offset，而如果在（3）的时候，你抛了个异常，那是不是就不会提交了？是不是业务端只要处理失败后抛个异常出来就万事大吉啦？</p>
+<p>非也，继续翻它的调用者：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> RuntimeException <span style="color:#a6e22e">doInvokeRecordListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> ConsumerRecord<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> record<span style="color:#f92672">,</span>
+                <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span>RAW_TYPES<span style="color:#f92672">)</span> Producer producer<span style="color:#f92672">,</span>
+                Iterator<span style="color:#f92672">&lt;</span>ConsumerRecord<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> iterator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// (1) 
+</span><span style="color:#75715e"></span>                invokeOnMessage<span style="color:#f92672">(</span>record<span style="color:#f92672">,</span> producer<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>RuntimeException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// (2)
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">containerProperties</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAckOnError</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">autoCommit</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> producer <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    ackCurrent<span style="color:#f92672">(</span>record<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+
+                <span style="color:#75715e">// (3)各种异常处理balabala
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+</code></pre></div><p>很不幸，<code>invokeOnMessage(record, producer)</code>抛出的异常被捕获了，而且在满足某些条件的情况下，它仍然会帮你提交offset。so sad🐶。具体看看是什么条件<code>isAckOnError()</code>，<code>autoCommit</code>，<code>producer</code>，其中如果kafka消费时没有定义事务，那<code>producer == null</code>，<code>autoCommit</code>的值，取决于spirng配置中<code>spring.kafka.consumer.enable-auto-commit</code> 的值，默认为false。我去，后两个条件都满足了，继续看<code>isAckOnError()</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAckOnError</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ackOnError</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span>
+                <span style="color:#f92672">!</span><span style="color:#f92672">(</span>AckMode<span style="color:#f92672">.</span><span style="color:#a6e22e">MANUAL_IMMEDIATE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ackMode</span><span style="color:#f92672">)</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span> AckMode<span style="color:#f92672">.</span><span style="color:#a6e22e">MANUAL</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ackMode</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>其中<code>this.ackOnError</code>默认为<code>true</code>，让整个方法返回<code>false</code>的唯一方法，是定义<code>this.ackMode</code>为<code>MANUAL_IMMEDIATE</code>或<code>MANUAL</code>，而其默认为<code>BATCH</code>，即默认一收到消息就提交offset，更加sad了🐶。</p>
+<p>所以，如果配置不当，又没有事务保证，在业务逻辑处理异常后，比如要存个数据库结果没存进去还抛了个异常，这个时候就会丢数据 - kafka的数据已经消费了，却没有成功入库。</p>
+<p>虽然Spring Kafka保证了大部分情况下的健壮，但是正确的配置和正确的业务逻辑处理也很重要。否则丢消息在所难免。</p>
+<h2 id="4-dive-in-src">4. Dive In Src</h2>
+<p>统筹兼顾一下，如上分析，配置+业务代码质量能显著影响Kafka消息的消费健壮性。主要在四个方面：</p>
+<ol>
+<li>【T1】自动提交</li>
+<li>【T2】ACK策略</li>
+<li>【T3】事务</li>
+<li>【T4】KafkaListener们，手动acknowledge。</li>
+</ol>
+<p>为了更好的弄明白Spring Kafka是如何让这些配置影响消费者的，以及KafkaListener所标注的这些方法或者类如何才能更好的提交offset，再深入一点，不妨再从源码入手，从定义消费者的“始作俑者”，<code>@KafkaListener</code>开始，弄清楚，消费者是如何配置的，如何注入的，如何管理的，如何启动，如何停止，如何最后将消息传给实际处理方法，最后如何处理offset，如何处理异常的。</p>
+<p>将问题分个类：</p>
+<ol>
+<li>【Q1】Kafka消费者的生命周期管理</li>
+<li>【Q2】Kafka消费者的异常处理</li>
+<li>【Q3】Kafka事务 （单独开篇，此篇仅讨论无事务情况）</li>
+</ol>
+<h3 id="41-注解扫描">4.1 注解扫描</h3>
+<p><code>@EnableKafka</code>将实际引入Kafka Spring的注解扫描配置。</p>
+<p>该注解可以放置在主类上，或者其他<code>@Configuration</code>上，甚至可以不放，至于为啥可以不放，感兴趣的可以翻翻<code>KafkaAutoConfiguration</code>的源码。</p>
+<p>开启Spring Kafka中<code>@EnableKafka</code>注解后，将触发<code>KafkaBootstrapConfiguration</code>自动配置，这配置干了啥呢？相当简单：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KafkaBootstrapConfiguration</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;rawtypes&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Bean</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> KafkaListenerConfigUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">KAFKA_LISTENER_ANNOTATION_PROCESSOR_BEAN_NAME</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Role</span><span style="color:#f92672">(</span>BeanDefinition<span style="color:#f92672">.</span><span style="color:#a6e22e">ROLE_INFRASTRUCTURE</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> KafkaListenerAnnotationBeanPostProcessor <span style="color:#a6e22e">kafkaListenerAnnotationProcessor</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> KafkaListenerAnnotationBeanPostProcessor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Bean</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> KafkaListenerConfigUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">KAFKA_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> KafkaListenerEndpointRegistry <span style="color:#a6e22e">defaultKafkaListenerEndpointRegistry</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> KafkaListenerEndpointRegistry<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>看起来确实相当简单呀，定义了两个Bean，<code>KafkaListenerAnnotationBeanPostProcessor</code>和<code>KafkaListenerEndpointRegistry</code>，通过源码上的文档，可以清楚的知道这两个Bean的作用。</p>
+<p><code>KafkaListenerAnnotationBeanPostProcessor</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Bean post-processor that registers methods annotated with {@link KafkaListener}
+</span><span style="color:#75715e"> * to be invoked by a Kafka message listener container created under the covers
+</span><span style="color:#75715e"> * by a {@link org.springframework.kafka.config.KafkaListenerContainerFactory}
+</span><span style="color:#75715e"> * according to the parameters of the annotation.
+</span><span style="color:#75715e"> */</span>
+</code></pre></div><p>意思是，这是一个Bean后处理器，这个后处理器专门用来注册那些被@KafkaListener标注的方法（感觉文档里漏了一点，还有可能是类），这些方法将会被kafka消息监听容器所触发，而这些容器归于<code>KafkaListenerContainerFactory</code>管理。</p>
+<p><code>KafkaListenerEndpointRegistry</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Creates the necessary {@link MessageListenerContainer} instances for the
+</span><span style="color:#75715e"> * registered {@linkplain KafkaListenerEndpoint endpoints}. Also manages the
+</span><span style="color:#75715e"> * lifecycle of the listener containers, in particular within the lifecycle
+</span><span style="color:#75715e"> * of the application context.
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * &lt;p&gt;Contrary to {@link MessageListenerContainer}s created manually, listener
+</span><span style="color:#75715e"> * containers managed by registry are not beans in the application context and
+</span><span style="color:#75715e"> * are not candidates for autowiring. Use {@link #getListenerContainers()} if
+</span><span style="color:#75715e"> * you need to access this registry&#39;s listener containers for management purposes.
+</span><span style="color:#75715e"> * If you need to access to a specific message listener container, use
+</span><span style="color:#75715e"> * {@link #getListenerContainer(String)} with the id of the endpoint.
+</span><span style="color:#75715e"> */</span>
+</code></pre></div><p>哎呀妈呀，全是阅读理解🤣。</p>
+<p>这两段话的大概意思是，这个类用于为那些已经注册到这个类里的endpoints创建必要的Kafka消息监听容器（是不是和上面那个Bean有那么点关系了），同时也将管理这些Kafka消息监听容器的生命周期。这些被管理的消息监听容器不是以Bean的形式存在于应用上下文中，所以是无法被自动注入的，如果需要引用这些消息监听容器，需要用到此类的<code>getListenerContainers()</code>方法。</p>
+<p>两个类分别解决了Q1和Q2，先看Q1。</p>
+<p><code>KafkaListenerAnnotationBeanPostProcessor</code>实现了4个Spring相关的接口，其中最重要的有两个，一个是<code>SmartInitializingSingleton</code>，另一个是<code>BeanPostProcessor</code>。前者用于提前实现单例Bean的初始化，后者用于增强Bean。</p>
+<p>在分析它们的源码前，有一件事情必须搞清楚，Spring提供的这些钩子，什么时候被调用，谁先调用谁后调用？如果无法理解他们的前后关系，理解上将出现巨大的偏差。此处不做过多探讨。</p>
+<p>如果没耐心查资料，直接断点，此处有三个方法需要搞清楚调用顺序，分别是：</p>
+<ul>
+<li><code>SmartInitializingSingleton.afterSingletonsInstantiated()</code></li>
+<li><code>BeanPostProcessor.postProcessBeforeInitialization()</code></li>
+<li><code>BeanPostProcessor.postProcessAfterInitialization()</code></li>
+</ul>
+<p>很明显<code>BeanPostProcessor</code>的先后顺序显而易见。通过断点发现：<code>postProcessBeforeInitialization()</code> -&gt; <code>postProcessAfterInitialization()</code> -&gt; <code>afterSingletonsInstantiated()</code>。（IDEA真香</p>
+<p>所以先看实现了<code>BeanPostProcessor</code>接口的方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">postProcessBeforeInitialization</span><span style="color:#f92672">(</span>Object bean<span style="color:#f92672">,</span> String beanName<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> bean<span style="color:#f92672">;</span> <span style="color:#75715e">// 它啥也没干。
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">postProcessAfterInitialization</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Object bean<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> String beanName<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//一个巨大的判断
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nonAnnotatedClasses</span><span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// 获取原始Bean类型，以防被代理
+</span><span style="color:#75715e"></span>            Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> targetClass <span style="color:#f92672">=</span> AopUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getTargetClass</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">//开始干实事了，找类级别的@KafkaListener注解
+</span><span style="color:#75715e"></span>            Collection<span style="color:#f92672">&lt;</span>KafkaListener<span style="color:#f92672">&gt;</span> classLevelListeners <span style="color:#f92672">=</span> findListenerAnnotations<span style="color:#f92672">(</span>targetClass<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+      <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> hasClassLevelListeners <span style="color:#f92672">=</span> classLevelListeners<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;</span> multiMethods <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+      <span style="color:#75715e">//又干了件实事，找方法级别的@KafkaListener注解
+</span><span style="color:#75715e"></span>      Map<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">,</span> Set<span style="color:#f92672">&lt;</span>KafkaListener<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> annotatedMethods <span style="color:#f92672">=</span> MethodIntrospector
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">selectMethods</span><span style="color:#f92672">(</span>targetClass<span style="color:#f92672">,</span><span style="color:#f92672">(</span>MethodIntrospector<span style="color:#f92672">.</span><span style="color:#a6e22e">MetadataLookup</span><span style="color:#f92672">&lt;</span>Set<span style="color:#f92672">&lt;</span>KafkaListener<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">)</span> method <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+                        Set<span style="color:#f92672">&lt;</span>KafkaListener<span style="color:#f92672">&gt;</span> listenerMethods <span style="color:#f92672">=</span> findListenerAnnotations<span style="color:#f92672">(</span>method<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>listenerMethods<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> listenerMethods <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+      <span style="color:#75715e">//如果有类级别的注解，则还需要确定找到其中的@KafkaHandler注解，是不是和第一章的使用方法对上了
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>hasClassLevelListeners<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;</span> methodsWithHandler <span style="color:#f92672">=</span> MethodIntrospector<span style="color:#f92672">.</span><span style="color:#a6e22e">selectMethods</span><span style="color:#f92672">(</span>targetClass<span style="color:#f92672">,</span>
+                        <span style="color:#f92672">(</span>ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">MethodFilter</span><span style="color:#f92672">)</span> method <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>
+                                AnnotationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">findAnnotation</span><span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> KafkaHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                multiMethods<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>methodsWithHandler<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>annotatedMethods<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nonAnnotatedClasses</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">logger</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">logger</span><span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;No @KafkaListener annotations found on bean type: &#34;</span> <span style="color:#f92672">+</span> bean<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span> <span style="color:#75715e">//如果找到了方法级别的注解，丢给别人再去包装
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">,</span> Set<span style="color:#f92672">&lt;</span>KafkaListener<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> entry <span style="color:#f92672">:</span> annotatedMethods<span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    Method method <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>KafkaListener listener <span style="color:#f92672">:</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">//（1）包装方法级别的消费者
+</span><span style="color:#75715e"></span>                        processKafkaListener<span style="color:#f92672">(</span>listener<span style="color:#f92672">,</span> method<span style="color:#f92672">,</span> bean<span style="color:#f92672">,</span> beanName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">logger</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isDebugEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">logger</span><span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span>annotatedMethods<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; @KafkaListener methods processed on bean &#39;&#34;</span>
+                            <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;: &#34;</span> <span style="color:#f92672">+</span> annotatedMethods<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+
+      <span style="color:#75715e">//如果有类级别的注解，也丢给别人再去包装。
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>hasClassLevelListeners<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//（2）包装类级别的消费则
+</span><span style="color:#75715e"></span>                processMultiMethodListeners<span style="color:#f92672">(</span>classLevelListeners<span style="color:#f92672">,</span> multiMethods<span style="color:#f92672">,</span> bean<span style="color:#f92672">,</span> beanName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> bean<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>这实现就跟写大纲似的，在其他bean完成初始化后，就会调用这个后处理方法，这个后处理方法会找到所有被<code>@KafkaListener</code>标注的方法，以及所有被<code>@KafkaListener</code>标注的类中的<code>@KafkaHandler</code>修饰的方法，然后继续对他们进行包装。</p>
+<p>（1）找到方法级别的消费者后，<code>processKafkaListener</code>将该方法包装到<code>MethodKafkaListenerEndpoint</code>类实例化的endpoint中，之后从注解中将各个参数解析出来赋给endpoint，最后，该endpoint会被注册到<code>KafkaListenerEndpointRegistrar</code>Bean中，调用的是其<code>registerEndpoint()</code>方法。这是一个<code>KafkaListenerEndpointRegistry</code>的帮助类。当endpoint注册到Registrar中的时候发生了什么呢？继续看源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerEndpoint</span><span style="color:#f92672">(</span>KafkaListenerEndpoint endpoint<span style="color:#f92672">,</span> KafkaListenerContainerFactory<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> factory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// 参数校验
+</span><span style="color:#75715e"></span>  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+  <span style="color:#75715e">// 打包endpoint和其对应的工厂，方便存储
+</span><span style="color:#75715e"></span>  KafkaListenerEndpointDescriptor descriptor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaListenerEndpointDescriptor<span style="color:#f92672">(</span>endpoint<span style="color:#f92672">,</span> factory<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+  <span style="color:#75715e">// 同步一下ArrayList，防止被同时操作
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointDescriptors</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">startImmediately</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerListenerContainer</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">endpoint</span><span style="color:#f92672">,</span> resolveContainerFactory<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointDescriptors</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>主要逻辑在同步代码块中，<code>this.startImmediately</code>的值默认为false，之后会改变，后文会讲到。所以此时它只是暂时把endpoint再包装一次放入一个列表中，<code>KafkaListenerEndpointDescriptor</code>这个类完全就是个只有两个属性的结构体，没有啥特殊的方法。如果是Spring Kafka完成了整个启动过程之后，再有业务来调用这个注册方法时，就会直接注册到endpointRegistry中，并立即启动。</p>
+<p>（2）找到类级别的消费者后，<code>processMultiMethodListeners</code>将这些方法包装到<code>MultiMethodKafkaListenerEndpoint</code>类实例化的endpoint中，之后的处理方式就和（1）一模一样了。</p>
+<p>到此为止，Kafka消费者的初始化（后处理）基本完成。接下来，Spring对<code>KafkaListenerAnnotationBeanPostProcessor</code>提供的最后一个钩子将发挥作用：<code>afterSingletonsInstantiated()</code>。</p>
+<p>继续看看它都干了些啥：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterSingletonsInstantiated</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 设置一些东西
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+    <span style="color:#75715e">// 为某个属性设置EndpointRegistry，眼熟吧
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registrar</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getEndpointRegistry</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">state</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span>
+                        <span style="color:#e6db74">&#34;BeanFactory must be set to find endpoint registry by bean name&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>
+                        KafkaListenerConfigUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">KAFKA_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME</span><span style="color:#f92672">,</span>
+                        KafkaListenerEndpointRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+      <span style="color:#75715e">// 实际上这个endpointRegistry的Bean就是在自动配置中声明的那个
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registrar</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setEndpointRegistry</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#75715e">// 设置一些东西...
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+        <span style="color:#75715e">// Actually register all listeners
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registrar</span><span style="color:#f92672">.</span><span style="color:#a6e22e">afterPropertiesSet</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>这个钩子为<code>registrar</code>这个帮助类的实例设置了一些必要的属性值，同时将<code>endpointRegistry</code>也注入了进去，最后再调用一个当所有属性都准备好后的方法<code>afterPropertiesSet()</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterPropertiesSet</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        registerAllEndpoints<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerAllEndpoints</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointDescriptors</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>KafkaListenerEndpointDescriptor descriptor <span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointDescriptors</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">endpointRegistry</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerListenerContainer</span><span style="color:#f92672">(</span>
+                        descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">endpoint</span><span style="color:#f92672">,</span> resolveContainerFactory<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">startImmediately</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// trigger immediate startup
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>第二个方法是不是有点眼熟，endpoint注册的时候也有类似的过程，只是现在这个方法把所有的descriptor全部取了出来并且立即注册到了<code>endpointRegistry</code>中，最后将<code>startImmediately</code>属性设置为了<code>true</code>。</p>
+<p>现在BeanPostProcessor的整个过程都串起来了，并且打通了一个通往<code>endpointRegistry</code>的桥梁，通过这个桥梁，<code>KafkaListenerAnnotationBeanPostProcessor</code>将包装好的endpoints的管理权移交给了<code>KafkaListenerEndpointRegistry</code>，到此Spring Kafka并没有将业务逻辑和Kafka消费者真正关联起来，而仅仅是对业务逻辑进行了一个包装。</p>
+<h3 id="42-初始化">4.2 初始化</h3>
+<p>先看看”那座桥梁“到底干了啥：<code>KafkaListenerEndpointRegistry.registerListenerContainer()</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerListenerContainer</span><span style="color:#f92672">(</span>KafkaListenerEndpoint endpoint<span style="color:#f92672">,</span> KafkaListenerContainerFactory<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> factory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    registerListenerContainer<span style="color:#f92672">(</span>endpoint<span style="color:#f92672">,</span> factory<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerListenerContainer</span><span style="color:#f92672">(</span>KafkaListenerEndpoint endpoint<span style="color:#f92672">,</span> KafkaListenerContainerFactory<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> factory<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> startImmediately<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 参数校验
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+    <span style="color:#75715e">// 串一下
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listenerContainers</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">state</span><span style="color:#f92672">(</span><span style="color:#f92672">!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listenerContainers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>id<span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+                    <span style="color:#e6db74">&#34;Another endpoint is already registered with id &#39;&#34;</span> <span style="color:#f92672">+</span> id <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// （1）包装之旅还没有结束...
+</span><span style="color:#75715e"></span>            MessageListenerContainer container <span style="color:#f92672">=</span> createListenerContainer<span style="color:#f92672">(</span>endpoint<span style="color:#f92672">,</span> factory<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listenerContainers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>id<span style="color:#f92672">,</span> container<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+      <span style="color:#75715e">// 放入一个以GroupId为beanName的单例里
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+      <span style="color:#75715e">// 看情况是否立即启动
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>startImmediately<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                startIfNecessary<span style="color:#f92672">(</span>container<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>有一个很重要的参数<code>startImmediately</code>为<code>false</code>，这表明，整个”系统“仍然在初始化的过程。（1）阶段将endpoint再次包装成了一个<code>MessageListenerContainer</code>，这玩意是个接口，所以得具体进<code>createListenerContainer()</code>方法看看其实现类。在开始了解<code>MessageListenerConatiner</code>的封装过程前，有一个参数的来历需要标明一下：（1）中的<code>factory</code>参数。实际上向上回溯，该factory在BeanPostProcessor中被引入，依据为<code>KafkaListener.containerFactory()</code>属性，该属性可以定义工厂类的名字，默认为在<code>KafkaAnnotationDrivenConfiguration</code>中定义的一个并行消费者工厂：<code>ConcurrentKafkaListenerContainerFactory</code>，此处不展开，有兴趣可以看看源码，这个类包含了从Spring配置文件中获取的对Kafka消费者的具体配置，比如Message Converter、Error Handler、Transaction Manager等等，这个类将帮助（1）来包装endpoint。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> MessageListenerContainer <span style="color:#a6e22e">createListenerContainer</span><span style="color:#f92672">(</span>KafkaListenerEndpoint endpoint<span style="color:#f92672">,</span> KafkaListenerContainerFactory<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> factory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//（1）
+</span><span style="color:#75715e"></span>        MessageListenerContainer listenerContainer <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createListenerContainer</span><span style="color:#f92672">(</span>endpoint<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">//（2）看情况调用listenerContainer的钩子
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// 校验生命周期阶段
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+        <span style="color:#66d9ef">return</span> listenerContainer<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>工厂类将把消费者的公共配置参数结合注解的参数，一并初始化到<code>MessageListenerContainer</code>中，这样，它才拥有了完整的和kafka消费者相关的配置。</p>
+<p>至此，所有Spring Kafka的相关配置参数的初始化完成，接下来，就要将这些方法和配置，和原生KafkaConsumer结合起来，实际上就是调用原生Kafka客户端来进行消费操作了。</p>
+<h3 id="43-运行消费者">4.3 运行消费者</h3>
+<p>在了解Spring Kafka如何创建原生的KafkaConsumer之前，先看看<code>KafkaAutoConfiguration</code>定义的一个和消费者相关的Bean。</p>
+<ul>
+<li>kafkaConsumerFactory - <code>DefaultKafkaConsumerFactory</code></li>
+</ul>
+<p>又是一个工厂，真是无处不在的工厂呀。</p>
+<p>很明显，这个Bean是用来生产消费者的（KafkaConsumer，这货是原生的kafka消费者，和Spring Kafka没啥关系），这个Bean在包装ContainerFactory生产Container的时候被初始化进去了，所以，每一个Container都有能力生产消费者。之所以让Container有能力生产消费者，和其注解提供的<code>concurrency</code>能力相关，以及多topic，多partitions消费相关。</p>
+<p>姑且可以理解为一个<code>@KafkaListener</code>就代表了一个Container。</p>
+<p>那如何初始化消费者，以及如何启动消费的呢？</p>
+<p><code>KafkaListenerEndpointRegistry</code> 实现了 <code>SmartLifecycle</code> 接口，所以，启动方法交由Spring来负责调用，即 <code>SmartLifecycle.start()</code> 开始，经过层层调用，实际上最关键的启动方法为<code>ConcurrentMessageListenerContainer.doStart()</code>。来，咱瞅一瞅</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doStart</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 参数校验和设置
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">concurrency</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//（1）根据concurrency数量，每一次循环又单独初始化一个container
+</span><span style="color:#75715e"></span>        KafkaMessageListenerContainer<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> container<span style="color:#f92672">;</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">containers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>container<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>（1）根据注解中concurrency配置的数量，初始化对应数量的单Container，这个单Container和其本身是不一样的哦，如果将<code>ConcurrentMessageListenerContainer</code>和<code>@KafkaListener</code>一一对应，那<code>KafkaMessageListenerContainer</code> 就可以理解为和（topic，partition）一一对应了，毕竟，虽然注解中定义了多个topics或者多个partitions，但是实际上消费的时候，他们肯定都是分开拉取消息消费的。最后会调用<code>container.start()</code>。继续看：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doStart</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 校验参数之类的
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+
+    <span style="color:#75715e">// Runnable
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listenerConsumer</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListenerConsumer<span style="color:#f92672">(</span>listener<span style="color:#f92672">,</span> listenerType<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// 另起线程执行了
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listenerConsumerFuture</span> <span style="color:#f92672">=</span> containerProperties
+            <span style="color:#f92672">.</span><span style="color:#a6e22e">getConsumerTaskExecutor</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+            <span style="color:#f92672">.</span><span style="color:#a6e22e">submitListenable</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listenerConsumer</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>很明显，重点在<code>ListenerConsumer</code>类上，该类实现了两个接口：</p>
+<ul>
+<li>
+<p><code>ConsumerSeekCallback</code></p>
+</li>
+<li>
+<p><code>SchedulingAwareRunnable</code></p>
+</li>
+</ul>
+<p>第一个接口的作用在于可自定义消费的起点，第二个接口有点意思，它比<code>Runnable</code>就多一个<code>isLongLived()</code>接口，用于告诉<code>WorkManager</code>，这是个长跑线程，它不会自己停止。更具体的，可以看一看参考中第三个链接，有比较详细的描述。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">//定义消费起点
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#75715e">// 持续拉取和消费
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>isRunning<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        pollAndInvoke<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pollAndInvoke</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 提交offset ...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 检查是否需要重新定义消费起点 ...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 检查是否被暂停 ...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 拉取消息
+</span><span style="color:#75715e"></span>    ConsumerRecords<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> records <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">consumer</span><span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">pollTimeout</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+    <span style="color:#75715e">// 消费消息
+</span><span style="color:#75715e"></span>    invokeListener<span style="color:#f92672">(</span>records<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    
+    <span style="color:#75715e">//...
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>注释已经把过程抽象出来，Spring Kafka实际上也是调用了原生Kafka客户端的<code>KafkaConsumer.poll()</code>方法来获取kafka消息，然后再喂给业务过程。</p>
+<h2 id="5-总结">5. 总结</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">graph TD;
+ A<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;@KafkaListener: 注解参数&#34;</span><span style="color:#f92672">)</span>--&gt;B<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MethodKafkaListenerEndpoint&#34;</span><span style="color:#f92672">)</span>;
+ B--&gt;D;
+ C<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ConcurrentKafkaListenerContainerFactory: 配置参数&#34;</span><span style="color:#f92672">)</span>--&gt;D<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KafkaListenerEndpointDescriptor&#34;</span><span style="color:#f92672">)</span>;
+ D-.-&gt;|注册|E<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KafkaListenerEndpointRegistrar: 辅助类&#34;</span><span style="color:#f92672">)</span>;
+ E--&gt;F<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ConcurrentMessageListenerContainer&#34;</span><span style="color:#f92672">)</span>;
+ F-.-&gt;|注册|G<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KafkaListenerEndpointRegistry&#34;</span><span style="color:#f92672">)</span>;
+ G-.-&gt;|start|H<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ConcurrentMessageListenerContainer&#34;</span><span style="color:#f92672">)</span>;
+ H--&gt;I<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KafkaMessageListenerContainer1&#34;</span><span style="color:#f92672">)</span>;
+ H--&gt;M<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KafkaMessageListenerContainer...&#34;</span><span style="color:#f92672">)</span>;
+ I--&gt;N<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ListenerConsumer: Runnable&#34;</span><span style="color:#f92672">)</span>;
+ N--&gt;N;
+ J<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Spring BeanPostProcessor&#34;</span><span style="color:#f92672">)</span>-.-&gt;|驱动|A
+ K<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Spring InitializingBean&#34;</span><span style="color:#f92672">)</span>-.-&gt;|驱动|E
+ L<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Spring SmartLifeCycle&#34;</span><span style="color:#f92672">)</span>-.-&gt;|驱动|G
+</code></pre></div><p><img src="https://raw.githubusercontent.com/XIEJD/blog-images/master/2020/02/23-18-45-01-output.png" alt="output.png"></p>
+<h3 id="51-可参考注解配置">5.1 可参考注解配置</h3>
+<h3 id="52-可参考通用配置">5.2 可参考通用配置</h3>
+<h2 id="6-有感">6. 有感</h2>
+<p>有时候，因为业务需要快速实现，没办法完全掌握一门框架后再下手，这就导致了代码的不可控，有些情况下，Coder会失了神，这样实现到底framework native吗？如果引入一个框架而无法榨取它的价值，那就得考虑它存在的意义了，依赖数量和复杂度肯定是正比关系。如何能榨取框架的价值？。对于我而言，从下而上的效率太低。往往买了一本《XXX实践》，还没翻到业务强相关的地方，就没时间了，坚持不下去了，然后尘封于书桌。对于Coder而言，最好的描述语言是Code，点开IDEA，“Download Sources”，看源码的过程可能会痛苦，但是啥都不会的后果会更痛苦。🏄🏻‍♂️</p>
+<h2 id="7-参考">7. 参考</h2>
+<ol>
+<li>
+<p><a href="https://docs.spring.io/spring-kafka/docs/2.2.12.RELEASE/reference/html/#even-quicker-with-spring-boot">https://docs.spring.io/spring-kafka/docs/2.2.12.RELEASE/reference/html/#even-quicker-with-spring-boot</a></p>
+</li>
+<li>
+<p><a href="https://juejin.im/post/5ab1bf19f265da23771947f1">https://juejin.im/post/5ab1bf19f265da23771947f1</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/8659609/thread-keeps-running-even-after-application-has-been-stopped-in-websphere">https://stackoverflow.com/questions/8659609/thread-keeps-running-even-after-application-has-been-stopped-in-websphere</a></p>
+</li>
+</ol>
+
+      </div>
+
+
+      <footer>
+        
+
+
+            <div id="vssue"></div>
+    <link rel="stylesheet" href="https://unpkg.com/vssue/dist/vssue.min.css">
+    <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
+    <script src="https://unpkg.com/vssue/dist/vssue.github.min.js"></script>
+    <script>
+        if (window.location.hostname != "localhost") {
+            new Vue({
+                el: '#vssue',
+                render: h => h('Vssue', {
+                    props: {
+                        title: options => `${options.prefix}comments on ${document.location.pathname}`,
+                        options: {
+                            autoCreateIssue: true,
+                            owner: 'XIEJD',
+                            repo: 'xiejd.github.io',
+                            clientId: 'd49c970afdb5dc4631f9',
+                            clientSecret: '200eadf0eaf8388c460170701a3af5155208133d', 
+                        },
+                    }
+                })
+            })
+        }
+    </script>
+
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>浓于利生贪，浓于名生嗔，浓于情生痴。</p>
+    
+    
+      
+        © 2020
+      
+       Shareif 
+    
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
