@@ -11,26 +11,26 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Springboot Websocket"/>
-<meta name="twitter:description" content="Table of Contents generated with DocToc
- What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
+<meta name="twitter:description" content="What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
 How 如何利用Spring Boot 快速开发
 自动配置 核心：classpath
 通过classpath上出现的配置类，自动进行配置
 SpringFactoriesLoader加载配置类
 所谓自动配置，其实是各种逻辑分支
 起步依赖 应用 WebSocket   客户端测试脚本(Python)
-import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&#39;ws://localhost:8080/ws&#39;) as websocket: req = {&#34;protocol&#34;:&#34;history_req&#34;,&#39;code&#39;:&#39;XAGODS&#39;,&#39;type&#39;:&#39;MINUTE&#39;,&#39;start_pos&#39;:&#39;0&#39;,&#39;pos_num&#39;:&#39;10&#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类"/>
+import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&#39;ws://localhost:8080/ws&#39;) as websocket: req = {&#34;protocol&#34;:&#34;history_req&#34;,&#39;code&#39;:&#39;XAGODS&#39;,&#39;type&#39;:&#39;MINUTE&#39;,&#39;start_pos&#39;:&#39;0&#39;,&#39;pos_num&#39;:&#39;10&#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类
+&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org."/>
 
     <meta property="og:title" content="Springboot Websocket" />
-<meta property="og:description" content="Table of Contents generated with DocToc
- What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
+<meta property="og:description" content="What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
 How 如何利用Spring Boot 快速开发
 自动配置 核心：classpath
 通过classpath上出现的配置类，自动进行配置
 SpringFactoriesLoader加载配置类
 所谓自动配置，其实是各种逻辑分支
 起步依赖 应用 WebSocket   客户端测试脚本(Python)
-import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&#39;ws://localhost:8080/ws&#39;) as websocket: req = {&#34;protocol&#34;:&#34;history_req&#34;,&#39;code&#39;:&#39;XAGODS&#39;,&#39;type&#39;:&#39;MINUTE&#39;,&#39;start_pos&#39;:&#39;0&#39;,&#39;pos_num&#39;:&#39;10&#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类" />
+import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&#39;ws://localhost:8080/ws&#39;) as websocket: req = {&#34;protocol&#34;:&#34;history_req&#34;,&#39;code&#39;:&#39;XAGODS&#39;,&#39;type&#39;:&#39;MINUTE&#39;,&#39;start_pos&#39;:&#39;0&#39;,&#39;pos_num&#39;:&#39;10&#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类
+&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.shareif.cn/posts/2019-06-02-springboot-websocket/" />
 <meta property="article:published_time" content="2019-06-02T00:00:00+00:00" />
@@ -143,7 +143,7 @@ import asyncio import websockets import json async def test_ws_quote(): async wi
         
         <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<!-- raw HTML omitted -->
 <ul>
 <li><a href="#what">What</a></li>
 <li><a href="#how">How</a>
@@ -191,18 +191,18 @@ asyncio<span style="color:#f92672">.</span>get_event_loop()<span style="color:#f
 <li>
 <p>Java服务器端maven依赖，配置类，业务处理类</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-          <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;/dependency&gt;</span>
+            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
   
-      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-          <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-websocket<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;/dependency&gt;</span>
-      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
-          <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
+        <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-websocket<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+        <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
 <span style="color:#a6e22e">@Configuration</span>
 <span style="color:#a6e22e">@EnableWebSocket</span>

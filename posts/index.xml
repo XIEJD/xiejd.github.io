@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Shareif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Feb 2020 22:27:08 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Feb 2020 21:17:02 +0800</lastBuildDate>
     
 	<atom:link href="https://www.shareif.cn/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>让女朋友快乐之Go</title>
+      <link>https://www.shareif.cn/posts/letgirlfriendhappy/</link>
+      <pubDate>Wed, 26 Feb 2020 21:17:02 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/letgirlfriendhappy/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Spring Kafka源码阅读小记之消费者</title>
@@ -58,8 +67,7 @@ docker pull emqx/emqx:v3.2.5 docker run -d --name emqx -p 1883:1883 -p 8083:8083
       <pubDate>Sun, 20 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.shareif.cn/posts/2019-10-20-spring-in-action/</guid>
-      <description>Table of Contents generated with DocToc
- spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+      <description>spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
    注解 解释     @ConditionalOnBean 当BeanFactory中存在某个bean时满足条件，可以匹配多个   @ConditionalOnClass 当ClassPath下存在某个类时满足条件，可以匹配多个   @ConditionalOnCloudPlatform 巴拉巴拉   @ConditionalOnExpression 可以定义SpEL语句进行匹配   @ConditinalOnJava 匹配当前运行JVM版本   @ConditionalOnJndi    @ConditionalOnMissingBean    @ConditionalOnMissingClass    @ConditinalOnNotWebApplication    @ConditionalOnProperty 当满足某个属性时满足条件   @ConditionalOnResource 当classpath下存在某个资源文件时满足条件，可以匹配多个   @ConditinalOnSingleCandidate    @ConditinalOnWebApplication     举几个🌰：</description>
     </item>
     
@@ -151,15 +159,15 @@ Java 8 时间工具 无时区时间类  LocalDate LocalTime LocalDateTime  publi
       <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.shareif.cn/posts/2019-06-02-springboot-websocket/</guid>
-      <description>Table of Contents generated with DocToc
- What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
+      <description>What How  自动配置 起步依赖   应用  WebSocket    What Spring Boot不是代码生成器，也不是服务器，它是一个能快速实现业务逻辑的编程框架，通过遵循Spring Boot的约定进行业务实现后，通常利用Maven进行项目的生命周期管理，编译打包成Jar包，然后给JVM运行。实际上利用Spring Boot和完全用纯Java实现业务的区别在于，Spring Boot能自动完成许多配置，帮你屏蔽掉很多不那么重要的代码实现，让程序快速上线。
 How 如何利用Spring Boot 快速开发
 自动配置 核心：classpath
 通过classpath上出现的配置类，自动进行配置
 SpringFactoriesLoader加载配置类
 所谓自动配置，其实是各种逻辑分支
 起步依赖 应用 WebSocket   客户端测试脚本(Python)
-import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&amp;#39;ws://localhost:8080/ws&amp;#39;) as websocket: req = {&amp;#34;protocol&amp;#34;:&amp;#34;history_req&amp;#34;,&amp;#39;code&amp;#39;:&amp;#39;XAGODS&amp;#39;,&amp;#39;type&amp;#39;:&amp;#39;MINUTE&amp;#39;,&amp;#39;start_pos&amp;#39;:&amp;#39;0&amp;#39;,&amp;#39;pos_num&amp;#39;:&amp;#39;10&amp;#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类</description>
+import asyncio import websockets import json async def test_ws_quote(): async with websockets.connect(&amp;#39;ws://localhost:8080/ws&amp;#39;) as websocket: req = {&amp;#34;protocol&amp;#34;:&amp;#34;history_req&amp;#34;,&amp;#39;code&amp;#39;:&amp;#39;XAGODS&amp;#39;,&amp;#39;type&amp;#39;:&amp;#39;MINUTE&amp;#39;,&amp;#39;start_pos&amp;#39;:&amp;#39;0&amp;#39;,&amp;#39;pos_num&amp;#39;:&amp;#39;10&amp;#39;} await websocket.send(json.dumps(req)) while True: quote = await websocket.recv() print(quote) asyncio.get_event_loop().run_until_complete(test_ws_quote())   Java服务器端maven依赖，配置类，业务处理类
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.</description>
     </item>
     
     <item>

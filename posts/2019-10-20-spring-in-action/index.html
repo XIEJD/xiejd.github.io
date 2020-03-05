@@ -11,13 +11,11 @@
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="spring 漫游"/>
-<meta name="twitter:description" content="Table of Contents generated with DocToc
- spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+<meta name="twitter:description" content="spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
    注解 解释     @ConditionalOnBean 当BeanFactory中存在某个bean时满足条件，可以匹配多个   @ConditionalOnClass 当ClassPath下存在某个类时满足条件，可以匹配多个   @ConditionalOnCloudPlatform 巴拉巴拉   @ConditionalOnExpression 可以定义SpEL语句进行匹配   @ConditinalOnJava 匹配当前运行JVM版本   @ConditionalOnJndi    @ConditionalOnMissingBean    @ConditionalOnMissingClass    @ConditinalOnNotWebApplication    @ConditionalOnProperty 当满足某个属性时满足条件   @ConditionalOnResource 当classpath下存在某个资源文件时满足条件，可以匹配多个   @ConditinalOnSingleCandidate    @ConditinalOnWebApplication     举几个🌰："/>
 
     <meta property="og:title" content="spring 漫游" />
-<meta property="og:description" content="Table of Contents generated with DocToc
- spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
+<meta property="og:description" content="spring-boot-autoconfiguration  Condition Jackson Mongo Quartz *[to do]* Kafka Redis  运行基于Docker的Redis WHY ?     Spring Integration  概览    spring-boot-autoconfiguration Condition AutoConfiguration的condition包下面有一套条件注解，用来决定什么时候创建bean，基本上所有的自动配置类都会用到里面的注解来“智能”的决定什么时候创建bean。
    注解 解释     @ConditionalOnBean 当BeanFactory中存在某个bean时满足条件，可以匹配多个   @ConditionalOnClass 当ClassPath下存在某个类时满足条件，可以匹配多个   @ConditionalOnCloudPlatform 巴拉巴拉   @ConditionalOnExpression 可以定义SpEL语句进行匹配   @ConditinalOnJava 匹配当前运行JVM版本   @ConditionalOnJndi    @ConditionalOnMissingBean    @ConditionalOnMissingClass    @ConditinalOnNotWebApplication    @ConditionalOnProperty 当满足某个属性时满足条件   @ConditionalOnResource 当classpath下存在某个资源文件时满足条件，可以匹配多个   @ConditinalOnSingleCandidate    @ConditinalOnWebApplication     举几个🌰：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.shareif.cn/posts/2019-10-20-spring-in-action/" />
@@ -131,7 +129,7 @@
         
         <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<!-- raw HTML omitted -->
 <ul>
 <li><a href="#spring-boot-autoconfiguration">spring-boot-autoconfiguration</a>
 <ul>
@@ -383,7 +381,7 @@
 <h3 id="kafka">Kafka</h3>
 <p>Spring提供的对Kafka客户端的封装，起步依赖：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-	  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.kafka<span style="color:#f92672">&lt;/groupId&gt;</span>
+      <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.kafka<span style="color:#f92672">&lt;/groupId&gt;</span>
     <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-kafka<span style="color:#f92672">&lt;/artifactId&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>自动配置相关类</p>
@@ -496,7 +494,7 @@ auth <span style="color:#ae81ff">123456</span>
 <p>Jackson中，对于joda time的序列化和反序列化自定义方法</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@JsonComponent</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DateTimeComponent</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String DEFAULT_DATETIME_FORMATTER <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yyyy-MM-dd&#39;T&#39;hh:mm:ss&#39;Z&#39;&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String DEFAULT_DATETIME_FORMATTER <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yyyy-MM-dd&#39;T&#39;HH:mm:ss&#39;Z&#39;&#34;</span><span style="color:#f92672">;</span>
   
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeDTOSerializer</span> <span style="color:#66d9ef">extends</span> JsonSerializer<span style="color:#f92672">&lt;</span>DateTime<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
         <span style="color:#a6e22e">@Override</span>
