@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Shareif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Feb 2020 22:27:08 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 29 Mar 2020 18:24:35 +0800</lastBuildDate>
     
 	<atom:link href="https://www.shareif.cn/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Springboot 启动过程中可定制“插槽”</title>
+      <link>https://www.shareif.cn/posts/springboot-start-precedure/</link>
+      <pubDate>Sun, 29 Mar 2020 18:24:35 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/springboot-start-precedure/</guid>
+      <description>sequenceDiagram participant refresh context participant SpringApplication participant A participant B participant C participant D participant E SpringApplication -&amp;gt;&amp;gt;+ B: B.starting() B -&amp;gt;&amp;gt;+ C: ApplicationStartingEvent C --&amp;gt;&amp;gt;- B: B --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ B: B.environmentPrepared() B -&amp;gt;&amp;gt;+ C: ApplicationEnvironmentPreparedEvent C -&amp;gt;&amp;gt;+ D: D.postProcessEnvironment() D -&amp;gt;&amp;gt;+ E: E.load() E --&amp;gt;&amp;gt;- D: D --&amp;gt;&amp;gt;- C: C --&amp;gt;&amp;gt;- B: B --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ A: A.initialize() A --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ B: B.contextPrepared() B -&amp;gt;&amp;gt;+ C: ApplicationContextInitializedEvent C --&amp;gt;&amp;gt;- B: B --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ B: B.</description>
+    </item>
     
     <item>
       <title>Spring Kafka源码阅读小记之消费者</title>
@@ -229,6 +238,18 @@ MongoDB聚合框架 MongoDB自身提供三种形式的聚合操作：管道聚�
       <description>Table of Contents generated with DocToc
  什么是流 Stream API概览 流操作  中间操作与终端操作（intermediate &amp;amp; terminal） 有状态与无状态 (stateful &amp;amp; stateless) 短路操作 （short-circuiting）   重要方法  函数式接口 映射（Map） 规约（Reduce） 可变规约（Collect）   REFERENCES  什么是流 比较偏颇的理解，流指代的就是集合类下的stream() api，它的作用就是将集合类型转化为Stream&amp;lt;E&amp;gt;接口实现的类， 官方一点说，&amp;ldquo;从支持数据处理操作的源生成的元素序列&amp;rdquo;。这个序列，实际上就是Stream实现类，可以调用由Stream定义的抽象方法来对数据进行批量操作，而不用像以往那样对数据集手动遍历才能进行各种操作。对于流的定义和描述，更具体的可以参考Stream Doc，或者已经尽力翻译的博客
 Stream API概览    Method Description Type     filter() 很常用的方法，将传入的方法对流中的每个数据都执行一遍 intermediate   distinct() 去重，根据Object.equals(Object)来判断两个元素是否相同，并行化代价高 stateful intermediate   skip() 跳过前n个元素，并行化代价高，但是如果允许跳过任意n个元素，可以改善并行化的性能 stateful intermediate   limit() 截断流前n个元素，并行化代价高 short-circuiting stateful intermediate   map() 将传入的匿名函数应用到每一个流中的元素中 intermediate   flatMap() 将流扁平化，可以将一个元素展开成多个元素，并将这种展开操作应用到所有元素，生成新的流。 intermediate   sorted() 排序，根据传入的Comparator stateful intermediate   anyMatch() 传入一个谓词Predicate，如果任意一个元素匹配成功，则会返回true short-circuiting terminal   noneMatch() 传入一个谓词Predicate，如果所有元素都不匹配，则会返回true short-circuiting terminal   allMatch() 传入一个谓词Predicate，如果所有元素都匹配，则会返回true short-circuiting terminal   findAny() 返回一个Optional对象来描述流是否空 short-circuiting terminal   findFirst() 返回一个Optional来描述流的第一个元素 short-circuiting terminal   forEach() 类似map，会对每个元素执行传入Consumer方法，不会生成新流 terminal   collect() 收集元素，按传入的匿名函数判断流中的元素是否应该放入到最后结果容器中（非流） terminal   reduce() 规约，将流按照传入匿名函数定义将流规约成一个值或对象 terminal   count() 特殊规约操作，将流中的元素个数返回 terminal    流操作 中间操作与终端操作（intermediate &amp;amp; terminal） Java8的流操作分成了两类，一类是中间操作，一类是终端操作，这两种操作最大的区别是中间操作会产生一个新的流，而终端操作会产生其他对象或值，而非流，所以顾名思义，一个终端操作往往在调用链的末尾，而调用链的中间步骤往往都是中间操作类型的函数。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://www.shareif.cn/posts/2020-share-good-posts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/2020-share-good-posts/</guid>
+      <description>+++ draft = false date = 2020-03-28T20:21:08+08:00 title = &amp;quot;&amp;rdquo; description = &amp;quot;&amp;rdquo; slug = &amp;quot;&amp;rdquo; tags = [] categories = [] externalLink = &amp;quot;&amp;rdquo; series = []
++++
+书 电子书、纸质书，都归于此类。
+ 设计模式  文章 </description>
     </item>
     
   </channel>

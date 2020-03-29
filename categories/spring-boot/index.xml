@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring Boot on Shareif</title>
+    <link>https://www.shareif.cn/categories/spring-boot/</link>
+    <description>Recent content in Spring Boot on Shareif</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 29 Mar 2020 18:24:35 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.shareif.cn/categories/spring-boot/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Springboot 启动过程中可定制“插槽”</title>
+      <link>https://www.shareif.cn/posts/springboot-start-precedure/</link>
+      <pubDate>Sun, 29 Mar 2020 18:24:35 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/springboot-start-precedure/</guid>
+      <description>sequenceDiagram participant refresh context participant SpringApplication participant A participant B participant C participant D participant E SpringApplication -&amp;gt;&amp;gt;+ B: B.starting() B -&amp;gt;&amp;gt;+ C: ApplicationStartingEvent C --&amp;gt;&amp;gt;- B: B --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ B: B.environmentPrepared() B -&amp;gt;&amp;gt;+ C: ApplicationEnvironmentPreparedEvent C -&amp;gt;&amp;gt;+ D: D.postProcessEnvironment() D -&amp;gt;&amp;gt;+ E: E.load() E --&amp;gt;&amp;gt;- D: D --&amp;gt;&amp;gt;- C: C --&amp;gt;&amp;gt;- B: B --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ A: A.initialize() A --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ B: B.contextPrepared() B -&amp;gt;&amp;gt;+ C: ApplicationContextInitializedEvent C --&amp;gt;&amp;gt;- B: B --&amp;gt;&amp;gt;- SpringApplication: SpringApplication -&amp;gt;&amp;gt;+ B: B.</description>
+    </item>
+    
+  </channel>
+</rss>
