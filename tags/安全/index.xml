@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>安全 on Shareif</title>
+    <link>https://www.shareif.cn/tags/%E5%AE%89%E5%85%A8/</link>
+    <description>Recent content in 安全 on Shareif</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Mar 2020 22:49:06 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.shareif.cn/tags/%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PKI、TLS、证书概念整理</title>
+      <link>https://www.shareif.cn/posts/tls/</link>
+      <pubDate>Sun, 15 Mar 2020 22:49:06 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/tls/</guid>
+      <description>1. PKI 2. HTTP over TLS 3. 证书(X509)、秘钥对 4. Practice 5. 参考  1. PKI Public Key Infrastructure - 公钥基础设施，这个名字，直译出来总觉得少点味，尤其是对于非安全领域，在接触到这个概念时，第一感觉它只是个“设施”，主要是用来管理“公钥”的，让人非常的疑惑。这类专有名词为什么不能稍微意译一下呢？
+PKI是一个体系，一个架构，一系列东西的集合，这个集合中规定了各种元素，元素的作用，元素和元素之间的通讯协议等等。在这个集合所构成的体系之下，能够保证集合中的两个节点的通讯是安全的。而我们广袤的互联网所使用的PKI，就是一种基于可信第三方（CA，Certificate Authority）的PKI。下文所说的PKI如无特殊说明，就是指基于可信第三方的PKI。
+2. HTTP over TLS HTTPS的交互过程网络上资料很多，不再做赘述。比较令我好奇的是，当进行双向校验时，客户端如何选择证书？
+在一个TLS建链过程中，有两个角色，一个客户端（client）主动发起，一个服务端（server）。
+服务端必须有秘钥对（证书+私钥）。用于认证以及用于对称秘钥加密。如果服务端不校验客户端，同时客户端也不校验服务端证书，那客户端可以不配置任何证书相关的东西。如果服务端需要校验客户端，则需要有CA，用来验证客户端证书是否为其签发。当客户端配置的方式为keystore时，其中可能存在许多对秘钥对，客户端如何选择用哪个密钥对来通信呢？从协议交互图中看出来，有一个5过程，该过程为服务端要求客户端提供证书。
+该博客中记录了TLS中，Certificate Request的内容 ：https://blog.csdn.net/mrpre/article/details/77868263
+3. 证书(X509)、秘钥对   X.509，证书标准，定义证书格式，遵循ASN.1规范。X.509定义的证书结构：
+  Version Number，版本
+  Serial Number，序列号
+  Signature Algorithm ID，签名算法ID
+  Issuer Name，颁发者
+  Validity period，有效期
+ Not Before Not After    Subject name，使用者
+  Subject Public Key Info，公钥信息</description>
+    </item>
+    
+  </channel>
+</rss>
