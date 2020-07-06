@@ -273,7 +273,7 @@ Stream API概览    Method Description Type     filter() 很常用的方法，�
 书 电子书、纸质书，都归于此类。
   设计模式
   《HTTPS权威指南》，关键词：体系知识，OpenSSL
-  文章  synchronized 原理及应用 : jdk8已做优化，可重入，放心用 Spring IOC : 依赖倒置是原则，控制反转是实践，依赖注入是方法。  Spring  Spring Cloud Kubenetes : kubenetes环境下，提供对k8s的使用抽象。 Spring AMQP : 对AMQP客户端的抽象。  </description>
+  文章  synchronized 原理及应用 : jdk8已做优化，可重入，放心用 Spring IOC : 依赖倒置是原则，控制反转是实践，依赖注入是方法。 分布式事务：三阶段提交  Spring  Spring Cloud Kubenetes : kubenetes环境下，提供对k8s的使用抽象。 Spring AMQP : 对AMQP客户端的抽象。  </description>
     </item>
     
   </channel>
