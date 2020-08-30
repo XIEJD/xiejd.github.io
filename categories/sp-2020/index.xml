@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SP-2020 on Shareif</title>
+    <link>https://www.shareif.cn/categories/sp-2020/</link>
+    <description>Recent content in SP-2020 on Shareif</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Aug 2020 21:38:12 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.shareif.cn/categories/sp-2020/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>复式记账法</title>
+      <link>https://www.shareif.cn/posts/bookkeeping/</link>
+      <pubDate>Wed, 19 Aug 2020 21:38:12 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/bookkeeping/</guid>
+      <description>Table of Contents generated with DocToc
+ 概念 借贷记账法 举几个例子  概念 什么是会计科目以及会计账户？
+会计科目本质上就是对相同经济性质的项目的命名，解决定性的问题。会计账户本质上就是用来反映会计科目的具体金额增减，价值的变化，解决定量的问题。
+一级会计科目包括：资产、负债、共同、所有者权益、成本、损益（收入性科目和费用支出型科目）。2020最新会计科目表：http://www.canet.com.cn/kemu/596034.html#gtl
+什么是复式记账法？
+复式记账法的核心概念从其名字就可以看出来：“复式”，doble entry，既要记录资金的来源，也要记录资金的去向。每一个经济活动，都会至少涉及两个会计账户的数量变化。复式记账法又可以分为借贷记账法、
+会计恒等式： $$ 资产 + 费用 = 负债 + 所有者权益 + 收入 $$
+借贷记账法 借贷记账法又叫T型记账法，国际通用，中国会计记账标准，其核心为两个记账符号：Debit（借）、Credit（贷），对于每个会计账户，都有借贷两个项目，左边为借，右边为贷。对于不同的会计科目，借和贷的含义不尽相同。
+属于会计恒等式左边的会计科目：借赠贷减
+属于会计恒等式右边的会计科目：借减贷增
+一图以蔽之：
+不管账户如何变动，都必定要满足： $$ Total Debit == Total Credit $$
+举几个例子 今天七夕，假设大东东用花呗买了一朵价值10元的玫瑰花准备送给女朋友。
+那么大东东的花呗账户需要支出10元（费用），大东东得到了一朵价值10元的花（所有者权益）
+    Debit Credit     费用账户（借增贷减） 10    所有者权益账户（借减贷增）  10    第二个月，大东东的花呗到期了，需要进行还款，还款10元给马爸爸。
+那么大东东的银行现金账户（资产）减少10元，其他应付款（负债类）减少10元
+    Debit Credit     现金账户（借增贷减）  10   应付款账户（借减贷增） 10     此时一个完整的消费过程完成后，Debit之和==Credit之和。</description>
+    </item>
+    
+  </channel>
+</rss>
