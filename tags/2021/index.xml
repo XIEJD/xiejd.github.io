@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2021 on Shareif</title>
+    <link>https://www.shareif.cn/tags/2021/</link>
+    <description>Recent content in 2021 on Shareif</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Jun 2021 23:21:08 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.shareif.cn/tags/2021/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2021 Agenda</title>
+      <link>https://www.shareif.cn/posts/agenda/</link>
+      <pubDate>Thu, 17 Jun 2021 23:21:08 +0800</pubDate>
+      
+      <guid>https://www.shareif.cn/posts/agenda/</guid>
+      <description> Definitions Dive in Framework Sources Dive in Books Dive in Blogs  Definitions 1%~49%: 50%~89%: 90%~100%: 全年完成度：所有progress之和/数量
+Dive in Framework Sources  暂无计划  Dive in Books  《Go 官方文档》  Dive in Blogs  七月 八月 九月 十月 十一月 十二月 SP.1 《》  </description>
+    </item>
+    
+  </channel>
+</rss>
