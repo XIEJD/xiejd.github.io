@@ -6,30 +6,10 @@
     <description>Recent content on Shareif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Jun 2021 23:21:08 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2020 21:38:12 +0800</lastBuildDate>
     
 	<atom:link href="https://www.shareif.cn/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>2021 Agenda</title>
-      <link>https://www.shareif.cn/posts/agenda/</link>
-      <pubDate>Thu, 17 Jun 2021 23:21:08 +0800</pubDate>
-      
-      <guid>https://www.shareif.cn/posts/agenda/</guid>
-      <description> Definitions Dive in Framework Sources Dive in Books Dive in Blogs  Definitions 1%~49%: 50%~89%: 90%~100%: 全年完成度：所有progress之和/数量
-Dive in Framework Sources  暂无计划  Dive in Books  《Go 官方文档》  Dive in Blogs  七月 八月 九月 十月 十一月 十二月 SP.1 《》  </description>
-    </item>
-    
-    <item>
-      <title>2020 Check List</title>
-      <link>https://www.shareif.cn/posts/2020-12-31-2020-checklist/</link>
-      <pubDate>Thu, 31 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.shareif.cn/posts/2020-12-31-2020-checklist/</guid>
-      <description>Definitions Dive in Framework Sources Dive in Books Dive in Blogs 我和我的意识流  Definitions 1%~49%: 50%~89%: 90%~100%: 全年完成度：所有progress之和/数量
-Dive in Framework Sources  netty spring kafka okhttp3 Redisson quartz scheduler  Dive in Books  《持续交付2.0》 《持续演进的Cloud Native》 《Java 性能优化权威指南》 《Go Web编程》  Basic Programming Language Spec https://golang.google.cn/ref/spec，then （in progress） The Book   【Optional】《算法笔记》  Dive in Blogs  一月 二月《Spring Kafka源码阅读小记之消费者》 三月 四月 五月 六月 七月 八月 九月 十月 十一月 十二月 SP.</description>
-    </item>
     
     <item>
       <title>复式记账法</title>
